@@ -1,10 +1,17 @@
 -Create a Tag class
 -Create a TagManager class
--Create a Folder class
--Create a File interface
--Create a absFile abstract class
 -Create a log class
 -Create a Manager class
--Create a FileManager class
 -Create a Image class extends absFile
 -Create a ImageManager class
+
+-Create Directory Package
+    -Create a File class
+        -Should be able to change the name of a file
+    -Create a Folder class that extends File
+        -Should store a representation of everything inside the Folder.
+        -Should be able to get the representation of items in the Folder.
+    -Create a File Manager
+        -Should be able to create an instance of File Manager with a given root directory
+        -Should store a representation of of the root and everything inside the folder
+        -Should be able to get all files that match the given input
