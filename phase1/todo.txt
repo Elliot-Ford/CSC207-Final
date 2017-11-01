@@ -1,0 +1,10 @@
+-Create a Tag class
+-Create a TagManager class
+-Create a Folder class
+-Create a File interface
+-Create a absFile abstract class
+-Create a log class
+-Create a Manager class
+-Create a FileManager class
+-Create a Image class extends absFile
+-Create a ImageManager class
