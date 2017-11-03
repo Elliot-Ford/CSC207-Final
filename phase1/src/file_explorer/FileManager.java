@@ -11,6 +11,10 @@ public class FileManager {
         nonDirectoryFileList = getAllLeafs(new File(root));
     }
 
+    public FileManager(File root) {
+        nonDirectoryFileList = getAllLeafs(root);
+    }
+
     private List<File> getAllLeafs(File root) {
         List<File> ret = new ArrayList<>();
         if(root.isDirectory() && root.listFiles() != null) {
