@@ -76,6 +76,7 @@ public class Image {
             tags.remove(tag);
             previousNames.remove("@" + tag.getName());
             tag.removeImage(this);
+            //TODO: this return value of tag.removeImage(this) is not used in this call
         }
 
         // If !notHere is true, then the removal was successful.
