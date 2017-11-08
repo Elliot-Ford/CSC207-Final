@@ -19,12 +19,38 @@ public class Tag {
     }
 
     public void addImage(Image newImage) {
-        //TODO: Write a working version of this.
+        boolean notHere = true;
+        // Checking if this Image is new to this Tag
+        for (Image image : images) {
+            if (image.getName().equals(newImage.getName())) {
+                notHere = false;
+            }
+        }
+
+        if (notHere) {
+            images.add(newImage);
+            newImage.addTag(this);
+        }
     }
 
     public boolean removeImage(Image image) {
-        //TODO: Write a working version of this
-        return false;
+        boolean notHere = true;
+        // Checking if this Image is in this Tag
+        for (Image existImage : images) {
+            if (existImage.getName().equals(image.getName())) {
+                notHere = false;
+            }
+        }
+
+        // If this Image is in this Tag, then remove it.
+        if (!notHere) {
+            images.remove(image);
+            image.removeTag(this);
+            //TODO: this return value of image.removeTag(this) is not used in this call
+        }
+
+        // If !notHere is true, then the removal was successful.
+        return !notHere;
     }
 
     public String getName() {
