@@ -26,4 +26,8 @@ public class Tag {
         //TODO: Write a working version of this
         return false;
     }
+
+    public String getName() {
+        return this.name;
+    }
 }
