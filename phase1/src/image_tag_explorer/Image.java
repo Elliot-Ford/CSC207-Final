@@ -24,7 +24,13 @@ public class Image {
         this.imageFile = imageFile;
         this.tags = new ArrayList<>(Arrays.asList(tags));
         previousNames = new Stack<>();
+
+        // Adding Tags into the Image name.
+        for (Tag tag : tags) {
+            previousNames.add("@" + tag.getName());
+        }
         //TODO: if there are "@" tags on the image name that aren't in the given Tag[] array throw an custom error.
+        // why do we need to check this if we are constructing a new Image object?
     }
 
     /**
@@ -34,7 +40,19 @@ public class Image {
      * @param newTag the tag to add to the image
      */
     public void addTag(Tag newTag) {
-        //TODO: Write a working version of this
+        boolean notHere = true;
+        // Checking if this Tag is new to this Image
+        for (String tagName : previousNames) {
+            if (tagName.equals(newTag.getName())) {
+                notHere = false;
+            }
+        }
+
+        if (notHere) {
+            previousNames.add("@" + newTag.getName());
+            tags.add(newTag);
+            newTag.addImage(this);
+        }
     }
 
     /**
@@ -45,8 +63,23 @@ public class Image {
      * @return true if tag removal was successful, false if not.
      */
     public boolean removeTag(Tag tag) {
-        //TODO: Write a working version of this
-        return false;
+        boolean notHere = true;
+        // Checking if this Tag is in this Image
+        for (String tagName : previousNames) {
+            if (tagName.equals(tag.getName())) {
+                notHere = false;
+            }
+        }
+
+        // If this Tag is in this Image, then remove it.
+        if (!notHere) {
+            tags.remove(tag);
+            previousNames.remove("@" + tag.getName());
+            tag.removeImage(this);
+        }
+
+        // If !notHere is true, then the removal was successful.
+        return !notHere;
     }
 
     public void rename(String newName) {
