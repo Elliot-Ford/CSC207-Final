@@ -6,15 +6,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileManager {
-    private List<File> DirectoryLeafs;
 
-    public FileManager(String root) {
-        DirectoryLeafs = getAllFiles(new File(root));
-    }
-
-    public FileManager(File root) {
-        DirectoryLeafs = getAllFiles(root);
-
+    public FileManager(){
     }
 
     /**
@@ -53,15 +46,9 @@ public class FileManager {
 
     }
 
-    public List<File> getDirectoryLeafs() {
-        return DirectoryLeafs;
-    }
+  /*public static void main(String[] args) {
 
-  public static void main(String[] args) {
+      FileManager fileManager = new FileManager();
 
-      FileManager fileManager = new FileManager("put the complete file path here");
-      for(File file:fileManager.getDirectoryLeafs()) {
-          System.out.println(file.getName());
-      }
-  }
+  }*/
 }
