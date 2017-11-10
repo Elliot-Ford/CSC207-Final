@@ -15,3 +15,8 @@
         -Should be able to create an instance of File Manager with a given root directory
         -Should store a representation of of the root and everything inside the folder
         -Should be able to get all files that match the given input
+
+
+Nov 9th
+-Create ImageManager, TagManager class in image_tag_explorer
+-Create Folder class
