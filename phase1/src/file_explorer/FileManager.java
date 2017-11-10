@@ -6,23 +6,28 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class FileManager {
-    List<File> DirectoryLeafs;
+    private List<File> DirectoryLeafs;
 
     public FileManager(String root) {
-        DirectoryLeafs = getAllLeafs(new File(root));
+        DirectoryLeafs = getAllFiles(new File(root));
     }
 
     public FileManager(File root) {
-        DirectoryLeafs = getAllLeafs(root);
+        DirectoryLeafs = getAllFiles(root);
 
     }
 
-    /** returns a list representation of all the non-directory files of the given root */
-    private List<File> getAllLeafs(File root) {
+    /**
+     * Returns a list representation of all the files of the given root.
+     *
+     * @param root the root of the directory.
+     * @return all the files that are found at/under the given root.
+     */
+    public List<File> getAllFiles(File root) {
         List<File> ret = new ArrayList<>();
         if(root.isDirectory() && root.listFiles() != null) {
             for(File subFile: root.listFiles()) {
-                ret.addAll(getAllLeafs(subFile));
+                ret.addAll(getAllFiles(subFile));
             }
         } else {
             ret.add(root);
@@ -31,19 +36,20 @@ public class FileManager {
     }
 
     /**
-     * Returns all the Files that contain a matching pattern to the input string
+     * Returns all the files under the given root that contain a matching pattern to the input string
      * @param regex the given pattern to match
      * @return an array of all files that contain a match to the given pattern
      */
-    public File[] getFiles(String regex) {
+    public List<File> getFiles(File root, String regex) {
         List<File> ret = new ArrayList<>();
         Pattern pattern = Pattern.compile(regex);
-        for(File file: DirectoryLeafs) {
+        List<File> filesToMatch = getAllFiles(root);
+        for(File file: filesToMatch) {
             if(pattern.matcher(file.getName()).find()) {
                 ret.add(file);
             }
         }
-        return ret.toArray(new File[ret.size()]);
+        return ret;
 
     }
 
