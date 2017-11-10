@@ -17,5 +17,8 @@
         -Should be able to get all files that match the given input
 
 
-Nov 9th
--Create ImageManager, TagManager class in image_tag_explorer
+===Nov 10th===
+-Create and Implement ImageManager, TagManager class in image_tag_explorer -@Jeremy
+-Start learning JavaFx -@Shlok
+-Start figuring out and implementing serialization -@Shadman
+-Generialize FileManager and add more features -@Elliot
