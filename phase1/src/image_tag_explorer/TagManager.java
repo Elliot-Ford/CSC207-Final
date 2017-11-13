@@ -1,6 +1,5 @@
 package image_tag_explorer;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,12 +16,12 @@ public class TagManager {
 
 	}
 
-	public void addTag(Tag newTag) {
-		tags.add(newTag);
+	public boolean addTag(Tag newTag) {
+		return tags.add(newTag);
 	}
 
-	public void removeTag(Tag tag) {
-		tags.remove(tag);
+	public boolean removeTag(Tag tag) {
+		return tags.remove(tag);
 	}
 
 	public Tag[] getTags() {
