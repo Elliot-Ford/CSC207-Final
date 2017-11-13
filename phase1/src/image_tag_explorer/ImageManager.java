@@ -14,9 +14,7 @@ public class ImageManager {
 
     public ImageManager(File[] files) {
         this.images = new ArrayList<>(files.length);
-        for(int i = 0; i<files.length; i++ ) {
-            images.add(new Image(files[i]));
-        }
+        this.addImages(files);
         //TODO: figure out how this constructor can just call the one below, passing in the right info.
     }
 
@@ -27,6 +25,16 @@ public class ImageManager {
     public boolean addImage(Image newImage) {
         return images.add(newImage);
     }
+
+    public boolean addImages(File[] files) {
+    	boolean ret = true;
+		for(int i = 0; i<files.length; i++ ) {
+			if(!images.add(new Image(files[i]))) {
+				ret = false;
+			}
+		}
+		return ret;
+	}
 
     public boolean removeImage(Image image) {
         return images.remove(image);
