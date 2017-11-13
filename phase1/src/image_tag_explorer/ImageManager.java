@@ -20,7 +20,20 @@ public class ImageManager {
         //TODO: figure out how this constructor can just call the one below, passing in the right info.
     }
 
-    public ImageManager(Image[] images, Tag[] tags) {
+    public ImageManager(Image[] images) {
         this.images = new ArrayList<>(Arrays.asList(images));
     }
+
+    public boolean addImage(Image newImage) {
+        return images.add(newImage);
+    }
+
+    public boolean removeImage(Image image) {
+        return images.remove(image);
+    }
+
+    public Image[] getImages() {
+        return (Image[]) images.toArray();
+    }
+
 }
