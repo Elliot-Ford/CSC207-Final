@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class FileManager {
 
@@ -23,10 +22,10 @@ public class FileManager {
             for(File subFile: root.listFiles()) {
                 ret.addAll(Arrays.asList(getAllFiles(subFile)));
             }
-        } else {
+        } else if(root.isFile()) {
             ret.add(root);
         }
-        return (File[]) ret.toArray();
+        return ret.toArray(new File[ret.size()]);
     }
 
     /**
