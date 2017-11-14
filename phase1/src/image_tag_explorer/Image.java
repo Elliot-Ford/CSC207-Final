@@ -50,7 +50,7 @@ public class Image {
     }
 
     if (!here) {
-      rename(String.format("%s @ %s", imageFile.getName(), newTag.getName()));
+      rename(String.format("%s @%s", imageFile.getName(), newTag.getName()));
       tags.add(newTag);
       newTag.addImage(this);
     }
