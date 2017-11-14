@@ -1,4 +1,4 @@
-package image_tag_explorer;
+package model.image_tag_explorer;
 
 import java.io.File;
 import java.util.ArrayList;

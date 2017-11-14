@@ -1,9 +1,9 @@
-package image_tag_model;
+package model;
 
-import file_explorer.FileManager;
-import image_tag_explorer.Image;
-import image_tag_explorer.ImageManager;
-import image_tag_explorer.TagManager;
+import model.file_explorer.FileManager;
+import model.image_tag_explorer.Image;
+import model.image_tag_explorer.ImageManager;
+import model.image_tag_explorer.TagManager;
 
 import java.io.File;
 

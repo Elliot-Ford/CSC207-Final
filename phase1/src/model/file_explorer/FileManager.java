@@ -1,4 +1,4 @@
-package file_explorer;
+package model.file_explorer;
 
 import java.io.File;
 import java.util.ArrayList;
