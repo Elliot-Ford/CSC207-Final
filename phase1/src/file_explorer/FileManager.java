@@ -30,18 +30,18 @@ public class FileManager {
 
     /**
      * Returns all the files under the given root that contain a matching pattern to the input string
-     * @param regex the given pattern to match
+     * @param regEx the given pattern to match
      * @return an array of all files that contain a match to the given pattern
      */
-    public File[] getFiles(File root, String regex) {
+    public File[] getFiles(File root, String regEx) {
         List<File> ret = new ArrayList<>();
         File[] filesToMatch = getAllFiles(root);
         for(File file: filesToMatch) {
-            if(file.getName().matches(regex)) {
+            if(file.getName().matches(regEx)) {
                 ret.add(file);
             }
         }
-        return (File[]) ret.toArray();
+        return ret.toArray(new File[ret.size()]);
 
     }
 

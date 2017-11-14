@@ -19,35 +19,35 @@ public class FileManagerTests {
   }
 
   @Test
-  public void testFileManagerGetFilesWithOneFile() {
+  public void testFileManagerAllGetFilesWithOneFile() {
     File root = new File(TEST_FOLDER_LOCATION, "1.jpg");
     File[] expectedReturn = {root};
     assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
   }
 
   @Test
-  public void testFileManagerGetFilesWithEmptyDirectory() {
+  public void testFileManagerGetAllFilesWithEmptyDirectory() {
     File root = new File(TEST_FOLDER_LOCATION, "empty");
     File[] expectedReturn = {};
     assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
   }
 
   @Test
-  public void testFileManagerGetFilesWithDirectoryWithOneFile() {
+  public void testFileManagerGetAllFilesWithDirectoryWithOneFile() {
     File root = new File(TEST_FOLDER_LOCATION, "foo/bar");
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
     assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
   }
 
   @Test
-  public void testFileManagerGetFilesWithDirectoryWithOneUnixHiddenFile() {
+  public void testFileManagerGetAllFilesWithDirectoryWithOneUnixHiddenFile() {
     File root = new File(TEST_FOLDER_LOCATION, "foo/baz");
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/baz/.hidden.txt")};
     assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
   }
 
   @Test
-  public void testFileManagerGetFilesWithDirectoryWithSubFoldersWithImagesAndAImage() {
+  public void testFileManagerGetAllFilesWithDirectoryWithSubFoldersWithImagesAndAImage() {
     File root = new File(TEST_FOLDER_LOCATION, "foo");
     File[] expectedReturn = {
       new File(TEST_FOLDER_LOCATION, "foo/4.jpg"),
@@ -56,4 +56,52 @@ public class FileManagerTests {
     };
     assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
   }
+
+  @Test
+  public void testFileManagerGetFilesWithOneFileAndRegExJpegSuffix() {
+    File root = new File(TEST_FOLDER_LOCATION, "1.jpg");
+    String regEx = ".*[.]jpg";
+    File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "1.jpg")};
+    assertEquals(
+        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+  }
+
+    @Test
+    public void testFileManagerGetFilesWithOneFileAndEmptyRegEx() {
+        File root = new File(TEST_FOLDER_LOCATION, "1.jpg");
+        String regEx = "";
+        File[] expectedReturn = {};
+        assertEquals(
+                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+    }
+
+  @Test
+  public void testFileManagerGetFilesWithDirectoryWithOneFileAndRegExJpegSuffix() {
+    File root = new File(TEST_FOLDER_LOCATION, "foo/bar");
+    String regEx = ".*[.]jpg";
+    File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
+    assertEquals(
+        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+  }
+
+    @Test
+    public void testFileManagerGetFilesWithDirectoryWithOneFileAndEmptyRegEx() {
+        File root = new File(TEST_FOLDER_LOCATION, "foo/bar");
+        String regEx = ".*[.]jpg";
+        File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
+        assertEquals(
+                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+    }
+
+    @Test
+    public void testFileManagerGetFilesWithDirectoryWithATextFileAndRegExJpegSuffix(){
+      File root = new File(TEST_FOLDER_LOCATION, "bar");
+      String regEx = ".*[.]jpg";
+      File[] expectedReturn = {
+              new File(TEST_FOLDER_LOCATION, "bar/2.jpg"),
+              new File(TEST_FOLDER_LOCATION, "bar/.hidden3.jpg")
+      };
+      assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+
+    }
 }
