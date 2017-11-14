@@ -2,7 +2,6 @@ package model.image_tag_explorer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
@@ -17,18 +16,35 @@ public class Image {
    *
    * @param imageFile the abstract file representation of the image file
    */
-  public Image(File imageFile) {
+  public Image(File imageFile) throws Exception {
     this(imageFile, new Tag[0]);
   }
 
-  public Image(File imageFile, Tag[] tags) {
+  public Image(File imageFile, Tag[] tags) throws Exception {
     this.imageFile = imageFile;
-    this.tags = new ArrayList<>(Arrays.asList(tags));
+    this.tags = new ArrayList<>(tags.length);
     previousNames = new Stack<>();
 
+    if (imageFile.getName().contains("@")) {
+      String[] possibleTags =
+          imageFile.getName().substring(imageFile.getName().indexOf("@")).split("@| ");
+      for(String possibleTag : possibleTags) {
+        if(possibleTag.startsWith("@")) {
+          boolean noTag = true;
+          for(Tag tag : tags) {
+            if(possibleTag.substring(1) == tag.getName()) {
+              noTag = false;
+            }
+          }
+          if(noTag) {
+            throw new Exception("No Tag");
+          }
+        }
+      }
+    }
     // Adding Tags into the Image name.
     for (Tag tag : tags) {
-      previousNames.add("@" + tag.getName());
+      addTag(tag);
     }
     // TODO: if there are "@" tags on the image name that aren't in the given Tag[] array throw an
     // custom error.

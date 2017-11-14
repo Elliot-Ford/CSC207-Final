@@ -25,6 +25,6 @@ public class TagManager {
 	}
 
 	public Tag[] getTags() {
-		return (Tag[]) tags.toArray();
+		return tags.toArray(new Tag[tags.size()]);
 	}
 }

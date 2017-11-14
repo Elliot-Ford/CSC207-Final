@@ -9,10 +9,10 @@ public class ImageManager {
     public List<Image> images;
 
     public ImageManager() {
-        this(new File[0]);
+        images = new ArrayList<>();
     }
 
-    public ImageManager(File[] files) {
+    public ImageManager(File[] files) throws Exception{
         this.images = new ArrayList<>(files.length);
         for(File file: files) {
             images.add(new Image(file));
@@ -43,7 +43,7 @@ public class ImageManager {
     }
 
     public Image[] getImages() {
-        return (Image[]) images.toArray();
+        return images.toArray(new Image[images.size()]);
     }
 
 }
