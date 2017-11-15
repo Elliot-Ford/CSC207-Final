@@ -16,7 +16,7 @@ public class Image {
    *
    * @param imageFile the abstract file representation of the image file
    */
-  public Image(File imageFile) throws Exception {
+  public Image(File imageFile) {
     this.imageFile = imageFile;
     this.tags = new ArrayList<>();
     previousNames = new Stack<>();
