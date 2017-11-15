@@ -17,39 +17,41 @@ public class Image {
    * @param imageFile the abstract file representation of the image file
    */
   public Image(File imageFile) throws Exception {
-    this(imageFile, new Tag[0]);
-  }
-
-  public Image(File imageFile, Tag[] tags) throws Exception {
     this.imageFile = imageFile;
-    this.tags = new ArrayList<>(tags.length);
+    this.tags = new ArrayList<>();
     previousNames = new Stack<>();
-
-    if (imageFile.getName().contains("@")) {
-      String[] possibleTags =
-          imageFile.getName().substring(imageFile.getName().indexOf("@")).split("@| ");
-      for(String possibleTag : possibleTags) {
-        if(possibleTag.startsWith("@")) {
-          boolean noTag = true;
-          for(Tag tag : tags) {
-            if(possibleTag.substring(1) == tag.getName()) {
-              noTag = false;
-            }
-          }
-          if(noTag) {
-            throw new Exception("No Tag");
-          }
-        }
-      }
-    }
-    // Adding Tags into the Image name.
-    for (Tag tag : tags) {
-      addTag(tag);
-    }
-    // TODO: if there are "@" tags on the image name that aren't in the given Tag[] array throw an
-    // custom error.
-    // why do we need to check this if we are constructing a new Image object?
   }
+
+//  public Image(File imageFile, Tag[] tags) throws Exception {
+//    this.imageFile = imageFile;
+//    this.tags = new ArrayList<>(tags.length);
+//    previousNames = new Stack<>();
+//
+//    if (imageFile.getName().contains("@")) {
+//      String[] possibleTags =
+//          imageFile.getName().substring(imageFile.getName().indexOf("@")).split("@| ");
+//      for(String possibleTag : possibleTags) {
+//        if(possibleTag.startsWith("@")) {
+//          boolean noTag = true;
+//          for(Tag tag : tags) {
+//            if(possibleTag.substring(1) == tag.getName()) {
+//              noTag = false;
+//            }
+//          }
+//          if(noTag) {
+//            throw new Exception("No Tag");
+//          }
+//        }
+//      }
+//    }
+//    // Adding Tags into the Image name.
+//    for (Tag tag : tags) {
+//      addTag(tag);
+//    }
+//    // TODO: if there are "@" tags on the image name that aren't in the given Tag[] array throw an
+//    // custom error.
+//    // why do we need to check this if we are constructing a new Image object?
+//  }
 
   /**
    * adds a given tag to the Image, modifies the image filename to match the new change
