@@ -15,7 +15,10 @@ public class Tag {
 
   public Tag(String name, Image[] images) {
     this.name = name;
-    this.images = new ArrayList<>(Arrays.asList(images));
+    this.images = new ArrayList<>(images.length);
+    for(Image image : images) {
+      addImage(image);
+    }
   }
 
   public void addImage(Image newImage) {
