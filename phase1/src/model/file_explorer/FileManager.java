@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class FileManager {
   //    private static final String SERIALIZED_IMAGES_FILENAME = ".images.ser";
@@ -84,7 +85,7 @@ public class FileManager {
    *
    * @return a Image[] of all image files anywhere under the root directory.
    */
-  public Image[] getAllImageFiles() {
+  public Image[] getAllImages() {
     List<Image> ret = new ArrayList<>();
     for (File file : getAllFiles(FILE_MATCH_STRING)) {
       ret.add(new Image(file));
@@ -99,9 +100,11 @@ public class FileManager {
    */
   public File[] getFiles() {
     List<File> ret = new ArrayList<>();
-    for (File file : root.listFiles()) {
-      if (file.isFile()) {
-        ret.add(file);
+    if(root.list() != null) {
+      for (File file : root.listFiles()) {
+        if (file.isFile()) {
+          ret.add(file);
+        }
       }
     }
     return ret.toArray(new File[ret.size()]);
@@ -241,9 +244,48 @@ public class FileManager {
     output.writeObject(tags);
     output.close();
   }
-  /*public static void main(String[] args) {
+  public static void main(String[] args) {
+      FileManager fileManager = new FileManager("");
 
-      FileManager fileManager = new FileManager();
+    Scanner scanner = new Scanner(System.in);
+    String input = "";
+    while(!input.equals("exit")) {
+      System.out.println("Enter a command (type \"exit\" to exit):\n" +
+              "(1) to change directory\n" +
+              "(2) to get Files\n" +
+              "(3) to get all Files\n" +
+              "(4) to get Images\n" +
+              "(5) to get all images");
+      input = scanner.nextLine();
+      String output = "";
+      switch (input) {
+        case "1":
+          System.out.println("Where to?");
+          input = scanner.nextLine();
+          fileManager = new FileManager(input);
+          output = "Changed directory to" + input;
+          break;
 
-  }*/
+        case "2":
+          output = Arrays.toString(fileManager.getFiles());
+          break;
+
+        case "3":
+          output = Arrays.toString(fileManager.getAllFiles());
+          break;
+
+        case "4":
+          output = Arrays.toString(fileManager.getImages());
+          break;
+
+        case "5":
+          output = Arrays.toString(fileManager.getAllImages());
+      }
+      if(output.equals("") && !input.equals("exit")) {
+        output = "This is not a valid input.";
+      }
+      System.out.println(output);
+    }
+
+  }
 }
