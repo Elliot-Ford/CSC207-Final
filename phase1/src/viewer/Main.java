@@ -4,12 +4,15 @@ import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.stage.DirectoryChooser;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class Main extends Application {
 
@@ -40,6 +43,7 @@ public class Main extends Application {
         //Enter
         Button enterButton = new Button("Enter");
         GridPane.setConstraints(enterButton, 15, 11);
+        enterButton.setOnAction( event -> isDirectory(nameInput.getText()));
 
         //Add everything to grid
         grid.getChildren().addAll(nameLabel, nameInput, enterButton);
@@ -49,5 +53,10 @@ public class Main extends Application {
         window.show();
     }
 
+    //check if the entered directory exists or not
+    private boolean isDirectory(String userInput){
+        File file = new File(userInput);
+        return file.exists();
+    }
 
 }
