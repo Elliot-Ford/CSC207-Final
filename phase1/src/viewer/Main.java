@@ -1,11 +1,9 @@
 package viewer;
 
 import javafx.application.Application;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.VPos;
-import javafx.stage.DirectoryChooser;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -17,6 +15,7 @@ import java.io.File;
 public class Main extends Application {
 
     Stage window;
+    Scene scene2;
 
     public static void main(String[] args) {
         launch(args);
@@ -43,7 +42,10 @@ public class Main extends Application {
         //Enter
         Button enterButton = new Button("Enter");
         GridPane.setConstraints(enterButton, 15, 11);
-        enterButton.setOnAction( event -> isDirectory(nameInput.getText()));
+        enterButton.setOnAction(event -> {
+            if (isDirectory(nameInput.getText()))
+                window.setScene(scene2);
+        });
 
         //Add everything to grid
         grid.getChildren().addAll(nameLabel, nameInput, enterButton);
@@ -52,11 +54,19 @@ public class Main extends Application {
         window.setScene(scene);
         window.show();
     }
-
+// TODO: 16-11-2017 have to show alert that the entered directory is not valid
     //check if the entered directory exists or not
     private boolean isDirectory(String userInput){
         File file = new File(userInput);
-        return file.exists();
+        if (file.exists())
+            return true;
+        else{
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Input not valid");
+        errorAlert.setContentText("Entered directory dose not exists. ");
+        errorAlert.showAndWait();
+        return false;
+        }
     }
 
 }
