@@ -1,5 +1,6 @@
 package model.file_explorer;
 
+import model.image_tag_explorer.Image;
 import model.image_tag_explorer.Tag;
 
 import java.io.*;
@@ -11,8 +12,11 @@ public class FileManager {
 //    private static final String SERIALIZED_IMAGES_FILENAME = ".images.ser";
     /** the name of a serialized file of tags */
     private static final String SERIALIZED_TAGS_FILENAME = ".tags.ser";
+	/** String to match all tagable files */
+	private static final String FILE_MATCH_STRING = ".*[.](jpg|png|gif|bmp)";
 
-    /** the root of the directory */
+
+	/** the root of the directory */
     private File root;
 
     public FileManager(String path){
@@ -20,9 +24,9 @@ public class FileManager {
     }
 
     /**
-     * Returns a list representation of all the files of the given root.
+     * Returns all files anywhere under the root directory.
      *
-     * @return all the files that are found at/under the given root.
+     * @return a File[] of all files anywhere under the root directory.
      */
     public File[] getAllFiles() {
         List<File> ret = new ArrayList<>();
@@ -50,14 +54,13 @@ public class FileManager {
     }
 
     /**
-     * Returns all the files under the given root that contain a matching the given pattern of the input string
-     * @param regEx the given pattern to match
-     * @return an array of all files that contain a match to the given pattern
+     * Return all files anywhere under the root directory that match the regular expression.
+     * @param regEx the regular expression to match.
+     * @return a File[] of all files anywhere under the root directory that match the given regular expression.
      */
     public File[] getAllFiles(String regEx) {
         List<File> ret = new ArrayList<>();
-        File[] filesToMatch = getAllFiles();
-        for(File file: filesToMatch) {
+        for(File file: getAllFiles()) {
             if(file.getName().matches(regEx)) {
                 ret.add(file);
             }
@@ -66,9 +69,21 @@ public class FileManager {
 
     }
 
+	/**
+	 * Returns all the image files anywhere under the root directory.
+	 * @return a Image[] of all image files anywhere under the root directory.
+	 */
+	public Image[] getAllImageFiles() {
+    	List<Image> ret = new ArrayList<>();
+    	for(File file: getAllFiles(FILE_MATCH_STRING)) {
+    		ret.add(new Image(file));
+		}
+    	return ret.toArray(new Image[ret.size()]);
+	}
+
     /**
-     * Returns all the files directly under the FileManger's root.
-     * @return an array of all files directly under the FileManager's root.
+     * Returns all the files directly under the root directory.
+     * @return a File[] of all files directly under the root directory.
      */
     public File[] getFiles() {
         List<File> ret = new ArrayList<>(root.list().length);
@@ -81,20 +96,33 @@ public class FileManager {
     }
 
     /**
-     * Returns all the files directly under the FileManager's root that match the given pattern of the input string.
+     * Returns all the files directly under the root directory that match the given pattern of the input string.
      * @param regEx the given pattern to match.
-     * @return an array of all files directly under the FileManager that contain a match to the given pattern.
+     * @return an File[] of all files directly under the root directory that contain a match to the given pattern.
      */
     public File[] getFiles(String regEx) {
         List<File> ret = new ArrayList<>();
-        File[] filesToMatch = getFiles();
-        for(File file: filesToMatch) {
+        for(File file: getFiles()) {
             if(file.getName().matches(regEx)) {
                 ret.add(file);
             }
         }
         return ret.toArray(new File[ret.size()]);
     }
+
+	/**
+	 * Returns all the image files directly under the root directory.
+	 * @return a Image[] of all images files directly under the root directory.
+	 */
+	public Image[] getImages() {
+    	List<Image> ret = new ArrayList<>();
+    	for(File file: getFiles(FILE_MATCH_STRING)) {
+    		ret.add(new Image(file));
+		}
+
+		return ret.toArray(new Image[ret.size()]);
+
+	}
 
 
 

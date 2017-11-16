@@ -70,7 +70,7 @@ public class FileManagerTests {
     String regEx = ".*[.]jpg";
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "1.jpg")};
     assertEquals(
-        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath(), regEx)));
+        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(regEx)));
   }
 
     @Test
@@ -80,7 +80,7 @@ public class FileManagerTests {
       String regEx = "";
       File[] expectedReturn = {};
       assertEquals(
-               Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath(), regEx)));
+               Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(regEx)));
     }
 
   @Test
@@ -90,7 +90,7 @@ public class FileManagerTests {
     String regEx = ".*[.]jpg";
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
     assertEquals(
-        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath(), regEx)));
+        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(regEx)));
   }
 
     @Test
@@ -100,7 +100,7 @@ public class FileManagerTests {
         String regEx = ".*[.]jpg";
         File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
         assertEquals(
-                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath(), regEx)));
+                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(regEx)));
     }
 
     @Test
@@ -112,7 +112,7 @@ public class FileManagerTests {
               new File(TEST_FOLDER_LOCATION, "bar/.hidden3.jpg"),
               new File(TEST_FOLDER_LOCATION, "bar/2.jpg"),
       };
-      assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath(), regEx)));
+      assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(regEx)));
 
     }
 }
