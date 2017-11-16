@@ -1,11 +1,13 @@
 package model.image_tag_explorer;
 
+import model.file_explorer.Log;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class Image {
+public class Image implements java.io.Serializable {
 
   private File imageFile;
   private List<Tag> tags;
@@ -99,8 +101,15 @@ public class Image {
   }
 
   public void rename(String newName) {
-    previousNames.push(imageFile.getName());
-    imageFile.renameTo(new File(imageFile.getParentFile(), newName));
+    //logger added for everytime the image is renamed
+      try {
+          Log my_log = new Log("log.txt");
+          my_log.logger.info(imageFile.getName() + "is being renamed to" + newName);
+
+      } catch (Exception e) {}
+
+      previousNames.push(imageFile.getName());
+      imageFile.renameTo(new File(imageFile.getParentFile(), newName));
     // TODO: write a tester that makes sure this method does what's expected.
   }
 
