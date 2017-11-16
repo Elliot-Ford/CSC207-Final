@@ -6,10 +6,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class Image {
+public class Image implements java.io.Serializable {
 
   private File imageFile;
   private List<Tag> tags;
@@ -103,10 +101,9 @@ public class Image {
   }
 
   public void rename(String newName) {
-    //logger added everytime the image is renamed
+    //logger added for everytime the image is renamed
       try {
           Log my_log = new Log("log.txt");
-          my_log.logger.setLevel(Level.INFO);
           my_log.logger.info(imageFile.getName() + "is being renamed to" + newName);
 
       } catch (Exception e) {}
