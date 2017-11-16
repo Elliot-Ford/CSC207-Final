@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Tag {
+public class Tag implements java.io.Serializable {
 
   private List<Image> images;
   private String name;
