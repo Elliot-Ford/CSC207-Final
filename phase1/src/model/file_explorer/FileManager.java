@@ -1,6 +1,5 @@
 package model.file_explorer;
 
-import model.image_tag_explorer.Image;
 import model.image_tag_explorer.Tag;
 
 import java.io.*;
@@ -9,41 +8,55 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FileManager {
-    private static final String SERIALIZED_IMAGES_FILENAME = ".images.ser";
+//    private static final String SERIALIZED_IMAGES_FILENAME = ".images.ser";
+    /** the name of a serialized file of tags */
     private static final String SERIALIZED_TAGS_FILENAME = ".tags.ser";
 
+    /** the root of the directory */
+    private File root;
 
-    public FileManager(){
+    public FileManager(String path){
+        root = new File(path);
     }
 
     /**
      * Returns a list representation of all the files of the given root.
      *
-     * @param path the path of the root directory.
      * @return all the files that are found at/under the given root.
      */
-    public File[] getAllFiles(String path) {
-        File root = new File(path);
+    public File[] getAllFiles() {
         List<File> ret = new ArrayList<>();
-        if(root.isDirectory() && root.listFiles() != null) {
-            for(File subFile: root.listFiles()) {
-                ret.addAll(Arrays.asList(getAllFiles(subFile.getPath())));
+        ret.add(root);
+        int i = 0;
+        while(i < ret.size()) {
+            // Check if element at i in ret is a Directory, a File, or it exists.
+            if(ret.get(i).isDirectory()) {
+                // Element at i is a directory, so determine if it has children and remove the Element at i.
+                // Check if the Element at i has children.
+                if(ret.get(i).list() != null) {
+                    // Element at i has children, so add children to the ArrayList.
+                    ret.addAll(Arrays.asList(ret.get(i).listFiles()));
+                }
+                ret.remove(i);
+            } else if(ret.get(i).isFile()) {
+                // Element at i is a File, so increment i by 1.
+                i += 1;
+            } else {
+                // Element doesn't exist in filesystem, so remove from ret.
+                ret.remove(i);
             }
-        } else if(root.isFile()) {
-            ret.add(root);
         }
         return ret.toArray(new File[ret.size()]);
     }
 
     /**
-     * Returns all the files under the given root that contain a matching pattern to the input string
+     * Returns all the files under the given root that contain a matching the given pattern of the input string
      * @param regEx the given pattern to match
      * @return an array of all files that contain a match to the given pattern
      */
-    public File[] getFiles(String path, String regEx) {
-        File root = new File(path);
+    public File[] getAllFiles(String regEx) {
         List<File> ret = new ArrayList<>();
-        File[] filesToMatch = getAllFiles(root.getPath());
+        File[] filesToMatch = getAllFiles();
         for(File file: filesToMatch) {
             if(file.getName().matches(regEx)) {
                 ret.add(file);
@@ -52,6 +65,38 @@ public class FileManager {
         return ret.toArray(new File[ret.size()]);
 
     }
+
+    /**
+     * Returns all the files directly under the FileManger's root.
+     * @return an array of all files directly under the FileManager's root.
+     */
+    public File[] getFiles() {
+        List<File> ret = new ArrayList<>(root.list().length);
+        for(File file: root.listFiles()) {
+            if(file.isFile()) {
+                ret.add(file);
+            }
+        }
+        return ret.toArray(new File[ret.size()]);
+    }
+
+    /**
+     * Returns all the files directly under the FileManager's root that match the given pattern of the input string.
+     * @param regEx the given pattern to match.
+     * @return an array of all files directly under the FileManager that contain a match to the given pattern.
+     */
+    public File[] getFiles(String regEx) {
+        List<File> ret = new ArrayList<>();
+        File[] filesToMatch = getFiles();
+        for(File file: filesToMatch) {
+            if(file.getName().matches(regEx)) {
+                ret.add(file);
+            }
+        }
+        return ret.toArray(new File[ret.size()]);
+    }
+
+
 
     //TODO: Create a method that moves a file from it's current directory to another directory
     //TODO: Create a method that returns whether a config file exists.
