@@ -22,28 +22,28 @@ public class FileManagerTests {
   public void testFileManagerAllGetFilesWithOneFile() {
     File root = new File(TEST_FOLDER_LOCATION, "1.jpg");
     File[] expectedReturn = {root};
-    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
+    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath())));
   }
 
   @Test
   public void testFileManagerGetAllFilesWithEmptyDirectory() {
     File root = new File(TEST_FOLDER_LOCATION, "empty");
     File[] expectedReturn = {};
-    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
+    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath())));
   }
 
   @Test
   public void testFileManagerGetAllFilesWithDirectoryWithOneFile() {
     File root = new File(TEST_FOLDER_LOCATION, "foo/bar");
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
-    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
+    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath())));
   }
 
   @Test
   public void testFileManagerGetAllFilesWithDirectoryWithOneUnixHiddenFile() {
     File root = new File(TEST_FOLDER_LOCATION, "foo/baz");
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/baz/.hidden.txt")};
-    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
+    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath())));
   }
 
   @Test
@@ -54,7 +54,7 @@ public class FileManagerTests {
       new File(TEST_FOLDER_LOCATION, "foo/baz/.hidden.txt"),
       new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg"),
     };
-    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root)));
+    assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getAllFiles(root.getPath())));
   }
 
   @Test
@@ -63,7 +63,7 @@ public class FileManagerTests {
     String regEx = ".*[.]jpg";
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "1.jpg")};
     assertEquals(
-        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root.getPath(), regEx)));
   }
 
     @Test
@@ -72,7 +72,7 @@ public class FileManagerTests {
         String regEx = "";
         File[] expectedReturn = {};
         assertEquals(
-                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root.getPath(), regEx)));
     }
 
   @Test
@@ -81,7 +81,7 @@ public class FileManagerTests {
     String regEx = ".*[.]jpg";
     File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
     assertEquals(
-        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+        Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root.getPath(), regEx)));
   }
 
     @Test
@@ -90,7 +90,7 @@ public class FileManagerTests {
         String regEx = ".*[.]jpg";
         File[] expectedReturn = {new File(TEST_FOLDER_LOCATION, "foo/bar/5.jpg")};
         assertEquals(
-                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+                Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root.getPath(), regEx)));
     }
 
     @Test
@@ -101,7 +101,7 @@ public class FileManagerTests {
               new File(TEST_FOLDER_LOCATION, "bar/2.jpg"),
               new File(TEST_FOLDER_LOCATION, "bar/.hidden3.jpg")
       };
-      assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root, regEx)));
+      assertEquals(Arrays.toString(expectedReturn), Arrays.toString(fileManager.getFiles(root.getPath(), regEx)));
 
     }
 }
