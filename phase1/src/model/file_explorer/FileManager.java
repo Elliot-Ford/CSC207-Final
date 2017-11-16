@@ -56,54 +56,54 @@ public class FileManager {
     //TODO: Create a method that moves a file from it's current directory to another directory
     //TODO: Create a method that returns whether a config file exists.
 
-    /**
-     * Checks if the serializable file of Image exists
-     * @param path the path to the root folder
-     * @return True if the serialized file of Image exists, False if otherwise.
-     */
-    public boolean ImagesFileExists(String path) {
-        return new File(path, SERIALIZED_IMAGES_FILENAME).exists();
-    }
-
-    /**
-     * Reads the serialized Image[] file in the given root and returns the Image[]
-     * @param path the path to the root folder
-     * @return  Image[] store in serialized file.
-     * @throws ClassNotFoundException throws ClassNotFoundException if File doesn't exist.
-     */
-    public Image[] readImagesFromFile(String path) throws ClassNotFoundException {
-        Image[] ret = new Image[0];
-        try {
-            InputStream file = new FileInputStream(new File(path, SERIALIZED_IMAGES_FILENAME));
-            InputStream buffer = new BufferedInputStream(file);
-            ObjectInput input = new ObjectInputStream(buffer);
-
-            // deserialize the Array
-            ret = (Image[]) input.readObject();
-            input.close();
-
-
-        } catch (IOException ex) {
-            //TODO: log
-        }
-        return ret;
-    }
-
-    /**
-     * Writes a given Image[] to the serializable file under the given path. Throws IOException if can't write the file.
-     * @param path the path to the root folder.
-     * @param images the image[] array to store in serialized file.
-     * @throws IOException throw this exception if unable to write the file
-     */
-    public void saveImagesToFile(String path, Image[] images) throws IOException {
-        OutputStream file = new FileOutputStream(new File(path, SERIALIZED_IMAGES_FILENAME));
-        OutputStream buffer = new BufferedOutputStream(file);
-        ObjectOutput output = new ObjectOutputStream(buffer);
-
-        // serialize the Array's
-        output.writeObject(images);
-        output.close();
-    }
+//    /**
+//     * Checks if the serializable file of Image exists
+//     * @param path the path to the root folder
+//     * @return True if the serialized file of Image exists, False if otherwise.
+//     */
+//    public boolean ImagesFileExists(String path) {
+//        return new File(path, SERIALIZED_IMAGES_FILENAME).exists();
+//    }
+//
+//    /**
+//     * Reads the serialized Image[] file in the given root and returns the Image[]
+//     * @param path the path to the root folder
+//     * @return  Image[] store in serialized file.
+//     * @throws ClassNotFoundException throws ClassNotFoundException if File doesn't exist.
+//     */
+//    public Image[] readImagesFromFile(String path) throws ClassNotFoundException {
+//        Image[] ret = new Image[0];
+//        try {
+//            InputStream file = new FileInputStream(new File(path, SERIALIZED_IMAGES_FILENAME));
+//            InputStream buffer = new BufferedInputStream(file);
+//            ObjectInput input = new ObjectInputStream(buffer);
+//
+//            // deserialize the Array
+//            ret = (Image[]) input.readObject();
+//            input.close();
+//
+//
+//        } catch (IOException ex) {
+//            //TODO: log
+//        }
+//        return ret;
+//    }
+//
+//    /**
+//     * Writes a given Image[] to the serializable file under the given path. Throws IOException if can't write the file.
+//     * @param path the path to the root folder.
+//     * @param images the image[] array to store in serialized file.
+//     * @throws IOException throw this exception if unable to write the file
+//     */
+//    public void saveImagesToFile(String path, Image[] images) throws IOException {
+//        OutputStream file = new FileOutputStream(new File(path, SERIALIZED_IMAGES_FILENAME));
+//        OutputStream buffer = new BufferedOutputStream(file);
+//        ObjectOutput output = new ObjectOutputStream(buffer);
+//
+//        // serialize the Array's
+//        output.writeObject(images);
+//        output.close();
+//    }
 
     /**
      * Checks if the serializable file of Tags exists
