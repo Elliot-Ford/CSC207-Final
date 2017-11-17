@@ -132,9 +132,4 @@ public class ImageFileManager {
         return ret.toArray(new ImageFile[ret.size()]);
     }
 
-    // TODO: Create a method that moves a file from it's current directory to another directory
-    // TODO: Create a method that returns whether a config file exists.
-
-
-
 }
