@@ -107,44 +107,33 @@ public class ImageFile {
 
   // TODO: add tag
   public boolean addTag(String newTag) throws IOException {
-    String lastName = getName();
-    File newFile =
-        new File(file.getParent(), String.format("%s %s%s%s", getName(), TAG_MARKER, newTag, getSuffix()));
-    File newLog =
-        new File(log.getParent(), String.format("%s%s", getName(), LOG_FILE_SUFFIX));
-    boolean imageRenameSuccess = file.renameTo(newFile);
-    boolean logRenameSuccess = log.renameTo(newLog);
-    // Add the last name to the log file.
-    if (imageRenameSuccess && logRenameSuccess) {
-      file = newFile;
-      log = newLog;
-      BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-      writer.append(lastName);
-      writer.append('\n');
-      writer.close();
-    }
-
-    return imageRenameSuccess && logRenameSuccess;
+      return rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
   }
 
   // TODO: remove tag
   public boolean removeTag(String thisTag) throws IOException {
-    boolean success = false;
-    if (file.getName().contains(thisTag)) {
-      String lastName = getName();
-      // Rename the current file.
-      String newName = file.getName().replace((" " + TAG_MARKER + thisTag), "");
-      success = file.renameTo(new File(file.getParent(), newName));
-      // Add the last name to the log file.
-      if (success) {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(log));
-        writer.append('\n');
-        writer.append(lastName);
-        writer.close();
+      boolean ret = false;
+      if(file.getName().contains(thisTag)) {
+          ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
       }
-    }
+      return ret;
+  }
 
-    return success;
+  //TODO: Rename()
+  public boolean rename(String newName) throws IOException {
+      boolean ret = false;
+      String lastName = getName();
+      File newFile = new File(file.getParent(), newName + getSuffix());
+      File newLog = new File(log.getParent(), newName + LOG_FILE_SUFFIX);
+      ret = file.renameTo(newFile) && log.renameTo(newLog);
+      if(ret) {
+          file = newFile;
+          log = newLog;
+          BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
+          writer.append(lastName).append(String.valueOf('\n'));
+          writer.close();
+      }
+      return ret;
   }
 
   /**
@@ -172,7 +161,7 @@ public class ImageFile {
   }
 
     public static void main(String[] args) {
-        ImageFile imageFile = new ImageFile("");
+        ImageFile imageFile = new ImageFile("/home/ecford/Desktop/foo/foo.jpg");
 
         Scanner scanner = new Scanner(System.in);
         String input = "";
@@ -232,6 +221,20 @@ public class ImageFile {
                         output = Arrays.toString(imageFile.getPreviousTags());
                     } catch (IOException e) {
                         output = "Getting previous tags threw error";
+                    }
+                    break;
+
+                case "6":
+                    System.out.println("Where should I move the image?");
+                    input = scanner.nextLine();
+                    try {
+                        if(imageFile.moveFile(input)) {
+                            output = "Moved image" + input;
+                        } else {
+                            output = "Moving image failed";
+                        }
+                    } catch (IOException e) {
+                        output = "Moving Image threw error";
                     }
             }
             if (output.equals("") && !input.equals("exit")) {
