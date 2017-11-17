@@ -67,7 +67,13 @@ public class Main extends Application {
                 });
         OpenFile op = new OpenFile();
 
-
+        nameInput.setOnKeyPressed(ke -> {
+            if (isDirectory(nameInput.getText())){
+                if (ke.getCode().equals(KeyCode.ENTER)) {
+                    op.openFile(primaryStage);
+            }
+            }
+        });
         //Enter
         Button enterButton = new Button("Enter");
         GridPane.setConstraints(enterButton, 1, 1);
