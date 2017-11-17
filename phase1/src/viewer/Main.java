@@ -29,6 +29,51 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        window = primaryStage;
+        window.show();
 
+        //GridPane with 10pixel padding around edge
+        GridPane grid = new GridPane();
+        grid.setAlignment(Pos.CENTER);
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(10);
+        grid.setHgap(10);
+
+        Label nameLabel = new Label(" Enter Directory");
+        GridPane.setConstraints(nameLabel, 0, 0);
+        //Name Input
+        TextField nameInput = new TextField();
+        nameInput.setPromptText("Directory");
+        GridPane.setConstraints(nameInput, 0, 1);
+
+        //Enter
+        Button enterButton = new Button("Enter");
+        GridPane.setConstraints(enterButton, 1, 1);
+        enterButton.setOnAction(event -> {
+            if (isDirectory(nameInput.getText()))
+                window.setScene(scene2);
+        });
+
+        //Add everything to grid
+        grid.getChildren().addAll(nameLabel, nameInput, enterButton);
+
+        Scene scene = new Scene(grid, 1020, 720);
+        window.setScene(scene);
+        window.show();
     }
+
+    //check if the entered directory exists or not
+    public boolean isDirectory(String userInput){
+        File file = new File(userInput);
+        if (file.exists())
+            return true;
+        else{
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText("Input not valid");
+        errorAlert.setContentText("Entered directory dose not exists.");
+        errorAlert.showAndWait();
+        return false;
+        }
+    }
+
 }
