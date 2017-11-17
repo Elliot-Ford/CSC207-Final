@@ -80,7 +80,7 @@ public class ImageFileManager {
         for (File file : getAllFiles(FILE_MATCH_STRING)) {
             ret.add(new ImageFile(file));
         }
-        return ret.toArray(new ImageFileManager[ret.size()]);
+        return ret.toArray(new ImageFile[ret.size()]);
     }
 
     /**

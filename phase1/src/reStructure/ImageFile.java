@@ -18,4 +18,11 @@ public class ImageFile {
         new File(
             path, file.getName().substring(0, file.getName().lastIndexOf('.')) + LOG_FILE_SUFFIX);
   }
+
+    public ImageFile(File file) {
+        this.file = file;
+        log = new File( file.getAbsolutePath(),
+                file.getName().substring(0, file.getName().lastIndexOf('.')) + LOG_FILE_SUFFIX);
+    }
+
 }
