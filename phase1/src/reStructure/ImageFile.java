@@ -152,11 +152,11 @@ public class ImageFile {
    * @return the name of an image.
    */
   public String getName() {
+      String ret = "";
       if(file.getName().lastIndexOf(".") != -1) {
-          return file.getName().substring(0, file.getName().lastIndexOf("."));
-      } else {
-          return "";
+          ret = file.getName().substring(0, file.getName().lastIndexOf("."));
       }
+      return ret;
   }
 
   /**
@@ -164,7 +164,11 @@ public class ImageFile {
    * @return the suffix of an image
    */
   public String getSuffix() {
-      return file.getName().substring(file.getName().lastIndexOf("."));
+      String ret = "";
+      if(file.getName().lastIndexOf(".") != -1) {
+          ret = file.getName().substring(file.getName().lastIndexOf("."));
+      }
+      return ret;
   }
 
     public static void main(String[] args) {
