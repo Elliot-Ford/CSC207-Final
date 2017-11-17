@@ -3,14 +3,9 @@ package model;
 import model.file_explorer.FileManager;
 import model.image_tag_explorer.Image;
 import model.image_tag_explorer.ImageManager;
-import model.image_tag_explorer.Tag;
 import model.image_tag_explorer.TagManager;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ModelManager {
     /**
@@ -42,7 +37,7 @@ public class ModelManager {
 //                tagManager = new TagManager(t);
 //            }
 //        } else {
-            for (File file : fileManager.getFiles(FILE_MATCH_STRING)) {
+            for (File file : fileManager.getLocalFiles(FILE_MATCH_STRING)) {
                 try {
                     imageManager.addImage(new Image(file));
                 } catch (Exception e) {
