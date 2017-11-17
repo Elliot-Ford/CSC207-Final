@@ -52,7 +52,6 @@ public class ImageFile {
    * @throws IOException Throws an exception if we cannot write the file
    */
   public boolean moveFile(String newPath) throws IOException {
-    String name = getName();
     File newFile = new File(newPath, getName() + getSuffix());
     File newLog = new File(newPath, getName() + LOG_FILE_SUFFIX);
     boolean ret = file.renameTo(newFile) && log.renameTo(newLog);
@@ -118,10 +117,14 @@ public class ImageFile {
   }
 
   // TODO: remove tag
-  public boolean removeTag(String thisTag) throws IOException {
+  public boolean removeTag(String thisTag) {
     boolean ret = false;
     if (file.getName().contains(thisTag)) {
-      ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
+      try {
+        ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return ret;
   }
@@ -213,15 +216,12 @@ public class ImageFile {
         case "3":
           System.out.println("What tag should I remove?");
           input = scanner.nextLine();
-          try {
-            if (imageFile.removeTag(input)) {
-              output = "Removed " + input;
-            } else {
-              output = "Removing tag failed";
-            }
-          } catch (IOException ex) {
-            output = "Removing tag threw error";
+          if (imageFile.removeTag(input)) {
+            output = "Removed " + input;
+          } else {
+            output = "Removing tag failed";
           }
+
           break;
 
         case "4":
