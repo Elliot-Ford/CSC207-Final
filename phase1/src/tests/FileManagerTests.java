@@ -1,6 +1,6 @@
 package tests;
 
-import model.file_explorer.FileManager;
+import model_old.file_explorer.FileManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,6 @@
-package model.image_tag_explorer;
+package model_old.image_tag_explorer;
 
-import model.file_explorer.Log;
+import model_old.file_explorer.Log;
 
 import java.io.File;
 import java.util.ArrayList;

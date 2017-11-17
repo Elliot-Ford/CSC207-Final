@@ -1,7 +1,7 @@
-package model.file_explorer;
+package model_old.file_explorer;
 
-import model.image_tag_explorer.Image;
-import model.image_tag_explorer.Tag;
+import model_old.image_tag_explorer.Image;
+import model_old.image_tag_explorer.Tag;
 
 import java.io.*;
 import java.util.ArrayList;
