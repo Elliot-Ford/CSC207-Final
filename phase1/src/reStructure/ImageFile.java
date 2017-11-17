@@ -129,11 +129,10 @@ public class ImageFile {
 
   //TODO: Rename()
   public boolean rename(String newName) throws IOException {
-      boolean ret = false;
       String lastName = getName();
       File newFile = new File(file.getParent(), newName + getSuffix());
       File newLog = new File(log.getParent(), newName + LOG_FILE_SUFFIX);
-      ret = file.renameTo(newFile) && log.renameTo(newLog);
+      boolean ret = file.renameTo(newFile) && log.renameTo(newLog);
       if(ret) {
           if(newFile.exists()) {
               file = newFile;
