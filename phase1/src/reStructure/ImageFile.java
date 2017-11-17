@@ -56,7 +56,18 @@ public class ImageFile {
    */
   public boolean moveFile(String newPath) throws IOException {
       String name = getName();
-      return file.renameTo(new File(newPath, file.getName())) && log.renameTo(new File(newPath, name + LOG_FILE_SUFFIX));
+      File newFile = new File(newPath, getName() + getSuffix());
+      File newLog = new File(newPath, getName() + LOG_FILE_SUFFIX);
+      boolean ret = file.renameTo(newFile) && log.renameTo(newLog);
+      if(ret) {
+          if(newFile.exists()) {
+              file = newFile;
+          }
+          if(newLog.exists()) {
+              log = newLog;
+          }
+      }
+      return ret;
 
   }
 
@@ -94,6 +105,11 @@ public class ImageFile {
                   found = true;
               }
           }
+          for(String existingTag: tags) {
+              if(existingTag.equals(potentialTag)) {
+                  found = true;
+              }
+          }
           if(!found) {
               tags.add(potentialTag);
           }
@@ -127,8 +143,12 @@ public class ImageFile {
       File newLog = new File(log.getParent(), newName + LOG_FILE_SUFFIX);
       ret = file.renameTo(newFile) && log.renameTo(newLog);
       if(ret) {
-          file = newFile;
-          log = newLog;
+          if(newFile.exists()) {
+              file = newFile;
+          }
+          if(newLog.exists()) {
+              log = newLog;
+          }
           BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
           writer.append(lastName).append(String.valueOf('\n'));
           writer.close();
