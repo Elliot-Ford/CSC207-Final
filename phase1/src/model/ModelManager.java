@@ -26,29 +26,30 @@ public class ModelManager {
     public ModelManager() {
         imageManager = new ImageManager();
         tagManager = new TagManager();
-        fileManager = new FileManager();
+        fileManager = new FileManager("");
     }
 
     public ModelManager(String path) throws ClassNotFoundException {
-        this();
+        imageManager = new ImageManager();
+        tagManager = new TagManager();
+        fileManager = new FileManager(path);
 
-        if (fileManager.ImagesFileExists(path)) {
-            Image[] ret = fileManager.readImagesFromFile(path);
-            imageManager = new ImageManager(ret);
-            if (fileManager.TagsFileExists(path)) {
-                Tag[] t = fileManager.readTagsFromFile(path);
-                tagManager = new TagManager(t);
-            }
-        } else {
-            fileManager.getFiles(path, "*.jpg");
-            for (File file : fileManager.getFiles(path, FILE_MATCH_STRING)) {
+//        if (fileManager.ImagesFileExists()) {
+//            Image[] ret = fileManager.readImagesFromFile();
+//            imageManager = new ImageManager(ret);
+//            if (fileManager.TagsFileExists()) {
+//                Tag[] t = fileManager.readTagsFromFile();
+//                tagManager = new TagManager(t);
+//            }
+//        } else {
+            for (File file : fileManager.getFiles(FILE_MATCH_STRING)) {
                 try {
                     imageManager.addImage(new Image(file));
                 } catch (Exception e) {
                     // TODO: we should catch when Image has tags that are not in tagManager
                 }
             }
-        }
+//        }
     }
 }
 
