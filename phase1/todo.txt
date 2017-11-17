@@ -29,3 +29,26 @@ Nov 9th
 	-Should be able to add Tag objects to the list
 	-Should be able to remove Tag objects to the list
 	-Should be able to get all the Tags from this Manager
+
+--Just some notes I wrote up from the phase 1 introduction.
+What should the program do?
+-rename image files based on a set of tags the user chooses.
+
+What can the user see?
+-A list of all images files anywhere in the directory
+-A list of all image files directly under the directory
+-all the names that a file as had
+-view an image
+-older sets of tags for a particular file
+
+What should a user be able to do?
+-user should be able to go back to older sets of tags for a particular file
+-user should be able to move a file to another directory
+-user should be able to select tags from the currently-existing tags
+-User should be able to add new tags and delete existing ones
+
+What should be stateless?
+-A list of avaliable tags
+
+What should be logged?
+-All renaming ever done (old name, new name, and timestamp)
