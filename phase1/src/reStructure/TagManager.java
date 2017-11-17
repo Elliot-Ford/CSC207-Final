@@ -1,17 +1,17 @@
 package reStructure;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class TagManager {
     /** A list of string representations for tags. */
-    public List<String> tags;
+    public Set<String> tags;
 
     /**
      * Construct a new TagManager with no existing tag.
      */
-    public TagManager() {}
+    public TagManager() {
+        tags = new HashSet<>();
+    }
 
     /**
      * Construct a new TagManager with a list of existing tags.
@@ -19,7 +19,7 @@ public class TagManager {
      * @param tags a list of string representations for existing tags
      */
     public TagManager(String[] tags) {
-        this.tags = new ArrayList<>(Arrays.asList(tags));
+        this.tags = new HashSet<>(Arrays.asList(tags));
     }
 
     /**
@@ -29,15 +29,7 @@ public class TagManager {
      * @return a boolean indicating whether the adding of this tag succeeded
      */
     public boolean addTag(String newTag) {
-        // Checking if this tag already exists
-        boolean here = tags.contains(newTag);
-
-        // Add the tag to the list if it does not exist
-        if (!here) {
-            tags.add(newTag);
-        }
-
-        return !here;
+        return tags.add(newTag);
     }
 
     /**
@@ -47,15 +39,7 @@ public class TagManager {
      * @return a boolean indicating whether the removal of this tag succeeded
      */
     public boolean removeTag(String thisTag) {
-        // Checking if this tag already exists
-        boolean here = tags.contains(thisTag);
-
-        // Remove the tag to the list if it does not exist
-        if (here) {
-            tags.remove(thisTag);
-        }
-
-        return here;
+        return tags.remove(thisTag);
     }
 
     /**
@@ -65,5 +49,9 @@ public class TagManager {
      */
     public String[] getTags() {
         return tags.toArray(new String[tags.size()]);
+    }
+
+    public boolean update(String[] newTags) {
+        return tags.addAll(Arrays.asList(newTags));
     }
 }
