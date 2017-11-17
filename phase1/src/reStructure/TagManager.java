@@ -29,13 +29,8 @@ public class TagManager {
      * @return a boolean indicating whether the adding of this tag succeeded
      */
     public boolean addTag(String newTag) {
-        boolean here = false;
         // Checking if this tag already exists
-        for (String tag : tags) {
-            if (tag.equals(newTag)) {
-                here = true;
-            }
-        }
+        boolean here = tags.contains(newTag);
 
         // Add the tag to the list if it does not exist
         if (!here) {
@@ -52,13 +47,8 @@ public class TagManager {
      * @return a boolean indicating whether the removal of this tag succeeded
      */
     public boolean removeTag(String thisTag) {
-        boolean here = false;
         // Checking if this tag already exists
-        for (String tag : tags) {
-            if (tag.equals(thisTag)) {
-                here = true;
-            }
-        }
+        boolean here = tags.contains(thisTag);
 
         // Remove the tag to the list if it does not exist
         if (here) {
