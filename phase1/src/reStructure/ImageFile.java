@@ -1,10 +1,7 @@
 package reStructure;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /** Represents a physical image file in a filesystem. */
 public class ImageFile {
@@ -92,25 +89,20 @@ public class ImageFile {
 
   // TODO: get previous tags
   public String[] getPreviousTags() throws IOException {
-    List<String> tags = new ArrayList<>();
+    Set<String> tags = new HashSet<>();
     String[] currentTags = getTags();
     BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
     String line = reader.readLine();
     while (line != null) {
       String[] potentialTags = extractTags(line);
       for(String potentialTag : potentialTags) {
-          boolean found = false;
-          for(String currentTag: currentTags) {
-              if (currentTag.equals(potentialTag)) {
-                  found = true;
+          if(currentTags.length > 0) {
+              for (String currentTag : currentTags) {
+                  if (!currentTag.equals(potentialTag)) {
+                      tags.add(potentialTag);
+                  }
               }
-          }
-          for(String existingTag: tags) {
-              if(existingTag.equals(potentialTag)) {
-                  found = true;
-              }
-          }
-          if(!found) {
+          } else {
               tags.add(potentialTag);
           }
       }
