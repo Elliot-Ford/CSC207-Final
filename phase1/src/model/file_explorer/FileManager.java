@@ -98,7 +98,7 @@ public class FileManager {
    *
    * @return a File[] of all files directly under the root directory.
    */
-  public File[] getFiles() {
+  public File[] getLocalFiles() {
     List<File> ret = new ArrayList<>();
     if(root.list() != null) {
       for (File file : root.listFiles()) {
@@ -118,9 +118,9 @@ public class FileManager {
    * @return an File[] of all files directly under the root directory that contain a match to the
    *     given pattern.
    */
-  public File[] getFiles(String regEx) {
+  public File[] getLocalFiles(String regEx) {
     List<File> ret = new ArrayList<>();
-    for (File file : getFiles()) {
+    for (File file : getLocalFiles()) {
       if (file.getName().matches(regEx)) {
         ret.add(file);
       }
@@ -135,7 +135,7 @@ public class FileManager {
    */
   public Image[] getImages() {
     List<Image> ret = new ArrayList<>();
-    for (File file : getFiles(FILE_MATCH_STRING)) {
+    for (File file : getLocalFiles(FILE_MATCH_STRING)) {
       ret.add(new Image(file));
     }
 
@@ -267,7 +267,7 @@ public class FileManager {
           break;
 
         case "2":
-          output = Arrays.toString(fileManager.getFiles());
+          output = Arrays.toString(fileManager.getLocalFiles());
           break;
 
         case "3":
