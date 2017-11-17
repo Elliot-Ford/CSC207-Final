@@ -19,6 +19,11 @@ public class ImageFileManager {
     /** the root of the directory */
     private File root;
 
+    /**
+     * Construct a new ImageFileManager object.
+     *
+     * @param path the root directory for this ImageFileManager object
+     */
     public ImageFileManager(String path) {
         root = new File(path);
     }
