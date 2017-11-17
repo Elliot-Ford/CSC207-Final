@@ -1,8 +1,7 @@
 package reStructure;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ImageFileManager {
   /** String to match all tagable files */
@@ -11,6 +10,9 @@ public class ImageFileManager {
   /** the root of the directory */
   private File root;
 
+  /** the tagManager */
+  private TagManager tagManager;
+
   /**
    * Construct a new ImageFileManager object.
    *
@@ -18,6 +20,7 @@ public class ImageFileManager {
    */
   public ImageFileManager(String path) {
     root = new File(path);
+    tagManager = new TagManager(getAllTags());
   }
 
   /**
@@ -83,13 +86,38 @@ public class ImageFileManager {
     return ret;
   }
 
-  //TODO: deleteTag
-    /**
-     * Deletes Tag from all files and
-     * @param Tag
-     * @return
-     */
-  public boolean deleteTag(String Tag) {
-    return false;
+  public String[] getAllCurrentTags() {
+    updateTagManager();
+    return tagManager.getTags();
+  }
+
+  /**
+   * Deletes Tag from all files and tagManager
+   *
+   * @param tag the tag to delet
+   * @return true if it succeeds, false if it doesn't.
+   */
+  public boolean deleteTag(String tag) {
+    boolean ret = true;
+    if (!tagManager.removeTag(tag)) {
+      ret = false;
+    }
+    if (ret) {
+      for (ImageFile imageFile : getAllImageFiles()) {
+        if (!imageFile.removeTag(tag)) {
+          ret = false;
+        }
+      }
+    }
+    return ret;
+  }
+
+  /** updates the tagManager so it keeps up with the new tags */
+  private boolean updateTagManager() {
+    Set<String> tags = new HashSet<>();
+    for (ImageFile imageFile : getAllImageFiles()) {
+      tags.addAll(Arrays.asList(imageFile.getTags()));
+    }
+    return tagManager.update(tags.toArray(new String[tags.size()]));
   }
 }
