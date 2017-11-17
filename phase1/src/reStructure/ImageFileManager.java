@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ImageFileManager {
-    //    private static final String SERIALIZED_IMAGES_FILENAME = ".images.ser";
-    /** the name of a serialized file of tags */
-    private static final String SERIALIZED_TAGS_FILENAME = ".tags.ser";
     /** String to match all tagable files */
     private static final String FILE_MATCH_STRING = ".*[.](jpg|png|gif|bmp)";
 
@@ -67,9 +64,31 @@ public class ImageFileManager {
      */
     public File[] getAllFiles(String regEx) {
         List<File> ret = new ArrayList<>();
-        for (File file : getAllFiles()) {
-            if (file.getName().matches(regEx)) {
-                ret.add(file);
+        if(root.isDirectory() || (root.isFile() && root.getName().matches(regEx))) {
+            ret.add(root);
+
+            int i = 0;
+            while (i < ret.size()) {
+                // Check if element at i in ret is a Directory, a File, or it exists.
+                if (ret.get(i).isDirectory()) {
+                    // Element at i is a directory, so determine if it has children and remove the Element at i.
+                    // Check if the Element at i has children.
+                    if (ret.get(i).list() != null) {
+                        // Element at i has children, so add children to the ArrayList if they match the regEx.
+                        for (File file : ret.get(i).listFiles()) {
+                            if (file.getName().matches(regEx) || file.isDirectory()) {
+                                ret.add(file);
+                            }
+                        }
+                    }
+                    ret.remove(i);
+                } else if (ret.get(i).isFile()) {
+                    // Element at i is a File, so increment i by 1.
+                    i += 1;
+                } else {
+                    // Element doesn't exist in filesystem, so remove from ret.
+                    ret.remove(i);
+                }
             }
         }
         return ret.toArray(new File[ret.size()]);
@@ -81,11 +100,40 @@ public class ImageFileManager {
      * @return a ImageFile[] of all image files anywhere under the root directory.
      */
     public ImageFile[] getAllImageFiles() {
-        List<ImageFile> ret = new ArrayList<>();
-        for (File file : getAllFiles(FILE_MATCH_STRING)) {
-            ret.add(new ImageFile(file));
+        List<File> files = new ArrayList<>();
+        if (root.isDirectory() || (root.isFile() && root.getName().matches(FILE_MATCH_STRING))) {
+            files.add(root);
+
+            int i = 0;
+            while (i < files.size()) {
+                // Check if element at i in ret is a Directory, a File, or it exists.
+                if (files.get(i).isDirectory()) {
+                    // Element at i is a directory, so determine if it has children and remove the Element at
+                    // i.
+                    // Check if the Element at i has children.
+                    if (files.get(i).list() != null) {
+                        // Element at i has children, so add children to the ArrayList if they match the regEx.
+                        for (File file : files.get(i).listFiles()) {
+                            if (file.getName().matches(FILE_MATCH_STRING) || file.isDirectory()) {
+                                files.add(file);
+                            }
+                        }
+                    }
+                    files.remove(i);
+                } else if (files.get(i).isFile()) {
+                    // Element at i is a File, so increment i by 1.
+                    i += 1;
+                } else {
+                    // Element doesn't exist in filesystem, so remove from ret.
+                    files.remove(i);
+                }
+            }
         }
-        return ret.toArray(new ImageFile[ret.size()]);
+        ImageFile[] ret = new ImageFile[files.size()];
+        for(int i = 0; i < ret.length; i++) {
+            ret[i] = new ImageFile(files.get(i));
+        }
+        return ret;
     }
 
     /**
