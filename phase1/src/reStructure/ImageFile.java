@@ -25,18 +25,7 @@ public class ImageFile {
    * @param path the directory this ImageFile object is under
    */
   public ImageFile(String path) {
-    file = new File(path);
-    log =
-        new File(
-            file.getParent(),
-            file.getName().substring(0, file.getName().lastIndexOf('.')) + LOG_FILE_SUFFIX);
-    if (!log.exists() && file.exists()) {
-      try {
-        log.createNewFile();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+      this(new File(path));
   }
 
   /**
@@ -46,10 +35,14 @@ public class ImageFile {
    */
   public ImageFile(File file) {
     this.file = file;
-    log =
-        new File(
-            file.getAbsolutePath(),
-            file.getName().substring(0, file.getName().lastIndexOf('.')) + LOG_FILE_SUFFIX);
+    log = new File(file.getParent(), getName() + LOG_FILE_SUFFIX);
+    if (!log.exists() && file.exists()) {
+      try {
+          log.createNewFile();
+      } catch (IOException e) {
+          e.printStackTrace();
+      }
+}
   }
 
   // TODO: change the directory of this file
@@ -62,19 +55,14 @@ public class ImageFile {
    * @throws IOException Throws an exception if we cannot write the file
    */
   public boolean moveFile(String newPath) throws IOException {
-    boolean success = file.renameTo(new File(newPath));
-    if (success) {
-      log.renameTo(
-          new File(
-              newPath,
-              file.getName().substring(0, file.getName().lastIndexOf('.')) + LOG_FILE_SUFFIX));
-    }
-    return success;
+      String name = getName();
+      return file.renameTo(new File(newPath, file.getName())) && log.renameTo(new File(newPath, name + LOG_FILE_SUFFIX));
+
   }
 
   // TODO: get tags
   public String[] getTags() {
-    return extractTags(file.getName().substring(0, file.getName().lastIndexOf(".")));
+    return extractTags(getName());
   }
 
   /** Extracts the Tags in a given string */
@@ -119,23 +107,11 @@ public class ImageFile {
 
   // TODO: add tag
   public boolean addTag(String newTag) throws IOException {
-    String lastName = file.getName().substring(0, file.getName().lastIndexOf('.'));
+    String lastName = getName();
     File newFile =
-        new File(
-            file.getParent(),
-            String.format(
-                "%s %s%s%s",
-                file.getName().substring(0, file.getName().lastIndexOf('.')),
-                TAG_MARKER,
-                newTag,
-                file.getName().substring(file.getName().lastIndexOf("."))));
+        new File(file.getParent(), String.format("%s %s%s%s", getName(), TAG_MARKER, newTag, getSuffix()));
     File newLog =
-        new File(
-            log.getParent(),
-            String.format(
-                "%s%s",
-                newFile.getName().substring(0, newFile.getName().lastIndexOf(".")),
-                LOG_FILE_SUFFIX));
+        new File(log.getParent(), String.format("%s%s", getName(), LOG_FILE_SUFFIX));
     boolean imageRenameSuccess = file.renameTo(newFile);
     boolean logRenameSuccess = log.renameTo(newLog);
     // Add the last name to the log file.
@@ -155,7 +131,7 @@ public class ImageFile {
   public boolean removeTag(String thisTag) throws IOException {
     boolean success = false;
     if (file.getName().contains(thisTag)) {
-      String lastName = file.getName().substring(0, file.getName().lastIndexOf('.'));
+      String lastName = getName();
       // Rename the current file.
       String newName = file.getName().replace((" " + TAG_MARKER + thisTag), "");
       success = file.renameTo(new File(file.getParent(), newName));
@@ -169,6 +145,26 @@ public class ImageFile {
     }
 
     return success;
+  }
+
+  /**
+   * Returns the name of an image with no suffix.
+   * @return the name of an image.
+   */
+  public String getName() {
+      if(file.getName().lastIndexOf(".") != -1) {
+          return file.getName().substring(0, file.getName().lastIndexOf("."));
+      } else {
+          return "";
+      }
+  }
+
+  /**
+   * Returns the suffix of an image.
+   * @return the suffix of an image
+   */
+  public String getSuffix() {
+      return file.getName().substring(file.getName().lastIndexOf("."));
   }
 
     public static void main(String[] args) {
