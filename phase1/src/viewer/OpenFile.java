@@ -25,8 +25,11 @@ public final class OpenFile{
         window = stage;
         window.show();
         GridPane newGrid = new GridPane();
+
         Scene scene2 = new Scene(newGrid, 1020, 720);
         window.setScene(scene2);
         window.setTitle("Lets do Tagging");
+
+
     }
 }

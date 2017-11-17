@@ -1,6 +1,7 @@
 package viewer;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,8 +11,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -45,22 +52,33 @@ public class Main extends Application {
         nameInput.setPromptText("Directory");
         GridPane.setConstraints(nameInput, 0, 1);
 
+//        final FileChooser fileChooser = new FileChooser();
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+
+        final Button openButton = new Button("Browse");
+        GridPane.setConstraints(openButton, 2, 1);
+
+        openButton.setOnAction(
+                e -> {
+                    File file = directoryChooser.showDialog(primaryStage);
+                    if (file != null) {
+                        nameInput.setText(file.getAbsolutePath());
+                    }
+                });
+        OpenFile op = new OpenFile();
+
 
         //Enter
         Button enterButton = new Button("Enter");
         GridPane.setConstraints(enterButton, 1, 1);
         enterButton.setOnAction(event -> {
             if (isDirectory(nameInput.getText())) {
-                GridPane newGrid = new GridPane();
-                Scene scene2 = new Scene(newGrid, 1020, 720);
-                window.setScene(scene2);
-                window.setTitle("Scene 2");
-
+                op.openFile(primaryStage);
             }
         });
 
         //Add everything to grid
-        grid.getChildren().addAll(nameLabel, nameInput, enterButton);
+        grid.getChildren().addAll(nameLabel, nameInput, enterButton, openButton);
 
         Scene scene = new Scene(grid, 1020, 720);
         window.setScene(scene);
@@ -82,3 +100,5 @@ public class Main extends Application {
     }
 
 }
+
+
