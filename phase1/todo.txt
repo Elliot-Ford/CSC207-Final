@@ -48,7 +48,7 @@ What should a user be able to do?
 -User should be able to add new tags and delete existing ones
 
 What should be stateless?
--A list of avaliable tags
+-A list of available tags
 
 What should be logged?
 -All renaming ever done (old name, new name, and timestamp)
