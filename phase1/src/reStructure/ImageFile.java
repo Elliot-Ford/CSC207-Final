@@ -74,12 +74,18 @@ public class ImageFile {
 
   // TODO: get tags
   public String[] getTags() {
+    return extractTags(file.getName().substring(0, file.getName().lastIndexOf(".")));
+  }
+
+  /** Extracts the Tags in a given string */
+  private String[] extractTags(String stringWithTags) {
     List<String> tags = new ArrayList<>();
-    String[] fileName = file.getName().substring(0, file.getName().lastIndexOf(".")).split(" ");
-    for (String s : fileName) {
-      if (s.length() >= TAG_MARKER.length()
-          && s.substring(0, TAG_MARKER.length()).equals(TAG_MARKER)) {
-        tags.add(s.substring(1));
+    String[] slicedString = stringWithTags.split(" ");
+    for (String word : slicedString) {
+        // Check each word to see if its format indicates it's a tag.
+        if (word.length() >= TAG_MARKER.length()
+          && word.substring(0, TAG_MARKER.length()).equals(TAG_MARKER)) {
+          tags.add(word.substring(1));
       }
     }
     return tags.toArray(new String[tags.size()]);
@@ -88,20 +94,23 @@ public class ImageFile {
   // TODO: get previous tags
   public String[] getPreviousTags() throws IOException {
     List<String> tags = new ArrayList<>();
-
+    String[] currentTags = getTags();
     BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
     String line = reader.readLine();
     while (line != null) {
-      String[] fileName = file.getName().split(" ");
-      // Check each string to see if its format indicates it's a tag.
-      for (String s : fileName) {
-        if (s.length() >= TAG_MARKER.length()
-            && s.substring(0, TAG_MARKER.length()).equals(TAG_MARKER)
-            && !tags.contains(s.substring(0, TAG_MARKER.length()))) {
-          // Add the tag into the tag list.
-          tags.add(s);
-        }
+      String[] potentialTags = extractTags(line);
+      for(String potentialTag : potentialTags) {
+          boolean found = false;
+          for(String currentTag: currentTags) {
+              if (currentTag.equals(potentialTag)) {
+                  found = true;
+              }
+          }
+          if(!found) {
+              tags.add(potentialTag);
+          }
       }
+      line = reader.readLine();
     }
     reader.close();
 
