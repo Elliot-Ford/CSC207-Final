@@ -18,7 +18,6 @@ import java.io.IOException;
 public class Main extends Application {
 
     Stage window;
-    Scene scene2;
 
     public Main() throws IOException {
     }
@@ -46,12 +45,18 @@ public class Main extends Application {
         nameInput.setPromptText("Directory");
         GridPane.setConstraints(nameInput, 0, 1);
 
+
         //Enter
         Button enterButton = new Button("Enter");
         GridPane.setConstraints(enterButton, 1, 1);
         enterButton.setOnAction(event -> {
-            if (isDirectory(nameInput.getText()))
+            if (isDirectory(nameInput.getText())) {
+                GridPane newGrid = new GridPane();
+                Scene scene2 = new Scene(newGrid, 1020, 720);
                 window.setScene(scene2);
+                window.setTitle("Scene 2");
+
+            }
         });
 
         //Add everything to grid
