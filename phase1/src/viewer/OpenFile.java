@@ -15,20 +15,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 
-public class Main extends Application {
+public class OpenFile(Scene scene) {
 
-    Stage window;
-    Scene scene2;
-
-    public Main() throws IOException {
-    }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
-    }
 }
