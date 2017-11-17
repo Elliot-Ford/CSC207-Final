@@ -20,7 +20,7 @@ public class ImageFileManager {
    */
   public ImageFileManager(String path) {
     root = new File(path);
-    tagManager = new TagManager(getAllTags());
+    tagManager = new TagManager(getAllCurrentTags());
   }
 
   /**
@@ -94,7 +94,7 @@ public class ImageFileManager {
   /**
    * Deletes Tag from all files and tagManager
    *
-   * @param tag the tag to delet
+   * @param tag the tag to delete
    * @return true if it succeeds, false if it doesn't.
    */
   public boolean deleteTag(String tag) {
