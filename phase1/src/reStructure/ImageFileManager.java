@@ -82,4 +82,14 @@ public class ImageFileManager {
     }
     return ret;
   }
+
+  //TODO: deleteTag
+    /**
+     * Deletes Tag from all files and
+     * @param Tag
+     * @return
+     */
+  public boolean deleteTag(String Tag) {
+    return false;
+  }
 }
