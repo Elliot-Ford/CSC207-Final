@@ -22,11 +22,11 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Main extends Application {
+public class Console extends Application {
 
     Stage window;
 
-    public Main() throws IOException {
+    public Console() throws IOException {
     }
 
     public static void main(String[] args) {
