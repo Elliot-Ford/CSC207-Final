@@ -53,16 +53,24 @@ public class Console extends Application {
         GridPane.setConstraints(nameInput, 0, 1);
 
 //        final FileChooser fileChooser = new FileChooser();
-        DirectoryChooser directoryChooser = new DirectoryChooser();
+        DirectoryChooser dc = new DirectoryChooser();
 
         final Button openButton = new Button("Browse");
         GridPane.setConstraints(openButton, 2, 1);
 
         openButton.setOnAction(
                 e -> {
-                    File file = directoryChooser.showDialog(primaryStage);
-                    if (file != null) {
-                        nameInput.setText(file.getAbsolutePath());
+                    dc.setInitialDirectory(new File(System.getProperty("user.home")));
+                    File file = dc.showDialog(window);
+                    if(file == null || ! file.isDirectory()) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setHeaderText("Input not valid");
+                        alert.setContentText("Entered directory dose not exists.");
+                        alert.showAndWait();
+                    } else {
+                        OpenFile op = new OpenFile();
+                        op.openFile(primaryStage);
+                        a.setRoot(getNodesForDirectory(choice));
                     }
                 });
         OpenFile op = new OpenFile();
