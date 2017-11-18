@@ -13,6 +13,8 @@ public class ImageFile {
 
   private static final String TAG_MARKER = "@";
 
+  private static final String LOG_FILE_SEPARATOR = "|";
+
   /** the image file in the system */
   private File file;
 
@@ -106,7 +108,7 @@ public class ImageFile {
     }
     String line = reader.readLine();
     while (line != null) {
-      String[] potentialTags = extractTags(line);
+      String[] potentialTags = extractTags(line.split(LOG_FILE_SEPARATOR)[0]);
       for (String potentialTag : potentialTags) {
         if (currentTags.length > 0) {
           for (String currentTag : currentTags) {
@@ -172,7 +174,7 @@ public class ImageFile {
       }
       try {
         BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-        writer.append(String.format(lastName, " | ", newName, " | ",
+        writer.append(String.format("%s %s %s %s %s", lastName, LOG_FILE_SEPARATOR, newName, LOG_FILE_SEPARATOR,
                 dateFormat.format(time))).append(String.valueOf('\n'));
         writer.close();
       } catch (IOException ex) {
