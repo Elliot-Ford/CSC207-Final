@@ -203,6 +203,8 @@ public class ImageFile {
     return ret;
   }
 
+  // TODO: getImage()
+
   public static void main(String[] args) {
     ImageFile imageFile = new ImageFile("/home/ecford/Desktop/foo/foo.jpg");
 
