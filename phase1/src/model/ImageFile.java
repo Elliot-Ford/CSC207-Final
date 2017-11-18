@@ -203,7 +203,14 @@ public class ImageFile {
     return ret;
   }
 
-  // TODO: getImage()
+  /**
+   * Returns the physical Image File.
+   *
+   * @return the physical Image File.
+   */
+  public File getImage() {
+    return file;
+  }
 
   public static void main(String[] args) {
     ImageFile imageFile = new ImageFile("/home/ecford/Desktop/foo/foo.jpg");
