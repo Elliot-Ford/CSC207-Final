@@ -8,6 +8,16 @@ import java.io.IOException;
 public class Main {
 
     /**
+     * Return a new ImageFileManager when the GUI requested.
+     *
+     * @param path the path for the directory
+     * @return the new ImageFileManager
+     */
+    public ImageFileManager startProgram(String path) {
+        return new ImageFileManager(path);
+    }
+
+    /**
      * Return all the ImageFiles under one ImageFileManager.
      *
      * @param IFManager the ImageFileManager
@@ -72,12 +82,15 @@ public class Main {
         return IFile.getPreviousTags();
     }
 
-    public static void main (String args[]) {
-        String path = "";
-        //get the path from the user interface
-        ImageFileManager IFManager1 = new ImageFileManager(path);
+    /**
+     * Rename a given ImageFile.
+     *
+     * @param IFile the ImageFIle
+     * @param newName the new name we want to rename the ImageFile with
+     * @return whether this renaming was successful
+     */
+    public boolean renameFile(ImageFile IFile, String newName) {
+        return IFile.rename(newName);
     }
-
-    //TODO: come up with more?
 
 }
