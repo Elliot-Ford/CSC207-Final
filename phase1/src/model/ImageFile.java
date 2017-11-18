@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 /** Represents a physical image file in a filesystem. */
+@SuppressWarnings("WeakerAccess")
 public class ImageFile {
 
   private static final String LOG_FILE_SUFFIX = ".log";
@@ -42,8 +43,6 @@ public class ImageFile {
     }
   }
 
-  // TODO: change the directory of this file
-
   /**
    * Move the ImageFile to a given directory.
    *
@@ -66,7 +65,10 @@ public class ImageFile {
     return ret;
   }
 
-  // TODO: get tags
+  /**
+   * gets all the tags associated to the image file.
+   * @return a String[] of associated tags.
+   */
   public String[] getTags() {
     return extractTags(getName());
   }
@@ -85,11 +87,21 @@ public class ImageFile {
     return tags.toArray(new String[tags.size()]);
   }
 
-  // TODO: get previous tags
+  /**
+   * gets all the tags that were previously associated to the image file.
+   * @return a String[] of previously associated tags.
+   */
+  @SuppressWarnings("ResultOfMethodCallIgnored")
   public String[] getPreviousTags() throws IOException {
     Set<String> tags = new HashSet<>();
     String[] currentTags = getTags();
-    BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new FileReader(log.getPath()));
+    } catch (FileNotFoundException e) {
+      //log file must not exist
+      log.createNewFile();
+    }
     String line = reader.readLine();
     while (line != null) {
       String[] potentialTags = extractTags(line);
@@ -111,30 +123,41 @@ public class ImageFile {
     return tags.toArray(new String[tags.size()]);
   }
 
-  // TODO: add tag
-  public boolean addTag(String newTag) throws IOException {
+  /**
+   * Tries to add a given tag to the image.
+   * @param newTag the tag to try and add.
+   * @return true if successful, false if it isn't.
+   */
+  public boolean addTag(String newTag) {
     return rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
   }
 
-  // TODO: remove tag
+  /**
+   * Tries to remove the given tag from the image.
+   * @param thisTag the tag to try and remove.
+   * @return true if removal is successful, false if it isn't.
+   */
   public boolean removeTag(String thisTag) {
     boolean ret = false;
     if (file.getName().contains(thisTag)) {
-      try {
         ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
     }
     return ret;
   }
 
-  // TODO: Rename()
-  public boolean rename(String newName) throws IOException {
+  /**
+   * Tries to rename the image with the newName
+   * @param newName a String to try and rename the image with.
+   * @return true if renaming is successful, false if it isn't.
+   */
+  public boolean rename(String newName) {
     String lastName = getName();
     File newFile = new File(file.getParent(), newName + getSuffix());
     File newLog = new File(log.getParent(), newName + LOG_FILE_SUFFIX);
-    boolean ret = file.renameTo(newFile) && log.renameTo(newLog);
+    boolean ret = false;
+    if(!newFile.exists() && !newLog.exists()) {
+      ret = file.renameTo(newFile) && log.renameTo(newLog);
+    }
     if (ret) {
       if (newFile.exists()) {
         file = newFile;
@@ -142,9 +165,14 @@ public class ImageFile {
       if (newLog.exists()) {
         log = newLog;
       }
-      BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-      writer.append(lastName).append(String.valueOf('\n'));
-      writer.close();
+      try {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
+        writer.append(lastName).append(String.valueOf('\n'));
+        writer.close();
+      } catch (IOException ex) {
+        ex.printStackTrace();
+        ret = false;
+      }
     }
     return ret;
   }
@@ -202,15 +230,11 @@ public class ImageFile {
         case "2":
           System.out.println("What tag should I add?");
           input = scanner.nextLine();
-          try {
             if (imageFile.addTag(input)) {
               output = "Added " + input;
             } else {
               output = "Adding tag failed";
             }
-          } catch (IOException ex) {
-            output = "Adding tag threw error";
-          }
           break;
 
         case "3":
