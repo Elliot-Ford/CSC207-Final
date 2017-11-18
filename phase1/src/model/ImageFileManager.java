@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.*;
 
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
+/** Manages all the imageFiles under a root folder*/
 public class ImageFileManager {
   /** String to match all tagable files */
   private static final String FILE_MATCH_STRING = ".*[.](jpg|png|gif|bmp)";

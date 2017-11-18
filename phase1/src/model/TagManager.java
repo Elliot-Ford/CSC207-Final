@@ -2,9 +2,10 @@ package model;
 
 import java.util.*;
 
+/** manages a collection of tags. */
 public class TagManager {
-  /** A list of string representations for tags. */
-  public Set<String> tags;
+  /** A set of tags. */
+  private Set<String> tags;
 
   /** Construct a new TagManager with no existing tag. */
   public TagManager() {
@@ -14,7 +15,7 @@ public class TagManager {
   /**
    * Construct a new TagManager with a list of existing tags.
    *
-   * @param tags a list of string representations for existing tags
+   * @param tags a list of string representations for existing tags.
    */
   public TagManager(String[] tags) {
     this.tags = new HashSet<>(Arrays.asList(tags));
@@ -41,14 +42,19 @@ public class TagManager {
   }
 
   /**
-   * Get a list of the string representation of the existing tags.
+   * Return existing tags.
    *
-   * @return a list of the string representation of the existing tags
+   * @return a String[] of the existing tags
    */
   public String[] getTags() {
     return tags.toArray(new String[tags.size()]);
   }
 
+  /**
+   * Update the tagManager with new tags.
+   * @param newTags tags to add to the tagManager.
+   * @return if updating the tagManager was a success.
+   */
   public boolean update(String[] newTags) {
     return tags.addAll(Arrays.asList(newTags));
   }
