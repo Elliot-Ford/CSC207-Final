@@ -61,8 +61,6 @@ public class Main {
         return IFile.moveFile(newPath);
     }
 
-    //TODO: get previous tags for one file
-
     /**
      * Get the String representation of all the previous Tags for a given ImageFile.
      *
