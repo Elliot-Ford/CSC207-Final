@@ -56,7 +56,7 @@ What should be logged?
 ===Friday, November 17, 2017===
 Some things that still need to get done for the model:
      -ImageFile should be able to return a image of it's associated image file.
-     -ImageFileManager should be able to change directories.
+     -ImageFileManager should be able to change directories. --Done (Elliot Ford)
 Some things that need to be done in general:
      -Create a UML diagram (design.pdf)
      -Create a file with contain a concise and clear set of instructions for how to compile and run your code from the
