@@ -37,9 +37,12 @@ public final class OpenFile{
         Button back = new Button("<");
         GridPane.setConstraints(back,0,0);
 
+        Button forward = new Button(">");
+        GridPane.setConstraints(forward,0,0);
+
         Scene scene2 = new Scene(newGrid, 1020, 720);
 
-        newGrid.getChildren().addAll(back);
+        newGrid.getChildren().addAll(back, forward);
         window.setScene(scene2);
         window.show();
 
