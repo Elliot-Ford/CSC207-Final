@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.io.*;
 import java.util.*;
 
@@ -203,7 +205,18 @@ public class ImageFile {
     return ret;
   }
 
-  // TODO: getImage()
+  /**
+   * Returns the image associated to the imageFile.
+   *
+   * @return the associated image.
+   * @throws IOException if it is unable to read the image.
+   */
+  public Image getImage() throws IOException {
+    FileInputStream inputStream = new FileInputStream(file);
+    Image image = new Image(inputStream);
+    inputStream.close();
+    return image;
+  }
 
   public static void main(String[] args) {
     ImageFile imageFile = new ImageFile("/home/ecford/Desktop/foo/foo.jpg");
