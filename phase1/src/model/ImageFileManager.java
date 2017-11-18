@@ -91,6 +91,7 @@ public class ImageFileManager {
 
   /**
    * returns all the current existing tags, associated or unassociated to images
+   *
    * @return a String[] of all the tags.
    */
   public String[] getAllCurrentTags() {
@@ -120,8 +121,9 @@ public class ImageFileManager {
   }
 
   /**
-   * Changes the working directory of ImageFileManager if new directory exists.
-   * All tags that aren't associated with an Image will when be unavailable when switch happens unless restored.
+   * Changes the working directory of ImageFileManager if new directory exists. All tags that aren't
+   * associated with an Image will when be unavailable when switch happens unless restored.
+   *
    * @param path the String path of the root folder to try to switch to
    * @return true if changingDirectory succeeds.
    */
@@ -130,14 +132,15 @@ public class ImageFileManager {
   }
 
   /**
-   * Changes the working directory of ImageFileManager if new directory exists.
-   * All tags that aren't associated with an Image will when be unavailable when switch happens unless restored.
+   * Changes the working directory of ImageFileManager if new directory exists. All tags that aren't
+   * associated with an Image will when be unavailable when switch happens unless restored.
+   *
    * @param root the root folder to try to switch to
    * @return true if changingDirectory succeeds.
    */
   public boolean changeDirectory(File root) {
     boolean ret = false;
-    if(root.exists()) {
+    if (root.exists()) {
       ret = true;
       this.root = root;
       tagManager = new TagManager();
