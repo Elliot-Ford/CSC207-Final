@@ -1,7 +1,6 @@
-package model.image_tag_explorer;
+package model_old.image_tag_explorer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Tag implements java.io.Serializable {
