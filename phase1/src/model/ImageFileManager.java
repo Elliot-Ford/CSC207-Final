@@ -3,6 +3,7 @@ package model;
 import java.io.File;
 import java.util.*;
 
+@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class ImageFileManager {
   /** String to match all tagable files */
   private static final String FILE_MATCH_STRING = ".*[.](jpg|png|gif|bmp)";
@@ -28,6 +29,7 @@ public class ImageFileManager {
    *
    * @return a ImageFile[] of all image files anywhere under the root directory.
    */
+  @SuppressWarnings("ConstantConditions")
   public ImageFile[] getAllImageFiles() {
     List<File> matchingFiles = new ArrayList<>();
     if (root.isDirectory() || (root.isFile() && root.getName().matches(FILE_MATCH_STRING))) {
@@ -70,6 +72,7 @@ public class ImageFileManager {
    *
    * @return a ImageFile[] of all images files directly under the root directory.
    */
+  @SuppressWarnings("ConstantConditions")
   public ImageFile[] getLocalImageFiles() {
     List<File> matchingFiles = new ArrayList<>();
     if (root.list() != null) {
