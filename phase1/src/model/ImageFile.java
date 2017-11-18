@@ -268,7 +268,7 @@ public class ImageFile {
    *
    * @return the name of an image.
    */
-  public String getName() {
+  private String getName() {
     String ret = "";
     if (file.getName().lastIndexOf(".") != -1) {
       ret = file.getName().substring(0, file.getName().lastIndexOf("."));
@@ -281,7 +281,7 @@ public class ImageFile {
    *
    * @return the suffix of an image
    */
-  public String getSuffix() {
+  private String getSuffix() {
     String ret = "";
     if (file.getName().lastIndexOf(".") != -1) {
       ret = file.getName().substring(file.getName().lastIndexOf("."));
