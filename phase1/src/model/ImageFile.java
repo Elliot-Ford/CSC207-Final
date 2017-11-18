@@ -2,6 +2,8 @@ package model;
 
 import java.io.*;
 import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
@@ -155,6 +157,9 @@ public class ImageFile {
     File newFile = new File(file.getParent(), newName + getSuffix());
     File newLog = new File(log.getParent(), newName + LOG_FILE_SUFFIX);
     boolean ret = false;
+    // get the time
+    Date time = new Date();
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     if(!newFile.exists() && !newLog.exists()) {
       ret = file.renameTo(newFile) && log.renameTo(newLog);
     }
@@ -167,7 +172,8 @@ public class ImageFile {
       }
       try {
         BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-        writer.append(lastName).append(String.valueOf('\n'));
+        writer.append(String.format(lastName, " | ", newName, " | ",
+                dateFormat.format(time))).append(String.valueOf('\n'));
         writer.close();
       } catch (IOException ex) {
         ex.printStackTrace();
