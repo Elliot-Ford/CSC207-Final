@@ -66,6 +66,7 @@ public class Console extends Application {
                     dc.setInitialDirectory(new File(System.getProperty("user.home")));
                     File file = dc.showDialog(window);
                     nameInput.setText(file.getAbsolutePath());
+
                 });
 
 

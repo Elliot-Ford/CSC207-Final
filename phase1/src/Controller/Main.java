@@ -6,7 +6,6 @@ import model.ImageFileManager;
 import java.io.IOException;
 
 public class Main {
-
     /**
      * Construct a new Main object for the Controller.
      */
