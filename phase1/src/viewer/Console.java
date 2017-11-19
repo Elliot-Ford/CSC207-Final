@@ -11,14 +11,14 @@ public class Console extends Application {
 
   Stage window;
 
-  public Console() throws IOException {}
+  public Console() {}
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException{
     launch(args);
   }
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
+  public void start(Stage primaryStage) throws Exception{
     DirectoryChooser dc = new DirectoryChooser();
     OpenFile op = new OpenFile();
 

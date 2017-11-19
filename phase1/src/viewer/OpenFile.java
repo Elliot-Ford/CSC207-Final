@@ -21,6 +21,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -36,9 +37,13 @@ public final class OpenFile{
 
     Stage window;
 
+    public static void main(String[] args) {
+        Application.launch(Console.class, args);
+    }
 
 
-    public void openFile(File file,Stage stage) {
+
+    public void openFile(File file,Stage stage) throws Exception {
         final int[] toggleViewer = {-1};
 
         window = stage;
@@ -69,12 +74,13 @@ public final class OpenFile{
                     if (newValue != null) {
 //                        System.out.println(newValue.getValue());
                         System.out.println(fileMap.get(newValue.getValue()));
+                        // TODO: 19-11-2017 remove the print statements
                     }
                 });
         // button for browsing between directories
         Button browseFiles = new Button("Change Directory");
         browseFiles.setOnAction( e -> {
-            window.close();
+            OpenFile.main();
             //link it to the console
         });
 
@@ -126,17 +132,18 @@ public final class OpenFile{
     // for making the
     private TreeItem<String> getNodesForDirectory(File directory, String StringThatContains) {
         TreeItem<String> root = new TreeItem<>(directory.getName());
-        for(File f : directory.listFiles()) {
-            if(f.isDirectory()) {
-                TreeItem<String> children = getNodesForDirectory(f, StringThatContains);
+        if(directory.listFiles() != null) {
+            for (File f : directory.listFiles()) {
+                if (f.isDirectory()) {
+                    TreeItem<String> children = getNodesForDirectory(f, StringThatContains);
 //                System.out.println(children.getChildren().size());
-                if(children.getChildren().size() != 0) {
-                    root.getChildren().add(getNodesForDirectory(f, StringThatContains));
-                }
-            }
-            else {
-                if(StringThatContains.contains(f.getName())) {
-                    root.getChildren().add(new TreeItem<>(f.getName()));
+                    if (children.getChildren().size() != 0) {
+                        root.getChildren().add(getNodesForDirectory(f, StringThatContains));
+                    }
+                } else {
+                    if (StringThatContains.contains(f.getName())) {
+                        root.getChildren().add(new TreeItem<>(f.getName()));
+                    }
                 }
             }
         }
@@ -177,4 +184,6 @@ public final class OpenFile{
         window.setScene(scene);
         window.showAndWait();
     }
+
+
 }
