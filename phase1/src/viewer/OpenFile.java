@@ -16,9 +16,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -27,7 +29,8 @@ import javafx.scene.control.TreeView;
 
 import Controller.Main;
 import model.ImageFile;
-import model_old.image_tag_explorer.Image;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 public final class OpenFile{
@@ -41,7 +44,7 @@ public final class OpenFile{
         window.setTitle("Lets do Tagging");
 
         GridPane newGrid = new GridPane();
-        newGrid.setAlignment(Pos.CENTER);
+        newGrid.setAlignment(Pos.CENTER_LEFT);
         newGrid.setPadding(new Insets(10, 10, 10, 10));
         newGrid.setVgap(10);
         newGrid.setHgap(10);
@@ -61,13 +64,12 @@ public final class OpenFile{
         Button showAll = new Button("Show all Images");
         GridPane.setConstraints(showAll,5,5);
 
-        TableView<ImageFile> table = new TableView<>();
+//        TableView<ImageFile> table = new TableView<>();
         System.out.println(file.getPath());
 
         Main controller = new Main();
+        ImageFile[] imageList = controller.getImageFiles(controller.startProgram(file.getPath()));
         showAll.setOnAction( e -> {
-            ImageFile[] imageList;
-            imageList = controller.getImageFiles(controller.startProgram(file.getPath()));
             showImage(imageList, file.getPath());
         });
 
@@ -97,7 +99,7 @@ public final class OpenFile{
             nodeItem.getChildren().addAll((Collection<? extends TreeItem<String>>) image);
          }
          */
-        TreeItem<ImageFile> rootItem = new TreeItem<>();
+        TreeItem<String> rootItem = new TreeItem<>("Root Folder");
         rootItem.setExpanded(true);
 
 
@@ -109,11 +111,12 @@ public final class OpenFile{
         newGrid.setHgap(10);
 
         for (ImageFile IFile : list) {
-            TreeItem<ImageFile> nodeItem = new TreeItem<>(IFile);
+            //Node nodeIcon = new ImageView(new Image(getClass().getResourceAsStream(IFile.getName())));
+            TreeItem<String> nodeItem = new TreeItem<>(IFile.getName());
             rootItem.getChildren().add(nodeItem);
         }
 
-        TreeView<ImageFile> tree = new TreeView<>(rootItem);
+        TreeView<String> tree = new TreeView<>(rootItem);
         StackPane root = new StackPane();
         root.getChildren().add(tree);
 
