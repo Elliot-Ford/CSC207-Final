@@ -8,6 +8,11 @@ import java.io.IOException;
 public class Main {
 
     /**
+     * Construct a new Main object for the Controller.
+     */
+    public Main() {}
+
+    /**
      * Return a new ImageFileManager when the GUI requested.
      *
      * @param path the path for the directory
