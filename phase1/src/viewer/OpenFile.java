@@ -37,8 +37,8 @@ public final class OpenFile{
 
     Stage window;
 
-    public static void main(String[] args) {
-        Application.launch(Console.class, args);
+    private static void open(Stage stage) {
+        Application.launch(Console.class);
     }
 
 
@@ -68,19 +68,19 @@ public final class OpenFile{
         holderTree.getChildren().addAll(tree.getChildren());
         tree = holderTree;
 
+        editImage ei = new editImage();
+
         a.setRoot(tree);
         a.getSelectionModel().selectedItemProperty()
                 .addListener((v, oldValue, newValue) -> {
                     if (newValue != null) {
-//                        System.out.println(newValue.getValue());
-                        System.out.println(fileMap.get(newValue.getValue()));
-                        // TODO: 19-11-2017 remove the print statements
+                        ei.editPic(newValue);
                     }
                 });
         // button for browsing between directories
         Button browseFiles = new Button("Change Directory");
         browseFiles.setOnAction( e -> {
-            OpenFile.main();
+            OpenFile.open(window);
             //link it to the console
         });
 
