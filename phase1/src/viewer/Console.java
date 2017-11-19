@@ -13,17 +13,21 @@ public class Console extends Application {
 
   public Console() {}
 
-  public static void main(String[] args) throws IOException{
+  public static void main(String[] args) {
     launch(args);
   }
 
   @Override
-  public void start(Stage primaryStage) throws Exception{
+  public void start(Stage primaryStage) {
     DirectoryChooser dc = new DirectoryChooser();
     OpenFile op = new OpenFile();
 
     dc.setInitialDirectory(new File(System.getProperty("user.home")));
     File file = dc.showDialog(window);
-    op.openFile(file, primaryStage);
+    try {
+      op.openFile(file, primaryStage);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
