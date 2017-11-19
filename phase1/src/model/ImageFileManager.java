@@ -13,7 +13,7 @@ public class ImageFileManager {
   private File root;
 
   /** the tagManager */
-  private TagManager tagManager = new TagManager();
+  public TagManager tagManager = new TagManager();
 
   /**
    * Construct a new ImageFileManager object.
@@ -64,7 +64,9 @@ public class ImageFileManager {
     ImageFile[] ret = new ImageFile[matchingFiles.size()];
     for (int i = 0; i < ret.length; i++) {
       ret[i] = new ImageFile(matchingFiles.get(i));
+      ret[i].addObserver(tagManager);
     }
+
     return ret;
   }
 
@@ -86,6 +88,7 @@ public class ImageFileManager {
     ImageFile[] ret = new ImageFile[matchingFiles.size()];
     for (int i = 0; i < ret.length; i++) {
       ret[i] = new ImageFile(matchingFiles.get(i));
+      ret[i].addObserver(tagManager);
     }
     return ret;
   }
@@ -96,7 +99,6 @@ public class ImageFileManager {
    * @return a String[] of all the tags.
    */
   public String[] getAllCurrentTags() {
-    updateTagManager();
     return tagManager.getTags();
   }
 
@@ -147,14 +149,5 @@ public class ImageFileManager {
       tagManager = new TagManager();
     }
     return ret;
-  }
-
-  /** updates the tagManager so it keeps up with the new tags */
-  private boolean updateTagManager() {
-    Set<String> tags = new HashSet<>();
-    for (ImageFile imageFile : getAllImageFiles()) {
-      tags.addAll(Arrays.asList(imageFile.getTags()));
-    }
-    return tagManager.update(tags.toArray(new String[tags.size()]));
   }
 }

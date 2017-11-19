@@ -3,13 +3,20 @@ package model;
 import java.util.*;
 
 /** manages a collection of tags. */
-public class TagManager {
+public class TagManager implements Observer {
   /** A set of tags. */
   private Set<String> tags;
+
+  /** A observable ImageFile object. */
+  private ImageFile tagUpdate;
 
   /** Construct a new TagManager with no existing tag. */
   public TagManager() {
     tags = new HashSet<>();
+  }
+
+  public TagManager(String tag) {
+    tags.add(tag);
   }
 
   /**
@@ -52,10 +59,13 @@ public class TagManager {
 
   /**
    * Update the tagManager with new tags.
-   * @param newTags tags to add to the tagManager.
-   * @return if updating the tagManager was a success.
+   *
+   * @param o the observable object that updates the observer TagManager when new Tag is added
+   * @param arg
    */
-  public boolean update(String[] newTags) {
-    return tags.addAll(Arrays.asList(newTags));
+  @Override
+  public void update(Observable o, Object arg) {
+    tagUpdate = (ImageFile) o;
+    tags.addAll(Arrays.asList(tagUpdate.getTags()));
   }
 }

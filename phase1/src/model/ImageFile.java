@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
-public class ImageFile {
+public class ImageFile extends Observable{
 
   private static final String LOG_FILE_SUFFIX = ".log";
 
@@ -133,7 +133,10 @@ public class ImageFile {
    * @return true if successful, false if it isn't.
    */
   public boolean addTag(String newTag) {
-    return rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+    boolean success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+    setChanged();
+    notifyObservers();
+    return success;
   }
 
   /**
@@ -221,7 +224,7 @@ public class ImageFile {
   }
 
   public static void main(String[] args) {
-    ImageFile imageFile = new ImageFile("/home/ecford/Desktop/foo/foo.jpg");
+    ImageFile imageFile = new ImageFile("/Users/Jeremy/Desktop/test/Sakshi.jpg");
 
     Scanner scanner = new Scanner(System.in);
     String input = "";
