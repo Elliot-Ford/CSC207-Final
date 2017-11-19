@@ -58,7 +58,9 @@ public final class OpenFile{
                         System.out.println(newValue.getValue());
                 });
 
-        // button that shows all the image under the parent directory
+        // button that shows all the image under the the selected directory
+
+        Button toggle = new Button("Change Toggle");
 
 //        newGrid.setAlignment(Pos.BASELINE_RIGHT);
         Button showAll = new Button("Show all Images");
@@ -73,11 +75,12 @@ public final class OpenFile{
             showImage(imageList, file.getPath());
         });
 
-        newGrid.getChildren().addAll(a, showAll);
+        newGrid.getChildren().addAll(showAll);
         Scene scene = new Scene(newGrid, 1020, 720);
         window.setScene(scene);
         window.show();
     }
+
 
     // for making the
     private TreeItem<String> getNodesForDirectory(File directory) {
