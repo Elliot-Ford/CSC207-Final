@@ -3,8 +3,8 @@ package model;
 import java.io.File;
 import java.util.*;
 
-@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 /** Manages all the imageFiles under a root folder*/
+@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class ImageFileManager {
   /** String to match all tagable files */
   private static final String FILE_MATCH_STRING = ".*[.](jpg|png|gif|bmp)";
@@ -21,7 +21,11 @@ public class ImageFileManager {
    * @param path the root directory for this ImageFileManager object
    */
   public ImageFileManager(String path) {
-    root = new File(path);
+    this(new File(path));
+  }
+
+  public ImageFileManager(File file) {
+    root = file;
     tagManager = new TagManager(getAllCurrentTags());
   }
 
