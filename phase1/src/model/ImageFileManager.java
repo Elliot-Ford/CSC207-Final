@@ -13,7 +13,7 @@ public class ImageFileManager {
   private File root;
 
   /** the tagManager */
-  private TagManager tagManager;
+  private TagManager tagManager = new TagManager();
 
   /**
    * Construct a new ImageFileManager object.
