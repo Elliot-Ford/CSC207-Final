@@ -7,7 +7,7 @@ import java.util.*;
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class ImageFileManager {
   /** String to match all tagable files */
-  private static final String FILE_MATCH_STRING = ".*[.](jpg|png|gif|bmp)";
+  private static final String FILE_MATCH_STRING = ".*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)";
 
   /** the root of the directory */
   private File root;
