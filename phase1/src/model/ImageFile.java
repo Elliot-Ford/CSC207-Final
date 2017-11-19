@@ -133,7 +133,11 @@ public class ImageFile {
    * @return true if successful, false if it isn't.
    */
   public boolean addTag(String newTag) {
-    return rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+    boolean ret = false;
+    if(!Arrays.toString(getTags()).contains(newTag)) {
+      ret = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+    }
+    return ret;
   }
 
   /**
