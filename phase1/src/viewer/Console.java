@@ -1,6 +1,7 @@
 package viewer;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -36,7 +37,7 @@ public class Console extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         window = primaryStage;
-        window.show();
+        window.setTitle("Image Tagger");
 
         //GridPane with 10pixel padding around edge
         GridPane grid = new GridPane();
@@ -55,39 +56,35 @@ public class Console extends Application {
 //        final FileChooser fileChooser = new FileChooser();
         DirectoryChooser dc = new DirectoryChooser();
 
-        final Button openButton = new Button("Browse");
+        Button openButton = new Button("Browse");
         GridPane.setConstraints(openButton, 2, 1);
+
+        OpenFile op = new OpenFile();
 
         openButton.setOnAction(
                 e -> {
                     dc.setInitialDirectory(new File(System.getProperty("user.home")));
                     File file = dc.showDialog(window);
-                    if(file == null || ! file.isDirectory()) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setHeaderText("Input not valid");
-                        alert.setContentText("Entered directory dose not exists.");
-                        alert.showAndWait();
-                    } else {
-                        OpenFile op = new OpenFile();
-                        op.openFile(primaryStage);
-                        a.setRoot(getNodesForDirectory(choice));
-                    }
+                    nameInput.setText(file.getAbsolutePath());
                 });
-        OpenFile op = new OpenFile();
+
 
         nameInput.setOnKeyPressed(ke -> {
             if (isDirectory(nameInput.getText())){
                 if (ke.getCode().equals(KeyCode.ENTER)) {
-                    op.openFile(primaryStage);
-            }
+                    File newFile = new File(nameInput.getText());
+                    op.openFile(newFile, primaryStage);
+                }
             }
         });
+
         //Enter
         Button enterButton = new Button("Enter");
         GridPane.setConstraints(enterButton, 1, 1);
-        enterButton.setOnAction(event -> {
+        enterButton.setOnAction((ActionEvent event) -> {
             if (isDirectory(nameInput.getText())) {
-                op.openFile(primaryStage);
+                File newFile = new File(nameInput.getText());
+                op.openFile(newFile, primaryStage);
             }
         });
 

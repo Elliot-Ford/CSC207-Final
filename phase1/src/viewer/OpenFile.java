@@ -37,44 +37,28 @@ import javafx.stage.Stage;
 
 
 public final class OpenFile{
+
     Stage window;
 
-    public void openFile(Stage stage) {
+    public void openFile(File file,Stage stage) {
         window = stage;
         window.setTitle("Lets do Tagging");
 
         GridPane newGrid = new GridPane();
+        newGrid.setAlignment(Pos.CENTER);
         newGrid.setPadding(new Insets(10, 10, 10, 10));
         newGrid.setVgap(10);
         newGrid.setHgap(10);
 
-        TreeView<String> a = new TreeView<String>();
-        BorderPane b = new BorderPane();
-        Button c = new Button("Load Folder");
-        c.setOnAction(e -> {
-            DirectoryChooser dc = new DirectoryChooser();
-            dc.setInitialDirectory(new File(System.getProperty("user.home")));
-            File choice = dc.showDialog(window);
-            if(choice == null || ! choice.isDirectory()) {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setHeaderText("Could not open directory");
-                alert.setContentText("The file is invalid.");
+        TreeView<String> a = new TreeView<>();
+        GridPane.setConstraints(a,0,0);
+        a.setRoot(getNodesForDirectory(file));
 
-                alert.showAndWait();
-            } else {
-                a.setRoot(getNodesForDirectory(choice));
-            }
-        });
-
-        b.setTop(c);
-        b.setCenter(a);
-        window.setScene(new Scene(b, 600, 400));
-        window.setTitle("Folder View");
+        newGrid.getChildren().addAll(a);
+        Scene scene = new Scene(newGrid, 1020, 720);
+        window.setScene(scene);
         window.show();
     }
-
-
-    //Returns a TreeItem representation of the specified directory
 
     public TreeItem<String> getNodesForDirectory(File directory) {
         TreeItem<String> root = new TreeItem<>(directory.getName());
@@ -88,4 +72,5 @@ public final class OpenFile{
         }
         return root;
     }
+
 }
