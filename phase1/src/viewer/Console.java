@@ -71,8 +71,8 @@ public class Console extends Application {
 
 
         nameInput.setOnKeyPressed(ke -> {
-            if (isDirectory(nameInput.getText())){
-                if (ke.getCode().equals(KeyCode.ENTER)) {
+            if (ke.getCode().equals(KeyCode.ENTER)){
+                if (isDirectory(nameInput.getText())) {
                     File newFile = new File(nameInput.getText());
                     op.openFile(newFile, primaryStage);
                 }
