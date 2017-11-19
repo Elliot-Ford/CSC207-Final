@@ -1,6 +1,5 @@
 package viewer;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -14,26 +13,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
-
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Stage;
 
 
 public final class OpenFile{
@@ -53,8 +35,17 @@ public final class OpenFile{
         TreeView<String> a = new TreeView<>();
         GridPane.setConstraints(a,0,0);
         a.setRoot(getNodesForDirectory(file));
+        a.getSelectionModel().selectedItemProperty().addListener( e -> {
 
-        newGrid.getChildren().addAll(a);
+        });
+
+
+        // button that shows all the image under the parent directory
+
+        Button showAll = new Button("Show all Images");
+
+
+        newGrid.getChildren().addAll(a, showAll);
         Scene scene = new Scene(newGrid, 1020, 720);
         window.setScene(scene);
         window.show();
@@ -72,5 +63,4 @@ public final class OpenFile{
         }
         return root;
     }
-
 }
