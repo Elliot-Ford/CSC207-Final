@@ -71,6 +71,14 @@ public final class OpenFile{
                         System.out.println(fileMap.get(newValue.getValue()));
                     }
                 });
+        // button for browsing between directories
+        Button browseFiles = new Button("Change Directory");
+        browseFiles.setOnAction( e -> {
+            window.close();
+            //link it to the console
+        });
+
+        GridPane.setConstraints(browseFiles,1,5);
 
         // button that shows all the image under the the selected directory
 
@@ -108,7 +116,7 @@ public final class OpenFile{
         });
 
 
-        newGrid.getChildren().addAll(a, toggle);
+        newGrid.getChildren().addAll(a, toggle, browseFiles);
         Scene scene = new Scene(newGrid, 1020, 720);
         window.setScene(scene);
         window.show();
