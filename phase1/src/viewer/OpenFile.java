@@ -1,35 +1,23 @@
 package viewer;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-import Controller.Main;
 import model.ImageFile;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import model.ImageFileManager;
 
 
@@ -45,6 +33,8 @@ public final class OpenFile{
 
     public void openFile(File file,Stage stage) throws Exception {
         final int[] toggleViewer = {-1};
+        final Console console = new Console();
+        final Map<String, ImageFile>[] fileMap = new Map[]{new HashMap<>()};
 
         window = stage;
         window.setTitle("Lets do Tagging");
@@ -57,20 +47,19 @@ public final class OpenFile{
 
         ImageFileManager imageFileManager = new ImageFileManager(file);
         ImageFile[] imageList = imageFileManager.getAllImageFiles();
-        Map<String, ImageFile> fileMap = new HashMap<>();
         TreeView<String> a = new TreeView<>();
-        for(ImageFile imageFile: imageList) {
-            fileMap.put(imageFile.toString(), imageFile);
+        for(ImageFile imageFile: imageFileManager.getAllImageFiles()) {
+            fileMap[0].put(imageFile.toString(), imageFile);
         }
         GridPane.setConstraints(a,0,0);
-        TreeItem<String> tree = getNodesForDirectory(file, Arrays.toString(imageList));
-        TreeItem<String> holderTree = new TreeItem<>(file.getName() + " (Tree View)");
-        holderTree.getChildren().addAll(tree.getChildren());
-        tree = holderTree;
+        final TreeItem<String>[] tree = new TreeItem[]{getNodesForDirectory(file, Arrays.toString(imageFileManager.getAllImageFiles()))};
+        final TreeItem<String>[] holderTree = new TreeItem[]{new TreeItem<>(file.getName() + " (Tree View)")};
+        holderTree[0].getChildren().addAll(tree[0].getChildren());
+        tree[0] = holderTree[0];
 
         editImage ei = new editImage();
 
-        a.setRoot(tree);
+        a.setRoot(tree[0]);
         a.getSelectionModel().selectedItemProperty()
                 .addListener((v, oldValue, newValue) -> {
                     if (newValue != null) {
@@ -79,9 +68,8 @@ public final class OpenFile{
                 });
         // button for browsing between directories
         Button browseFiles = new Button("Change Directory");
-        browseFiles.setOnAction( e -> {
-            OpenFile.open(window);
-            //link it to the console
+        browseFiles.setOnAction((final ActionEvent e) -> {
+                console.start(stage);
         });
 
         GridPane.setConstraints(browseFiles,1,5);
