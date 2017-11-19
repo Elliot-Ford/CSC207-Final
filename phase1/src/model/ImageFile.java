@@ -228,6 +228,31 @@ public class ImageFile extends Observable{
     return file;
   }
 
+  /**
+   * Return a list of String representations of the lines in the log file.
+   *
+   * @return the list of String representation
+   * @throws IOException
+   */
+  public String[] getLog() throws IOException {
+    List<String> logs = new ArrayList<>();
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new FileReader(log.getPath()));
+    } catch (FileNotFoundException e) {
+      //log file must not exist
+      log.createNewFile();
+    }
+    String line = reader.readLine();
+    while (line != null) {
+      logs.add(line);
+      line = reader.readLine();
+    }
+    reader.close();
+
+    return logs.toArray(new String[logs.size()]);
+  }
+
   public static void main(String[] args) {
     ImageFile imageFile = new ImageFile("/Users/Jeremy/Desktop/test/Sakshi.jpg");
 
