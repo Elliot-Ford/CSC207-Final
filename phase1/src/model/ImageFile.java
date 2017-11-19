@@ -214,6 +214,11 @@ public class ImageFile extends Observable{
     return ret;
   }
 
+  @Override
+  public String toString() {
+    return file.getName();
+  }
+
   /**
    * Returns the physical Image File.
    *
