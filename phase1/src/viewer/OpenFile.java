@@ -86,7 +86,11 @@ public final class OpenFile{
 
         Button browseFiles = new Button("Change Directory");
         browseFiles.setOnAction((final ActionEvent e) -> {
+            try {
                 console.start(stage);
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
         });
 
         //GridPane.setConstraints(browseFiles,1,5);

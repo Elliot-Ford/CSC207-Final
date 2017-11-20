@@ -14,7 +14,6 @@ public class ImageFileManager {
 
   /** the tagManager */
   private TagManager tagManager = new TagManager();
-
   /**
    * Construct a new ImageFileManager object.
    *
