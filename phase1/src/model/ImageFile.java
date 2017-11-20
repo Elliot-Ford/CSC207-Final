@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
-public class ImageFile {
+public class ImageFile extends Observable{
 
   private static final String LOG_FILE_SUFFIX = ".log";
 
@@ -133,11 +133,10 @@ public class ImageFile {
    * @return true if successful, false if it isn't.
    */
   public boolean addTag(String newTag) {
-    boolean ret = false;
-    if(!Arrays.toString(getTags()).contains(newTag)) {
-      ret = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
-    }
-    return ret;
+    boolean success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+    setChanged();
+    notifyObservers();
+    return success;
   }
 
   /**
@@ -217,7 +216,7 @@ public class ImageFile {
 
   @Override
   public String toString() {
-      return file.getName();
+    return file.getName();
   }
 
   /**
@@ -229,8 +228,33 @@ public class ImageFile {
     return file;
   }
 
+  /**
+   * Return a list of String representations of the lines in the log file.
+   *
+   * @return the list of String representation
+   * @throws IOException
+   */
+  public String[] getLog() throws IOException {
+    List<String> logs = new ArrayList<>();
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new FileReader(log.getPath()));
+    } catch (FileNotFoundException e) {
+      //log file must not exist
+      log.createNewFile();
+    }
+    String line = reader.readLine();
+    while (line != null) {
+      logs.add(line);
+      line = reader.readLine();
+    }
+    reader.close();
+
+    return logs.toArray(new String[logs.size()]);
+  }
+
   public static void main(String[] args) {
-    ImageFile imageFile = new ImageFile("/home/ecford/Desktop/foo/foo.jpg");
+    ImageFile imageFile = new ImageFile("/Users/Jeremy/Desktop/test/Sakshi.jpg");
 
     Scanner scanner = new Scanner(System.in);
     String input = "";
