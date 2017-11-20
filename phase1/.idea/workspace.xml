@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9a6f9a23-9ec8-4558-8990-f02826f7a1c7" name="Default" comment="Removed showImage method as we no longer need it.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/viewer/editImages.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/viewer/OpenFile.java" afterPath="$PROJECT_DIR$/src/viewer/OpenFile.java" />
+    <list default="true" id="9a6f9a23-9ec8-4558-8990-f02826f7a1c7" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,8 +21,7 @@
               <caret line="20" column="40" lean-forward="false" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#297#298#0" expanded="true" />
-                <element signature="e#319#320#0" expanded="true" />
+                <marker date="1511153027281" expanded="true" signature="643:647" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -62,7 +59,7 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-682">
+            <state relative-caret-position="-668">
               <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
@@ -72,11 +69,11 @@
       <file leaf-file-name="ImageFile.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/model/ImageFile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1162">
+            <state relative-caret-position="1230">
               <caret line="134" column="40" lean-forward="false" selection-start-line="134" selection-start-column="40" selection-end-line="134" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <marker date="1511131934433" expanded="true" signature="7250:9465" ph="{...}" />
+                <marker date="1511153027250" expanded="true" signature="6590:8805" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -85,10 +82,11 @@
       <file leaf-file-name="ImageFileManager.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/model/ImageFileManager.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1377">
-              <caret line="83" column="25" lean-forward="false" selection-start-line="83" selection-start-column="24" selection-end-line="83" selection-end-column="25" />
+            <state relative-caret-position="1360">
+              <caret line="80" column="25" lean-forward="false" selection-start-line="80" selection-start-column="25" selection-end-line="80" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <marker date="1511153027261" expanded="true" signature="5126:5130" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -123,7 +121,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$/.." value="shadman" />
+        <entry key="$PROJECT_DIR$/.." value="master" />
       </map>
     </option>
     <favorite-branches>
@@ -721,7 +719,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32978722" sideWeight="0.49584278" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32978722" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.64361703" sideWeight="0.49508694" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.46675533" sideWeight="0.49508694" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24867725" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1006,20 +1004,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="329">
           <caret line="31" column="8" lean-forward="false" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
-          <folding>
-            <element signature="e#325#326#0" expanded="false" />
-            <element signature="e#357#358#0" expanded="false" />
-            <element signature="e#392#393#0" expanded="false" />
-            <element signature="e#415#416#0" expanded="false" />
-            <element signature="e#601#602#0" expanded="false" />
-            <element signature="e#657#658#0" expanded="false" />
-            <element signature="e#891#892#0" expanded="false" />
-            <element signature="e#924#925#0" expanded="false" />
-            <element signature="e#1165#1166#0" expanded="false" />
-            <element signature="e#1202#1203#0" expanded="false" />
-            <element signature="e#1322#1323#0" expanded="false" />
-            <element signature="e#1376#1377#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1053,10 +1038,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/ImageFileManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1377">
-          <caret line="83" column="25" lean-forward="false" selection-start-line="83" selection-start-column="24" selection-end-line="83" selection-end-column="25" />
+        <state relative-caret-position="1360">
+          <caret line="80" column="25" lean-forward="false" selection-start-line="80" selection-start-column="25" selection-end-line="80" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
+            <marker date="1511153027261" expanded="true" signature="5126:5130" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1067,8 +1053,7 @@
           <caret line="20" column="40" lean-forward="false" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#297#298#0" expanded="true" />
-            <element signature="e#319#320#0" expanded="true" />
+            <marker date="1511153027281" expanded="true" signature="643:647" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1083,11 +1068,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/model/ImageFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1162">
+        <state relative-caret-position="1230">
           <caret line="134" column="40" lean-forward="false" selection-start-line="134" selection-start-column="40" selection-end-line="134" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1511131934433" expanded="true" signature="7250:9465" ph="{...}" />
+            <marker date="1511153027250" expanded="true" signature="6590:8805" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/viewer/editImages.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1374">
+          <caret line="100" column="8" lean-forward="false" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1104,22 +1099,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/viewer/editImages.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1374">
-          <caret line="100" column="8" lean-forward="false" selection-start-line="100" selection-start-column="8" selection-end-line="100" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/viewer/viewer.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-682">
+        <state relative-caret-position="-668">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
