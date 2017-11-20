@@ -77,9 +77,8 @@ public final class OpenFile{
                         if (newValue.getValue() != null){
                             if (fileMap.containsKey(newValue.getValue())){
                                  ImageFile imageFile = fileMap.get(newValue.getValue());
-
                             }
-                        }
+                    }
                     }
                 });
         // button for browsing between directories
@@ -161,41 +160,5 @@ public final class OpenFile{
         }
         return root;
     }
-
-    private void showImage(ImageFile[] list, String path){
-        /**
-        TreeItem<String> nodeItem = new TreeItem<>();
-        for (ImageFile image : list){
-            nodeItem.getChildren().addAll((Collection<? extends TreeItem<String>>) image);
-         }
-         */
-        TreeItem<String> rootItem = new TreeItem<>("Root Folder");
-        rootItem.setExpanded(true);
-
-
-        window = new Stage();
-        window.setTitle("All Image");
-        GridPane newGrid = new GridPane();
-        newGrid.setPadding(new Insets(10, 10, 10, 10));
-        newGrid.setVgap(10);
-        newGrid.setHgap(10);
-
-        for (ImageFile IFile : list) {
-            //Node nodeIcon = new ImageView(new Image(getClass().getResourceAsStream(IFile.getName())));
-            TreeItem<String> nodeItem = new TreeItem<>(IFile.getName());
-            rootItem.getChildren().add(nodeItem);
-        }
-
-        TreeView<String> tree = new TreeView<>(rootItem);
-        StackPane root = new StackPane();
-        root.getChildren().add(tree);
-
-        newGrid.getChildren().addAll(root.getChildren());
-
-        Scene scene = new Scene(newGrid, 1020, 720);
-        window.setScene(scene);
-        window.showAndWait();
-    }
-
 
 }
