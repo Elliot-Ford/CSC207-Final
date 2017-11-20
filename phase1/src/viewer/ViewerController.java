@@ -149,7 +149,7 @@ public class ViewerController {
     }
   }
 
-  public void handleCreatetag(ActionEvent actionEvent) {
+  public void handleCreateTag(ActionEvent actionEvent) {
     if(selectedImageFile != null) {
       selectedImageFile.addTag(tagToCreate.getText());
       tagToCreate.clear();

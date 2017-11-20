@@ -81,7 +81,7 @@
                 <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                     <children>
                         <TextField fx:id="tagToCreate" HBox.hgrow="ALWAYS" />
-                        <Button mnemonicParsing="false" onAction="#handleCreatetag" text="Create Tag" />
+                        <Button mnemonicParsing="false" onAction="#handleCreateTag" text="Create Tag" />
                     </children>
                 </HBox>
             </children>
