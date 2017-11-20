@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.io.*;
 import java.util.*;
 import java.text.DateFormat;
@@ -224,8 +226,8 @@ public class ImageFile extends Observable{
    *
    * @return the physical Image File.
    */
-  public File getImage() {
-    return file;
+  public Image getImage() {
+    return new Image("file:" + file.getAbsolutePath());
   }
 
   /**
