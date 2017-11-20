@@ -133,9 +133,12 @@ public class ImageFile extends Observable{
    * @return true if successful, false if it isn't.
    */
   public boolean addTag(String newTag) {
-    boolean success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
-    setChanged();
-    notifyObservers();
+    boolean success = false;
+    if (!Arrays.asList(getTags()).contains(newTag)) {
+      success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+      setChanged();
+      notifyObservers();
+    }
     return success;
   }
 
