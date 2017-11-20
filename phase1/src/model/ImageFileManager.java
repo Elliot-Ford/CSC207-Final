@@ -14,7 +14,7 @@ public class ImageFileManager {
   private File root;
 
   /** the tagManager */
-  public TagManager tagManager = new TagManager();
+  private TagManager tagManager = new TagManager();
 
   /**
    * Construct a new ImageFileManager object.
@@ -71,7 +71,6 @@ public class ImageFileManager {
       ret[i] = new ImageFile(matchingFiles.get(i));
       ret[i].addObserver(tagManager);
     }
-
     return ret;
   }
 
