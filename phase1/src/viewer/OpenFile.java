@@ -5,17 +5,21 @@ import java.util.*;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
 
 import model.ImageFile;
 import model.ImageFileManager;
@@ -57,16 +61,22 @@ public final class OpenFile{
         holderTree[0].getChildren().addAll(tree[0].getChildren());
         tree[0] = holderTree[0];
 
-        editImage ei = new editImage();
+
 
         a.setRoot(tree[0]);
         a.getSelectionModel().selectedItemProperty()
                 .addListener((v, oldValue, newValue) -> {
                     if (newValue != null) {
-                        ei.editPic(newValue);
+                        if (newValue.getValue() != null){
+                            if (fileMap.containsKey(newValue.getValue())){
+                                 ImageFile imageFile = fileMap.get(newValue.getValue());
+
+                            }
+                        }
                     }
                 });
         // button for browsing between directories
+
         Button browseFiles = new Button("Change Directory");
         browseFiles.setOnAction((final ActionEvent e) -> {
                 console.start(stage);
@@ -109,6 +119,11 @@ public final class OpenFile{
             }
         });
 
+        //logger to display all the changes ever done to any image
+        Button log = new Button("Log");
+        log.setOnAction(e -> {
+            // TODO: 19-11-2017 create a logger
+        });
 
         newGrid.getChildren().addAll(a, toggle, browseFiles);
         Scene scene = new Scene(newGrid, 1020, 720);
@@ -117,7 +132,7 @@ public final class OpenFile{
     }
 
 
-    // for making the
+    // for making the tree
     private TreeItem<String> getNodesForDirectory(File directory, String StringThatContains) {
         TreeItem<String> root = new TreeItem<>(directory.getName());
         if(directory.listFiles() != null) {
