@@ -1,7 +1,6 @@
 package viewer;
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,7 +13,10 @@ public class Viewer extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("viewer.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("viewer.fxml"));
+        Parent root = (Parent) loader.load();
+        ViewerController controller= (ViewerController)loader.getController();
+        controller.setup(stage);
 
         Scene scene = new Scene(root, 900, 600);
 

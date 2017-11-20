@@ -155,6 +155,10 @@ public class ImageFileManager {
     return ret;
   }
 
+  public File getRoot() {
+    return root;
+  }
+
   public static void main(String[] args) {
     ImageFileManager imageFileManager1 = new ImageFileManager("/Users/Jeremy/Desktop/test");
     ImageFile imageFile = new ImageFile("");
