@@ -54,14 +54,16 @@ public final class OpenFile{
         VBox vBox = new VBox();
         HBox buttonsBox = new HBox();
         buttonsBox.setSpacing(10);
+        buttonsBox.setPadding(new Insets(10, 10, 10, 10));
 
         ImageFileManager imageFileManager = new ImageFileManager(file);
-        TreeView<String> a = new TreeView<>();
+
+        TreeView<String> fileViewer = new TreeView<>();
         for(ImageFile imageFile: imageFileManager.getAllImageFiles()) {
             fileMap.put(imageFile.toString(), imageFile);
         }
         vBox.setAlignment(Pos.TOP_LEFT);
-        vBox.getChildren().add(a);
+        vBox.getChildren().add(fileViewer);
         //GridPane.setConstraints(a,0,0);
         final TreeItem<String>[] tree = new TreeItem[]{getNodesForDirectory(file, Arrays.toString(imageFileManager.getAllImageFiles()))};
         final TreeItem<String>[] holderTree = new TreeItem[]{new TreeItem<>(file.getName() + " (Tree View)")};
@@ -70,8 +72,8 @@ public final class OpenFile{
 
 
 
-        a.setRoot(tree[0]);
-        a.getSelectionModel().selectedItemProperty()
+        fileViewer.setRoot(tree[0]);
+        fileViewer.getSelectionModel().selectedItemProperty()
                 .addListener((v, oldValue, newValue) -> {
                     if (newValue != null) {
                         if (newValue.getValue() != null){
@@ -105,7 +107,7 @@ public final class OpenFile{
                 for(ImageFile imageFile: imageFileManager.getAllImageFiles()) {
                     newTree.getChildren().add(new TreeItem<>(imageFile.getName()));
                 }
-                a.setRoot(newTree);
+                fileViewer.setRoot(newTree);
             } else if(toggleViewer[0] == 0) {
                 toggleViewer[0] += 1;
                 TreeItem<String> newTree = new TreeItem<>(file.getName() +" (Local View)");
@@ -113,29 +115,30 @@ public final class OpenFile{
                 for(ImageFile imageFile: imageFileManager.getLocalImageFiles()) {
                     newTree.getChildren().add(new TreeItem<>(imageFile.getName()));
                 }
-                a.setRoot(newTree);
+                fileViewer.setRoot(newTree);
             } else if (toggleViewer[0] == 1) {
                 toggleViewer[0] = -1;
                 TreeItem<String> newTree = getNodesForDirectory(file, Arrays.toString(imageFileManager.getAllImageFiles()));
                 TreeItem<String> tempTree = new TreeItem<>(file.getName() + " (Tree View)");
                 tempTree.getChildren().addAll(newTree.getChildren());
                 newTree = tempTree;
-                a.setRoot(newTree);
+                fileViewer.setRoot(newTree);
 
             }
         });
 
-        //logger to display all the changes ever done to any image
-        Button log = new Button("Log");
-        log.setOnAction(e -> {
-            // TODO: 19-11-2017 create a logger
-        });
+//        //logger to display all the changes ever done to any image
+//        Button log = new Button("Log");
+//        log.setOnAction(e -> {
+//            // TODO: 19-11-2017 create a logger
+//        });
 
         buttonsBox.getChildren().addAll(toggle,browseFiles);
         newGrid.getChildren().addAll(vBox);
         vBox.getChildren().add(buttonsBox);
         Scene scene = new Scene(newGrid, 1020, 720);
         window.setScene(scene);
+        window.sizeToScene();
         window.show();
     }
 
