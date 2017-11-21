@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
@@ -229,7 +228,7 @@ public class ViewerController {
       logList.addAll(selectedImageFile.getLog());
     }
     log.setItems(logList);
-    log.scrollTo(logList.size()-1);
+    log.scrollTo(logList.size() - 1);
   }
 
   /** Update the image view. */
