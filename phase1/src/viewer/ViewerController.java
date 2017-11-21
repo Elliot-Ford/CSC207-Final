@@ -137,7 +137,7 @@ public class ViewerController {
     private void changeDirectory(Window window) {
         DirectoryChooser dc = new DirectoryChooser();
         File initialDirectory = new File(System.getProperty("user.home"));
-        File newDirectory = null;
+        File newDirectory;
 
         if (imageFileManager.getRoot().exists()) {
             initialDirectory = imageFileManager.getRoot();
@@ -164,7 +164,7 @@ public class ViewerController {
     private void moveFile(Window window) {
         DirectoryChooser dc = new DirectoryChooser();
         File initialDirectory = new File(System.getProperty("user.home"));
-        File newDirectory = null;
+        File newDirectory;
 
         if (imageFileManager.getRoot().exists()) {
             initialDirectory = imageFileManager.getRoot();
@@ -237,7 +237,7 @@ public class ViewerController {
      */
     @FXML
     private void updateCurrentTagsView() {
-        ObservableList availableTagsList = FXCollections.observableArrayList();
+        ObservableList<String> availableTagsList = FXCollections.observableArrayList();
         if (selectedImageFile != null) {
             availableTagsList.addAll(selectedImageFile.getTags());
         }
@@ -249,7 +249,7 @@ public class ViewerController {
      */
     @FXML
     private void updatePreviousTagsView() {
-        ObservableList previousTagsList = FXCollections.observableArrayList();
+        ObservableList<String> previousTagsList = FXCollections.observableArrayList();
         if (selectedImageFile != null) {
             previousTagsList.addAll(selectedImageFile.getPreviousTags());
         }
@@ -261,7 +261,7 @@ public class ViewerController {
      */
     @FXML
     private void updateAllTagsView() {
-        ObservableList allTagsList = FXCollections.observableArrayList();
+        ObservableList<String> allTagsList = FXCollections.observableArrayList();
         allTagsList.addAll(imageFileManager.getAllCurrentTags());
         allTags.setItems(allTagsList);
     }
@@ -271,7 +271,7 @@ public class ViewerController {
      */
     @FXML
     private void updateLogView() {
-        ObservableList logList = FXCollections.observableArrayList();
+        ObservableList<String> logList = FXCollections.observableArrayList();
         if (selectedImageFile != null) {
             logList.addAll(selectedImageFile.getLog());
         }
@@ -306,11 +306,9 @@ public class ViewerController {
 
     /**
      * Handles the viewer click action.
-     *
-     * @param mouseEvent this ActionEvent
      */
     @FXML
-    public void handleViewerClick(MouseEvent mouseEvent) {
+    public void handleViewerClick() {
         ImageFile imageFile = imageFileMap.get(viewer.getSelectionModel().getSelectedItem().getValue());
         if (imageFile != null) {
             selectedImageFile = imageFile;
@@ -321,32 +319,26 @@ public class ViewerController {
 
     /**
      * Handles the toggle view action.
-     *
-     * @param event this ActionEvent
      */
     @FXML
-    public void handleToggleViewerAction(ActionEvent event) {
+    public void handleToggleViewerAction() {
         toggle = !toggle;
         updateTreeView();
     }
 
     /**
      * Handles the change directory action.
-     *
-     * @param actionEvent this ActionEvent
      */
     @FXML
-    public void handleChangeDir(ActionEvent actionEvent) {
+    public void handleChangeDir() {
         changeDirectory(gp.getScene().getWindow());
     }
 
     /**
      * Handles the add Tag action.
-     *
-     * @param actionEvent this ActionEvent
      */
     @FXML
-    public void handleAddTag(ActionEvent actionEvent) {
+    public void handleAddTag() {
         //TODO doesn't work rn.
         if (selectedImageFile != null) {
             selectedImageFile.addTag(allTags.getSelectionModel().getSelectedItem());
@@ -356,11 +348,9 @@ public class ViewerController {
 
     /**
      * Handles the restore Tag action.
-     *
-     * @param actionEvent this ActionEvent
      */
     @FXML
-    public void handleRestoreTag(ActionEvent actionEvent) {
+    public void handleRestoreTag() {
         //TODO doesn't work rn.
         if (selectedImageFile != null) {
             selectedImageFile.addTag(previousTags.getSelectionModel().getSelectedItem());
@@ -370,11 +360,9 @@ public class ViewerController {
 
     /**
      * Handles the create Tag action.
-     *
-     * @param actionEvent this ActionEvent
      */
     @FXML
-    public void handleCreateTag(ActionEvent actionEvent) {
+    public void handleCreateTag() {
         if (selectedImageFile != null) {
             selectedImageFile.addTag(tagToCreate.getText());
             tagToCreate.clear();
@@ -384,21 +372,17 @@ public class ViewerController {
 
     /**
      * Handles the move file action.
-     *
-     * @param actionEvent this ActionEvent
      */
     @FXML
-    public void handleMoveFile(ActionEvent actionEvent) {
+    public void handleMoveFile() {
         moveFile(gp.getScene().getWindow());
     }
 
     /**
      * Handles the remove Tag action.
-     *
-     * @param actionEvent this ActionEvent
      */
     @FXML
-    public void handleRemoveTag(ActionEvent actionEvent) {
+    public void handleRemoveTag() {
         if (selectedImageFile != null) {
             selectedImageFile.removeTag(currentTags.getSelectionModel().getSelectedItem());
             tagToCreate.clear();
@@ -408,11 +392,9 @@ public class ViewerController {
 
     /**
      * Handles the delete Tag action.
-     *
-     * @param actionEvent this ActionEvent
      */
     @FXML
-    public void handleDeleteTag(ActionEvent actionEvent) {
+    public void handleDeleteTag() {
         if (imageFileManager != null) {
             imageFileManager.deleteTag(allTags.getSelectionModel().getSelectedItem());
             tagToCreate.clear();
