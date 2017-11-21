@@ -16,6 +16,7 @@ import model.ImageFile;
 import model.ImageFileManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,6 +91,15 @@ public class ViewerController {
     } while (newDirectory != null && !newDirectory.exists());
   }
 
+  private void updateAll() throws IOException {
+    updateTreeView();
+    updateCurrentTagsView();
+    updatePreviousTagsView();
+    updateAllTagsView();
+    updateLogView();
+    updateImageView();
+  }
+
   private void updateTreeView() {
     if (imageFileMap.size() > 0) {
       imageFileMap = new HashMap<>();
@@ -120,6 +130,37 @@ public class ViewerController {
       ObservableList availableTagsList = FXCollections.observableArrayList();
       availableTagsList.addAll(selectedImageFile.getTags());
       currentTags.setItems(availableTagsList);
+    }
+  }
+
+  private void updatePreviousTagsView() throws IOException {
+    if (selectedImageFile != null) {
+      ObservableList previousTagsList = FXCollections.observableArrayList();
+      previousTagsList.addAll(selectedImageFile.getPreviousTags());
+      previousTags.setItems(previousTagsList);
+    }
+  }
+
+  private void updateAllTagsView() {
+    ObservableList allTagsList = FXCollections.observableArrayList();
+    for (ImageFile iFile : imageFileManager.getAllImageFiles()) {
+      allTagsList.addAll(iFile.getTags());
+    }
+
+    allTags.setItems(allTagsList);
+  }
+
+  private void updateLogView() throws IOException {
+    if (selectedImageFile != null) {
+      ObservableList logList = FXCollections.observableArrayList();
+      logList.addAll(selectedImageFile.getLog());
+      log.setItems(logList);
+    }
+  }
+
+  private void updateImageView() {
+    if (selectedImageFile != null) {
+      imageView.setImage(selectedImageFile.getImage());
     }
   }
 
