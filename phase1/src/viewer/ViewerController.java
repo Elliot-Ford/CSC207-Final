@@ -56,8 +56,9 @@ public class ViewerController {
 
   }
 
-  void setup(Stage stage) {
+  void setup(Stage stage) throws IOException {
     changeDirectory(stage);
+    updateAllTags();
   }
 
   @FXML
@@ -91,13 +92,12 @@ public class ViewerController {
     } while (newDirectory != null && !newDirectory.exists());
   }
 
-  private void updateAll() throws IOException {
+  private void updateAllTags() throws IOException {
     updateTreeView();
     updateCurrentTagsView();
     updatePreviousTagsView();
     updateAllTagsView();
     updateLogView();
-    updateImageView();
   }
 
   private void updateTreeView() {
