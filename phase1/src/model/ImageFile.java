@@ -3,6 +3,7 @@ package model;
 import javafx.scene.image.Image;
 
 import java.io.*;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,7 +13,7 @@ import java.text.SimpleDateFormat;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
-public class ImageFile extends Observable{
+public class ImageFile extends Observable {
 
   private static final String LOG_FILE_SUFFIX = ".log";
 
@@ -58,6 +59,77 @@ public class ImageFile extends Observable{
       Files.setAttribute(logPath, "dos:hidden", true);
     } catch (IOException e) {
       e.printStackTrace();
+    }
+
+  }
+
+  public static void main(String[] args) {
+    ImageFile imageFile = new ImageFile("/Users/Jeremy/Desktop/test/Sakshi.jpg");
+
+    Scanner scanner = new Scanner(System.in);
+    String input = "";
+    while (!input.equals("exit")) {
+      System.out.println(
+          "Enter a number to execute a command (type \"exit\" to exit):\n"
+              + "(1) change to a new file\n"
+              + "(2) to add a Tag\n"
+              + "(3) to remove a Tag\n"
+              + "(4) to get Tags\n"
+              + "(5) to get previous Tags\n"
+              + "(6) to move file\n");
+      input = scanner.nextLine();
+      String output = "";
+      switch (input) {
+        case "1":
+          System.out.println("Where to?");
+          input = scanner.nextLine();
+          imageFile = new ImageFile(input);
+          output = "Changed to " + input;
+          break;
+
+        case "2":
+          System.out.println("What tag should I add?");
+          input = scanner.nextLine();
+          if (imageFile.addTag(input)) {
+            output = "Added " + input;
+          } else {
+            output = "Adding tag failed";
+          }
+          break;
+
+        case "3":
+          System.out.println("What tag should I remove?");
+          input = scanner.nextLine();
+          if (imageFile.removeTag(input)) {
+            output = "Removed " + input;
+          } else {
+            output = "Removing tag failed";
+          }
+
+          break;
+
+        case "4":
+          output = Arrays.toString(imageFile.getTags());
+          break;
+
+        case "5":
+          output = Arrays.toString(imageFile.getPreviousTags());
+          break;
+
+        case "6":
+          System.out.println("Where should I move the image?");
+          input = scanner.nextLine();
+
+          if (imageFile.moveFile(input)) {
+            output = "Moved image" + input;
+          } else {
+            output = "Moving image failed";
+          }
+      }
+      if (output.equals("") && !input.equals("exit")) {
+        output = "This is not a valid input.";
+      }
+      System.out.println(output);
     }
   }
 
@@ -131,7 +203,7 @@ public class ImageFile extends Observable{
    */
   public boolean addTag(String newTag) {
     boolean success = false;
-    if (!Arrays.asList(getTags()).contains(newTag)) {
+    if (!Arrays.asList(getTags()).contains(newTag) && newTag.length() > 0) {
       success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
       setChanged();
       notifyObservers();
@@ -146,9 +218,9 @@ public class ImageFile extends Observable{
    */
   public boolean removeTag(String thisTag) {
     boolean ret = false;
-    //TODO: removeTag only removes the "@" symbol, not the tag in it's entirety.
+    // TODO: removeTag only removes the "@" symbol, not the tag in it's entirety.
     if (file.getName().contains(thisTag)) {
-        ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
+      ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
     }
     return ret;
   }
@@ -166,7 +238,7 @@ public class ImageFile extends Observable{
     // get the time
     Date time = new Date();
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    if(!newFile.exists() && !newLog.exists()) {
+    if (!newFile.exists() && !newLog.exists()) {
       ret = file.renameTo(newFile) && log.renameTo(newLog);
     }
     if (ret) {
@@ -178,8 +250,16 @@ public class ImageFile extends Observable{
       }
       try {
         BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-        writer.append(String.format("%s %s %s %s %s", lastName, LOG_FILE_SEPARATOR, newName, LOG_FILE_SEPARATOR,
-                dateFormat.format(time))).append(String.valueOf('\n'));
+        writer
+            .append(
+                String.format(
+                    "%s %s %s %s %s",
+                    lastName,
+                    LOG_FILE_SEPARATOR,
+                    newName,
+                    LOG_FILE_SEPARATOR,
+                    dateFormat.format(time)))
+            .append(String.valueOf('\n'));
         writer.close();
       } catch (IOException ex) {
         ex.printStackTrace();
@@ -258,76 +338,5 @@ public class ImageFile extends Observable{
 
 
     return logs.toArray(new String[logs.size()]);
-  }
-
-  public static void main(String[] args) {
-    ImageFile imageFile = new ImageFile("/Users/Jeremy/Desktop/test/Sakshi.jpg");
-
-    Scanner scanner = new Scanner(System.in);
-    String input = "";
-    while (!input.equals("exit")) {
-      System.out.println(
-          "Enter a number to execute a command (type \"exit\" to exit):\n"
-              + "(1) change to a new file\n"
-              + "(2) to add a Tag\n"
-              + "(3) to remove a Tag\n"
-              + "(4) to get Tags\n"
-              + "(5) to get previous Tags\n"
-              + "(6) to move file\n");
-      input = scanner.nextLine();
-      String output = "";
-      switch (input) {
-        case "1":
-          System.out.println("Where to?");
-          input = scanner.nextLine();
-          imageFile = new ImageFile(input);
-          output = "Changed to " + input;
-          break;
-
-        case "2":
-          System.out.println("What tag should I add?");
-          input = scanner.nextLine();
-            if (imageFile.addTag(input)) {
-              output = "Added " + input;
-            } else {
-              output = "Adding tag failed";
-            }
-          break;
-
-        case "3":
-          System.out.println("What tag should I remove?");
-          input = scanner.nextLine();
-          if (imageFile.removeTag(input)) {
-            output = "Removed " + input;
-          } else {
-            output = "Removing tag failed";
-          }
-
-          break;
-
-        case "4":
-          output = Arrays.toString(imageFile.getTags());
-          break;
-
-        case "5":
-            output = Arrays.toString(imageFile.getPreviousTags());
-          break;
-
-        case "6":
-          System.out.println("Where should I move the image?");
-          input = scanner.nextLine();
-
-            if (imageFile.moveFile(input)) {
-              output = "Moved image" + input;
-            } else {
-              output = "Moving image failed";
-            }
-
-      }
-      if (output.equals("") && !input.equals("exit")) {
-        output = "This is not a valid input.";
-      }
-      System.out.println(output);
-    }
   }
 }
