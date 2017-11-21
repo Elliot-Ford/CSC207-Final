@@ -17,6 +17,7 @@ import model.ImageFileManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public class ViewerController {
     private ImageFile selectedImageFile;
     private Map<String, ImageFile> imageFileMap;
     private boolean toggle;
+    private boolean clicked;
 
     public ViewerController() {
         toggle = false;
@@ -59,7 +61,7 @@ public class ViewerController {
     @FXML
     void setup(Stage stage) {
         changeDirectory(stage);
-        updateAllTags();
+        updateAllTags(clicked);
     }
 
     @FXML
@@ -88,7 +90,9 @@ public class ViewerController {
             newDirectory = dc.showDialog(window);
             if (newDirectory != null && newDirectory.exists()) {
                 imageFileManager.changeDirectory(newDirectory);
-                updateTreeView();
+                selectedImageFile = null;
+                updateAllTags(clicked);
+                updateImageView();
             }
         } while (newDirectory != null && !newDirectory.exists());
     }
@@ -108,9 +112,10 @@ public class ViewerController {
         do {
             newDirectory = dc.showDialog(window);
             if (newDirectory != null && newDirectory.exists()) {
-                imageFileManager.changeDirectory(newDirectory);
                 selectedImageFile.moveFile(newDirectory.getPath());
-                updateAllTags();
+                selectedImageFile = null;
+                updateAllTags(clicked);
+                updateImageView();
             }
         } while (newDirectory != null && !newDirectory.exists());
     }
@@ -118,8 +123,10 @@ public class ViewerController {
     // the Update methods block.
 
     @FXML
-    private void updateAllTags() {
-        updateTreeView();
+    private void updateAllTags(boolean clicked) {
+        if (!clicked) {
+          updateTreeView();
+        }
         updateCurrentTagsView();
         updatePreviousTagsView();
         updateAllTagsView();
@@ -155,20 +162,20 @@ public class ViewerController {
 
     @FXML
     private void updateCurrentTagsView() {
+      ObservableList availableTagsList = FXCollections.observableArrayList();
         if (selectedImageFile != null) {
-            ObservableList availableTagsList = FXCollections.observableArrayList();
             availableTagsList.addAll(selectedImageFile.getTags());
-            currentTags.setItems(availableTagsList);
         }
+      currentTags.setItems(availableTagsList);
     }
 
     @FXML
     private void updatePreviousTagsView() {
+      ObservableList previousTagsList = FXCollections.observableArrayList();
         if (selectedImageFile != null) {
-            ObservableList previousTagsList = FXCollections.observableArrayList();
             previousTagsList.addAll(selectedImageFile.getPreviousTags());
-            previousTags.setItems(previousTagsList);
         }
+      previousTags.setItems(previousTagsList);
     }
 
     @FXML
@@ -183,11 +190,11 @@ public class ViewerController {
 
     @FXML
     private void updateLogView() {
+      ObservableList logList = FXCollections.observableArrayList();
         if (selectedImageFile != null) {
-            ObservableList logList = FXCollections.observableArrayList();
             logList.addAll(selectedImageFile.getLog());
-            log.setItems(logList);
         }
+      log.setItems(logList);
     }
 
     @FXML
@@ -208,23 +215,23 @@ public class ViewerController {
     public void handleViewerClick(MouseEvent mouseEvent) {
         ImageFile imageFile = imageFileMap.get(viewer.getSelectionModel().getSelectedItem().getValue());
         if (imageFile != null) {
-            imageView.setImage(imageFile.getImage());
             selectedImageFile = imageFile;
 
-            updateCurrentTagsView();
+            clicked = true;
+            updateAllTags(clicked);
+            clicked = false;
 
-            ObservableList allTagsList = FXCollections.observableArrayList();
-            allTagsList.addAll(imageFileManager.getAllCurrentTags());
-
-            allTags.setItems(allTagsList);
+            updateImageView();
         }
     }
 
     @FXML
     public void handleAddTag(ActionEvent actionEvent) {
-        if (selectedImageFile != null) {
-            selectedImageFile.addTag(allTags.getSelectionModel().getSelectedItem().toString());
-            updateTreeView();
+        if (selectedImageFile != null &&
+                !Arrays.asList(imageFileManager.getAllCurrentTags()).contains(tagToCreate.getText())) {
+            selectedImageFile.addTag(tagToCreate.getText());
+            tagToCreate.clear();
+            updateAllTags(clicked);
         }
     }
 
@@ -233,13 +240,30 @@ public class ViewerController {
         if (selectedImageFile != null) {
             selectedImageFile.addTag(tagToCreate.getText());
             tagToCreate.clear();
-            updateAllTagsView();
+            updateAllTags(clicked);
         }
     }
 
     @FXML
     public void handleMoveFile(ActionEvent actionEvent) {
         moveFile(gp.getScene().getWindow());
+    }
 
+    @FXML
+    public void handleRemoveTag(ActionEvent actionEvent) {
+        if (selectedImageFile != null) {
+            selectedImageFile.removeTag(tagToCreate.getText());
+            tagToCreate.clear();
+            updateAllTags(clicked);
+        }
+    }
+
+    @FXML
+    public void handleDeleteTag(ActionEvent actionEvent) {
+        if (imageFileManager != null) {
+            imageFileManager.deleteTag(tagToCreate.getText());
+            tagToCreate.clear();
+            updateAllTags(clicked);
+        }
     }
 }
