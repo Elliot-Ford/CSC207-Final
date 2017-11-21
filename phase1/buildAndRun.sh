@@ -11,4 +11,4 @@ javac -d ./out/production/phase1 ./src/*/*.java
 
 # run the project
 echo "starting project"
-java -cp ./out/production/phase1 viewer.Console
+java -cp ./out/production/phase1 viewer.Viewer
