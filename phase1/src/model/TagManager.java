@@ -15,10 +15,6 @@ public class TagManager implements Observer {
     tags = new HashSet<>();
   }
 
-  public TagManager(String tag) {
-    tags.add(tag);
-  }
-
   /**
    * Construct a new TagManager with a list of existing tags.
    *
@@ -35,7 +31,11 @@ public class TagManager implements Observer {
    * @return a boolean indicating whether the adding of this tag succeeded
    */
   public boolean addTag(String newTag) {
-    return tags.add(newTag);
+    boolean ret = false;
+    if(!tags.contains(newTag)) {
+      ret = tags.add(newTag);
+    }
+    return ret;
   }
 
   /**
@@ -66,6 +66,8 @@ public class TagManager implements Observer {
   @Override
   public void update(Observable o, Object arg) {
     tagUpdate = (ImageFile) o;
-    tags.addAll(Arrays.asList(tagUpdate.getTags()));
+    for(String tag: ((ImageFile) o).getTags()) {
+      addTag(tag);
+    }
   }
 }
