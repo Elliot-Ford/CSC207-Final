@@ -178,8 +178,8 @@ public class ViewerController {
       root.setExpanded(true);
       viewer.setRoot(root);
       for (ImageFile imageFile : imageFileManager.getAllImageFiles()) {
-        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getActualName()));
-        imageFileMap.put(imageFile.getActualName(), imageFile);
+        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
+        imageFileMap.put(imageFile.getFullName(), imageFile);
       }
     } else {
       TreeItem<String> root =
@@ -187,8 +187,8 @@ public class ViewerController {
       root.setExpanded(true);
       viewer.setRoot(root);
       for (ImageFile imageFile : imageFileManager.getLocalImageFiles()) {
-        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getActualName()));
-        imageFileMap.put(imageFile.getActualName(), imageFile);
+        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
+        imageFileMap.put(imageFile.getFullName(), imageFile);
       }
     }
   }
