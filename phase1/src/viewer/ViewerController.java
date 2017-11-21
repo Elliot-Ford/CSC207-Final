@@ -296,9 +296,9 @@ public class ViewerController {
     @FXML
     private void updateImageName() {
         if (selectedImageFile != null) {
-            imageName.setId(selectedImageFile.getName());
+            imageName.setText(selectedImageFile.getName());
         } else {
-            System.out.println("no Image");
+            imageName.setText("No Image");
         }
     }
 
