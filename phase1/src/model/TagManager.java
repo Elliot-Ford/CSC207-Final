@@ -12,11 +12,6 @@ public class TagManager implements Observer {
     private Set<String> tags;
 
     /**
-     * A observable ImageFile object.
-     */
-    private ImageFile tagUpdate;
-
-    /**
      * Construct a new TagManager with no existing tag.
      */
     public TagManager() {
@@ -73,7 +68,6 @@ public class TagManager implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        tagUpdate = (ImageFile) o;
         for (String tag : ((ImageFile) o).getTags()) {
             addTag(tag);
         }
