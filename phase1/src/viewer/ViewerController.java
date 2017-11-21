@@ -84,7 +84,7 @@ public class ViewerController {
   }
 
   @FXML
-  private void moveFile(Window window, String newPath) throws IOException {
+  private void moveFile(Window window) throws IOException {
     DirectoryChooser dc = new DirectoryChooser();
     File initialDirectory = new File(System.getProperty("user.home"));
     File newDirectory = null;
@@ -239,6 +239,7 @@ public class ViewerController {
 
   @FXML
   public void handleMoveFile(ActionEvent actionEvent) {
+      moveFile(gp.getScene().getWindow());
 
   }
 }
