@@ -7,13 +7,9 @@ back end with front fairly simple.
 -Elliot
 Hi Elliot
 
-
-
 -Jeremy
-Hi Jeremy
-
-
-
-
-
-	
+My job in this group initially was to work on the back end. Along with my teammate Elliot, we finished the model package,
+which contains ImageFile.java, ImageFileManager.java and Tag.Manager.java. We made sure that everything works in a dynamic
+fashion rather than simply storing lists of everything. Later into the project, after finishing the back end, we then joined
+our teammate Shlok to work on the GUI, which is in the viewer package, containing the Viewer.java and the ViewerController.java.
+I was mainly focusing on methods interacting with the backend and the handle methods.
