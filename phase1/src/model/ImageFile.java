@@ -54,9 +54,8 @@ public class ImageFile extends Observable{
    *
    * @param newPath the string representation of the given directory
    * @return Whether this moving of the ImageFile was successful
-   * @throws IOException Throws an exception if we cannot write the file
    */
-  public boolean moveFile(String newPath) throws IOException {
+  public boolean moveFile(String newPath) {
     File newFile = new File(newPath, getName() + getSuffix());
     File newLog = new File(newPath, getName() + LOG_FILE_SUFFIX);
     boolean ret = file.renameTo(newFile) && log.renameTo(newLog);
@@ -105,7 +104,7 @@ public class ImageFile extends Observable{
     for(String log : logs) {
       String[] potentialTags = extractTags(log.split(LOG_FILE_SEPARATOR)[0]);
       for(String potentialTag : potentialTags) {
-        if(currentTags.length <= 0 &&!currentTags.equals(potentialTag)) {
+        if((currentTags.length <= 0) && !currentTags.equals(potentialTag)) {
           tags.add(potentialTag);
         }
       }
@@ -304,15 +303,13 @@ public class ImageFile extends Observable{
         case "6":
           System.out.println("Where should I move the image?");
           input = scanner.nextLine();
-          try {
+
             if (imageFile.moveFile(input)) {
               output = "Moved image" + input;
             } else {
               output = "Moving image failed";
             }
-          } catch (IOException e) {
-            output = "Moving Image threw error";
-          }
+
       }
       if (output.equals("") && !input.equals("exit")) {
         output = "This is not a valid input.";
