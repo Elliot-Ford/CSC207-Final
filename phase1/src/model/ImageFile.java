@@ -186,11 +186,20 @@ public class ImageFile extends Observable {
     String[] currentTags = getTags();
     String[] logs = getLog();
     for(String log : logs) {
-      String[] potentialTags = extractTags(log.split(LOG_FILE_SEPARATOR)[0]);
+    String[] potentialTags = extractTags(log.split(LOG_FILE_SEPARATOR)[0]);
       for(String potentialTag : potentialTags) {
-        if((currentTags.length <= 0) && !currentTags.equals(potentialTag)) {
-          tags.add(potentialTag);
-        }
+          if (!Arrays.asList(currentTags).contains(potentialTag)) {
+              tags.add(potentialTag);
+          }
+//          if(currentTags.length > 0) {
+//              for (String currentTag : currentTags) {
+//                  if (currentTag.equals(potentialTag)) {
+//                      tags.add(potentialTag);
+//                  }
+//              }
+//          } else {
+//              tags.add(potentialTag);
+//          }
       }
     }
     return tags.toArray(new String[tags.size()]);
@@ -219,7 +228,7 @@ public class ImageFile extends Observable {
   public boolean removeTag(String thisTag) {
     boolean ret = false;
     // TODO: removeTag only removes the "@" symbol, not the tag in it's entirety.
-    if (file.getName().contains(thisTag)) {
+    if (file.getName().contains(thisTag) && thisTag.length() > 0) {
       ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
     }
     return ret;
