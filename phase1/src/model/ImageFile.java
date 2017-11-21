@@ -98,34 +98,18 @@ public class ImageFile extends Observable{
    * @return a String[] of previously associated tags.
    */
   @SuppressWarnings("ResultOfMethodCallIgnored")
-  public String[] getPreviousTags() throws IOException {
+  public String[] getPreviousTags() {
     Set<String> tags = new HashSet<>();
     String[] currentTags = getTags();
-    BufferedReader reader = null;
-    try {
-      reader = new BufferedReader(new FileReader(log.getPath()));
-    } catch (FileNotFoundException e) {
-      //log file must not exist
-      log.createNewFile();
-    }
-    String line = reader.readLine();
-    while (line != null) {
-      String[] potentialTags = extractTags(line.split(LOG_FILE_SEPARATOR)[0]);
-      for (String potentialTag : potentialTags) {
-        if (currentTags.length > 0) {
-          for (String currentTag : currentTags) {
-            if (!currentTag.equals(potentialTag)) {
-              tags.add(potentialTag);
-            }
-          }
-        } else {
+    String[] logs = getLog();
+    for(String log : logs) {
+      String[] potentialTags = extractTags(log.split(LOG_FILE_SEPARATOR)[0]);
+      for(String potentialTag : potentialTags) {
+        if(currentTags.length <= 0 &&!currentTags.equals(potentialTag)) {
           tags.add(potentialTag);
         }
       }
-      line = reader.readLine();
     }
-    reader.close();
-
     return tags.toArray(new String[tags.size()]);
   }
 
@@ -237,23 +221,29 @@ public class ImageFile extends Observable{
    * Return a list of String representations of the lines in the log file.
    *
    * @return the list of String representation
-   * @throws IOException
    */
-  public String[] getLog() throws IOException {
+  public String[] getLog() {
     List<String> logs = new ArrayList<>();
     BufferedReader reader = null;
+    if (!log.exists()) {
+      try {
+        log.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     try {
       reader = new BufferedReader(new FileReader(log.getPath()));
-    } catch (FileNotFoundException e) {
-      //log file must not exist
-      log.createNewFile();
+      String line = reader.readLine();
+      while (line != null) {
+        logs.add(line);
+        line = reader.readLine();
+      }
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    String line = reader.readLine();
-    while (line != null) {
-      logs.add(line);
-      line = reader.readLine();
-    }
-    reader.close();
+
 
     return logs.toArray(new String[logs.size()]);
   }
@@ -308,11 +298,7 @@ public class ImageFile extends Observable{
           break;
 
         case "5":
-          try {
             output = Arrays.toString(imageFile.getPreviousTags());
-          } catch (IOException e) {
-            output = "Getting previous tags threw error";
-          }
           break;
 
         case "6":
