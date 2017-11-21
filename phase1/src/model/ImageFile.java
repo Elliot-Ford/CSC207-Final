@@ -1,14 +1,15 @@
 package model;
 
-import javafx.scene.image.Image;
-
 import java.io.*;
+import java.util.*;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import javafx.scene.image.Image;
 
 /**
  * Represents a physical image file in a filesystem.
