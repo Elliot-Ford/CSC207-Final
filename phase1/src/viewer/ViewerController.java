@@ -123,10 +123,6 @@ public class ViewerController {
     }
   }
 
-  private void updateUnassociatedTagsView() {
-
-  }
-
   public void handleViewerClick(MouseEvent mouseEvent) {
     ImageFile imageFile = imageFileMap.get(viewer.getSelectionModel().getSelectedItem().getValue());
     if (imageFile != null) {
