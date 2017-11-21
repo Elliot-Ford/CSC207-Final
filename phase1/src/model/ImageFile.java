@@ -3,6 +3,9 @@ package model;
 import javafx.scene.image.Image;
 
 import java.io.*;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,11 +16,11 @@ public class ImageFile extends Observable{
 
   private static final String LOG_FILE_SUFFIX = ".log";
 
-  private static final String LOG_FILE_PREFIX = ".";
-
   private static final String TAG_MARKER = "@";
 
   private static final String LOG_FILE_SEPARATOR = "/";
+
+  private static final String LOG_FILE_PREFIX = ".";
 
   /** the image file in the system */
   private File file;
@@ -48,6 +51,13 @@ public class ImageFile extends Observable{
       } catch (IOException e) {
         e.printStackTrace();
       }
+    }
+    Path logPath = FileSystems.getDefault().getPath(log.getParentFile().getAbsolutePath(), log.getName());
+
+    try {
+      Files.setAttribute(logPath, "dos:hidden", true);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
   }
 
