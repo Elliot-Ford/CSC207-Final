@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
@@ -149,7 +150,6 @@ public class ViewerController {
   @FXML
   private void updateAll() {
     updateTreeView();
-
     updateCurrentTagsView();
     updatePreviousTagsView();
     updateAllTagsView();
@@ -158,6 +158,19 @@ public class ViewerController {
     updateImageName();
   }
 
+  /**
+   * Update everything that's image related.
+   *
+   */
+  @FXML
+  private void updateAllImageRelated() {
+    updateCurrentTagsView();
+    updatePreviousTagsView();
+    updateAllTagsView();
+    updateLogView();
+    updateImageView();
+    updateImageName();
+  }
   /** Update the tree view. */
   @FXML
   private void updateTreeView() {
@@ -228,6 +241,8 @@ public class ViewerController {
   private void updateImageView() {
     if (selectedImageFile != null) {
       imageView.setImage(selectedImageFile.getImage());
+    } else {
+      imageView.setImage(new Image("file:./NoImage.png"));
     }
   }
 
@@ -250,7 +265,7 @@ public class ViewerController {
     if (imageFile != null) {
       selectedImageFile = imageFile;
 
-      updateAll();
+      updateAllImageRelated();
     }
   }
 
