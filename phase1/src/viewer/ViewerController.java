@@ -40,11 +40,12 @@ public class ViewerController {
     public ListView allTags;
     public TextField tagToCreate;
 
+    public Label imageName;
+
     private ImageFileManager imageFileManager;
     private ImageFile selectedImageFile;
     private Map<String, ImageFile> imageFileMap;
     private boolean toggle;
-    private boolean clicked;
 
     public ViewerController() {
         toggle = false;
@@ -61,7 +62,7 @@ public class ViewerController {
     @FXML
     void setup(Stage stage) {
         changeDirectory(stage);
-        updateAllTags(clicked);
+        updateAll(false);
     }
 
     @FXML
@@ -86,8 +87,7 @@ public class ViewerController {
             if (newDirectory != null && newDirectory.exists()) {
                 imageFileManager.changeDirectory(newDirectory);
                 selectedImageFile = null;
-                updateAllTags(clicked);
-                updateImageView();
+                updateAll(false);
             }
         } while (newDirectory != null && !newDirectory.exists());
     }
@@ -109,8 +109,7 @@ public class ViewerController {
             if (newDirectory != null && newDirectory.exists()) {
                 selectedImageFile.moveFile(newDirectory.getPath());
                 selectedImageFile = null;
-                updateAllTags(clicked);
-                updateImageView();
+                updateAll(false);
             }
         } while (newDirectory != null && !newDirectory.exists());
     }
@@ -118,7 +117,7 @@ public class ViewerController {
     // the Update methods block.
 
     @FXML
-    private void updateAllTags(boolean clicked) {
+    private void updateAll(boolean clicked) {
         if (!clicked) {
           updateTreeView();
         }
@@ -126,6 +125,8 @@ public class ViewerController {
         updatePreviousTagsView();
         updateAllTagsView();
         updateLogView();
+        updateImageView();
+        updateImageName();
     }
 
     @FXML
@@ -199,8 +200,12 @@ public class ViewerController {
     }
 
     @FXML
-    private void updateUnassociatedTagsView() {
-
+    private void updateImageName() {
+        if (selectedImageFile != null) {
+            imageName.setId(selectedImageFile.getName());
+        } else {
+            System.out.println("no Image");
+        }
     }
 
     //  The handle methods block.
@@ -216,11 +221,8 @@ public class ViewerController {
             if (imageFile != null) {
                 selectedImageFile = imageFile;
 
-                updateAllTags(true);
-
-                updateImageView();
+                updateAll(true);
             }
-
     }
 
     @FXML
@@ -228,7 +230,7 @@ public class ViewerController {
         //TODO doesn't work rn.
         if (selectedImageFile != null) {
             selectedImageFile.addTag(allTags.getSelectionModel().getSelectedItem().toString());
-            updateAllTags(clicked);
+            updateAll(false);
         }
     }
 
@@ -237,7 +239,7 @@ public class ViewerController {
         //TODO doesn't work rn.
         if (selectedImageFile != null) {
             selectedImageFile.addTag(previousTags.getSelectionModel().getSelectedItem().toString());
-            updateAllTags(clicked);
+            updateAll(false);
         }
     }
 
@@ -246,7 +248,7 @@ public class ViewerController {
         if (selectedImageFile != null) {
             selectedImageFile.addTag(tagToCreate.getText());
             tagToCreate.clear();
-            updateAllTags(clicked);
+            updateAll(false);
         }
     }
 
@@ -258,18 +260,18 @@ public class ViewerController {
     @FXML
     public void handleRemoveTag(ActionEvent actionEvent) {
         if (selectedImageFile != null) {
-            selectedImageFile.removeTag(tagToCreate.getText());
+            selectedImageFile.removeTag(currentTags.getSelectionModel().getSelectedItem());
             tagToCreate.clear();
-            updateAllTags(clicked);
+            updateAll(false);
         }
     }
 
     @FXML
     public void handleDeleteTag(ActionEvent actionEvent) {
         if (imageFileManager != null) {
-            imageFileManager.deleteTag(tagToCreate.getText());
+            imageFileManager.deleteTag(allTags.getSelectionModel().getSelectedItem().toString());
             tagToCreate.clear();
-            updateAllTags(clicked);
+            updateAll(false);
         }
     }
 }
