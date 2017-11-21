@@ -13,9 +13,11 @@ public class ImageFile extends Observable{
 
   private static final String LOG_FILE_SUFFIX = ".log";
 
+  private static final String LOG_FILE_PREFIX = ".";
+
   private static final String TAG_MARKER = "@";
 
-  private static final String LOG_FILE_SEPARATOR = "|";
+  private static final String LOG_FILE_SEPARATOR = "/";
 
   /** the image file in the system */
   private File file;
@@ -39,7 +41,7 @@ public class ImageFile extends Observable{
    */
   public ImageFile(File file) {
     this.file = file;
-    log = new File(file.getParent(), getName() + LOG_FILE_SUFFIX);
+    log = new File(file.getParent(), LOG_FILE_PREFIX + getName() + LOG_FILE_SUFFIX);
     if (!log.exists() && file.exists()) {
       try {
         log.createNewFile();
@@ -57,7 +59,7 @@ public class ImageFile extends Observable{
    */
   public boolean moveFile(String newPath) {
     File newFile = new File(newPath, getName() + getSuffix());
-    File newLog = new File(newPath, getName() + LOG_FILE_SUFFIX);
+    File newLog = new File(newPath, LOG_FILE_PREFIX + getName() + LOG_FILE_SUFFIX);
     boolean ret = file.renameTo(newFile) && log.renameTo(newLog);
     if (ret) {
       if (newFile.exists()) {
@@ -134,6 +136,7 @@ public class ImageFile extends Observable{
    */
   public boolean removeTag(String thisTag) {
     boolean ret = false;
+    //TODO: removeTag only removes the "@" symbol, not the tag in it's entirety.
     if (file.getName().contains(thisTag)) {
         ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
     }
@@ -148,7 +151,7 @@ public class ImageFile extends Observable{
   public boolean rename(String newName) {
     String lastName = getName();
     File newFile = new File(file.getParent(), newName + getSuffix());
-    File newLog = new File(log.getParent(), newName + LOG_FILE_SUFFIX);
+    File newLog = new File(log.getParent(), LOG_FILE_PREFIX + newName + LOG_FILE_SUFFIX);
     boolean ret = false;
     // get the time
     Date time = new Date();
