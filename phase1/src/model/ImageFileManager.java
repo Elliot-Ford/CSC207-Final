@@ -17,7 +17,7 @@ public class ImageFileManager {
   private File root;
 
   /** the tagManager */
-  private TagManager tagManager = new TagManager();
+  private TagManager tagManager;
 
   /**
    * Construct a new ImageFileManager object.
@@ -29,8 +29,10 @@ public class ImageFileManager {
   }
 
   public ImageFileManager(File file) {
-    root = file;
-    tagManager = new TagManager(getAllCurrentTags());
+    root = new File("");
+//    tagManager = new TagManager();
+    changeDirectory(file);
+
   }
 
   public static void main(String[] args) {
@@ -230,6 +232,11 @@ public class ImageFileManager {
       ret = true;
       this.root = root;
       tagManager = new TagManager();
+      for(ImageFile image : getAllImageFiles()) {
+        for(String tag: image.getTags()) {
+          tagManager.addTag(tag);
+        }
+      }
     }
     return ret;
   }
