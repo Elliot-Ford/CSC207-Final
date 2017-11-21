@@ -53,12 +53,13 @@ public class ImageFile extends Observable {
         e.printStackTrace();
       }
     }
-    Path logPath = FileSystems.getDefault().getPath(log.getParentFile().getAbsolutePath(), log.getName());
-
-    try {
-      Files.setAttribute(logPath, "dos:hidden", true);
-    } catch (IOException e) {
-      e.printStackTrace();
+    if(System.getProperty("os.name").contains("Windows")) {
+        Path logPath = FileSystems.getDefault().getPath(log.getParentFile().getAbsolutePath(), log.getName());
+        try {
+            Files.setAttribute(logPath, "dos:hidden", true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
   }
