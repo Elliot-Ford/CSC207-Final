@@ -8,13 +8,14 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TreeView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="gp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="799.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewer.ViewerController">
+<GridPane fx:id="gp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="799.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewer.ViewerController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="319.0" minWidth="10.0" prefWidth="209.5" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.5" minWidth="10.0" prefWidth="430.5" />
@@ -62,13 +63,16 @@
                 <RowConstraints maxHeight="48.0" minHeight="7.33331298828125" prefHeight="42.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <ImageView fx:id="imageView" fitHeight="252.0" fitWidth="462.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                <ImageView fx:id="imageView" fitHeight="252.0" fitWidth="305.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
                     <viewport>
                         <Rectangle2D />
                     </viewport>
+               <image>
+                  <Image url="@5871764_keep_calm_and_select_an_image.png" />
+               </image>
                 </ImageView>
                 <Label text="Current Tags" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                 <ListView fx:id="currentTags" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />

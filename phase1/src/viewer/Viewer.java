@@ -20,7 +20,7 @@ public class Viewer extends Application {
 
         Scene scene = new Scene(root, 900, 600);
 
-        stage.setTitle("Tagger");
+        stage.setTitle("Let's start Tagging");
         stage.setScene(scene);
         stage.show();
     }
