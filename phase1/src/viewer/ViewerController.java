@@ -94,7 +94,7 @@ public class ViewerController {
     }
 
     @FXML
-    private void moveFile(Window window) throws IOException {
+    private void moveFile(Window window) {
         DirectoryChooser dc = new DirectoryChooser();
         File initialDirectory = new File(System.getProperty("user.home"));
         File newDirectory = null;
