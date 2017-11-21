@@ -237,23 +237,29 @@ public class ImageFile extends Observable{
    * Return a list of String representations of the lines in the log file.
    *
    * @return the list of String representation
-   * @throws IOException
    */
-  public String[] getLog() throws IOException {
+  public String[] getLog() {
     List<String> logs = new ArrayList<>();
     BufferedReader reader = null;
+    if (!log.exists()) {
+      try {
+        log.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     try {
       reader = new BufferedReader(new FileReader(log.getPath()));
-    } catch (FileNotFoundException e) {
-      //log file must not exist
-      log.createNewFile();
+      String line = reader.readLine();
+      while (line != null) {
+        logs.add(line);
+        line = reader.readLine();
+      }
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    String line = reader.readLine();
-    while (line != null) {
-      logs.add(line);
-      line = reader.readLine();
-    }
-    reader.close();
+
 
     return logs.toArray(new String[logs.size()]);
   }
