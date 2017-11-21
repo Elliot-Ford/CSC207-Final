@@ -62,7 +62,7 @@ public class ViewerController {
   @FXML
   public void handleToggleViewerAction(ActionEvent event) {
     toggle = !toggle;
-    updateTreeView();
+    updateView();
   }
 
   @FXML
@@ -85,12 +85,12 @@ public class ViewerController {
       newDirectory = dc.showDialog(window);
       if (newDirectory != null && newDirectory.exists()) {
         imageFileManager.changeDirectory(newDirectory);
-        updateTreeView();
+        updateView();
       }
     } while (newDirectory != null && !newDirectory.exists());
   }
 
-  private void updateTreeView() {
+  private void updateView() {
     if (imageFileMap.size() > 0) {
       imageFileMap = new HashMap<>();
     }
@@ -145,7 +145,7 @@ public class ViewerController {
   public void handleAddTag(ActionEvent actionEvent) {
     if(selectedImageFile != null) {
       selectedImageFile.addTag(allTags.getSelectionModel().getSelectedItem().toString());
-      updateTreeView();
+      updateView();
     }
   }
 
@@ -153,7 +153,7 @@ public class ViewerController {
     if(selectedImageFile != null) {
       selectedImageFile.addTag(tagToCreate.getText());
       tagToCreate.clear();
-      updateTreeView();
+      updateView();
     }
   }
 }
