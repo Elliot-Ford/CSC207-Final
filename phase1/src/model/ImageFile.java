@@ -279,4 +279,13 @@ public class ImageFile extends Observable {
 
     return logs.toArray(new String[logs.size()]);
   }
+
+  /**
+   * Return the name of the image file without any String representations of the Tags.
+   *
+   * @return the actual name of the image file
+   */
+  public String getActualName() {
+      return getName().substring(0, getName().indexOf(TAG_MARKER));
+  }
 }

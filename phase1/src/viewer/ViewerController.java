@@ -171,6 +171,7 @@ public class ViewerController {
     updateImageView();
     updateImageName();
   }
+
   /** Update the tree view. */
   @FXML
   private void updateTreeView() {
@@ -183,8 +184,8 @@ public class ViewerController {
       root.setExpanded(true);
       viewer.setRoot(root);
       for (ImageFile imageFile : imageFileManager.getAllImageFiles()) {
-        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getName()));
-        imageFileMap.put(imageFile.getName(), imageFile);
+        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getActualName()));
+        imageFileMap.put(imageFile.getActualName(), imageFile);
       }
     } else {
       TreeItem<String> root =
@@ -192,8 +193,8 @@ public class ViewerController {
       root.setExpanded(true);
       viewer.setRoot(root);
       for (ImageFile imageFile : imageFileManager.getLocalImageFiles()) {
-        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getName()));
-        imageFileMap.put(imageFile.getName(), imageFile);
+        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getActualName()));
+        imageFileMap.put(imageFile.getActualName(), imageFile);
       }
     }
   }
