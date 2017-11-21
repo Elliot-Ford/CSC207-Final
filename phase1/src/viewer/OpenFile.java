@@ -14,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -34,6 +33,7 @@ public final class OpenFile{
     private static void open(Stage stage) {
         Application.launch(Console.class);
     }
+
 
 
     public void openFile(File file,Stage stage) throws Exception {
@@ -86,11 +86,7 @@ public final class OpenFile{
 
         Button browseFiles = new Button("Change Directory");
         browseFiles.setOnAction((final ActionEvent e) -> {
-            try {
                 console.start(stage);
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
         });
 
         //GridPane.setConstraints(browseFiles,1,5);

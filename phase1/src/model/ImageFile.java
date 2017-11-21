@@ -1,5 +1,7 @@
 package model;
 
+import javafx.scene.image.Image;
+
 import java.io.*;
 import java.util.*;
 import java.text.DateFormat;
@@ -133,9 +135,12 @@ public class ImageFile extends Observable{
    * @return true if successful, false if it isn't.
    */
   public boolean addTag(String newTag) {
-    boolean success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
-    setChanged();
-    notifyObservers();
+    boolean success = false;
+    if (!Arrays.asList(getTags()).contains(newTag)) {
+      success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+      setChanged();
+      notifyObservers();
+    }
     return success;
   }
 
@@ -224,8 +229,8 @@ public class ImageFile extends Observable{
    *
    * @return the physical Image File.
    */
-  public File getImage() {
-    return file;
+  public Image getImage() {
+    return new Image("file:" + file.getAbsolutePath());
   }
 
   /**
