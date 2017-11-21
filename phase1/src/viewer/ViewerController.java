@@ -143,10 +143,7 @@ public class ViewerController {
 
   // the Update methods block.
 
-  /**
-   * Update everything.
-   *
-   */
+  /** Update everything. */
   @FXML
   private void updateAll() {
     updateTreeView();
@@ -158,10 +155,7 @@ public class ViewerController {
     updateImageName();
   }
 
-  /**
-   * Update everything that's image related.
-   *
-   */
+  /** Update everything that's image related. */
   @FXML
   private void updateAllImageRelated() {
     updateCurrentTagsView();
@@ -243,7 +237,7 @@ public class ViewerController {
     if (selectedImageFile != null) {
       imageView.setImage(selectedImageFile.getImage());
     } else {
-      imageView.setImage(new Image("file:./NoImage.png"));
+      imageView.setImage(null);
     }
   }
 
