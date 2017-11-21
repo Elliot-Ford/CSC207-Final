@@ -292,4 +292,13 @@ public class ImageFile extends Observable {
     }
     return ret;
   }
+
+  /**
+   * Return the full name of the image file, suffix and all.
+   *
+   * @return the full name of the image file
+   */
+  public String getFullName() {
+    return file.getName();
+  }
 }
