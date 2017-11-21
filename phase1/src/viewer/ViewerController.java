@@ -229,6 +229,7 @@ public class ViewerController {
       logList.addAll(selectedImageFile.getLog());
     }
     log.setItems(logList);
+    log.scrollTo(logList.size()-1);
   }
 
   /** Update the image view. */
