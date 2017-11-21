@@ -338,7 +338,7 @@ public class ImageFile extends Observable {
      */
     public String[] getLog() {
         List<String> logs = new ArrayList<>();
-        BufferedReader reader = null;
+        BufferedReader reader;
         if (!log.exists()) {
             try {
                 log.createNewFile();

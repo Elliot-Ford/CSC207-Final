@@ -33,7 +33,7 @@ public class TagManager implements Observer {
      * @param newTag the string representation for this new tag
      * @return a boolean indicating whether the adding of this tag succeeded
      */
-    public boolean addTag(String newTag) {
+    boolean addTag(String newTag) {
         boolean ret = false;
         if (!tags.contains(newTag)) {
             ret = tags.add(newTag);
@@ -47,7 +47,7 @@ public class TagManager implements Observer {
      * @param thisTag the string representation for this new tag
      * @return a boolean indicating whether the removal of this tag succeeded
      */
-    public boolean removeTag(String thisTag) {
+    boolean removeTag(String thisTag) {
         return tags.remove(thisTag);
     }
 
@@ -63,8 +63,8 @@ public class TagManager implements Observer {
     /**
      * Update the tagManager with new tags.
      *
-     * @param o   the observable object that updates the observer TagManager when new Tag is added
-     * @param arg
+     * @param o the observable object that updates the observer TagManager when new Tag is added
+     * @param arg pass in argument
      */
     @Override
     public void update(Observable o, Object arg) {

@@ -29,11 +29,11 @@ public class Viewer extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("viewer.fxml"));
         Parent root = null;
         try {
-            root = (Parent) loader.load();
+            root = loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ViewerController controller = (ViewerController) loader.getController();
+        ViewerController controller = loader.getController();
         controller.setup(stage);
 
         Scene scene = new Scene(root, 900, 600);
