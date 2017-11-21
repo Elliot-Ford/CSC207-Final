@@ -1,14 +1,17 @@
 package model;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
-/** Manages all the imageFiles under a root folder*/
+/** Manages all the imageFiles under a root folder */
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class ImageFileManager {
   /** String to match all tagable files */
-  private static final String FILE_MATCH_STRING = ".*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)";
+  private static final String FILE_MATCH_STRING =
+      ".*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)";
 
   /** the root of the directory */
   private File root;
@@ -28,6 +31,82 @@ public class ImageFileManager {
   public ImageFileManager(File file) {
     root = file;
     tagManager = new TagManager(getAllCurrentTags());
+  }
+
+  public static void main(String[] args) {
+    ImageFileManager imageFileManager1 = new ImageFileManager("/Users/Jeremy/Desktop/test");
+    ImageFile imageFile = new ImageFile("");
+    for (ImageFile thisImageFile : imageFileManager1.getAllImageFiles()) {
+      if (thisImageFile.getName().equals("Sakshi @\"foo\"")) {
+        imageFile = thisImageFile;
+      }
+    }
+
+    Scanner scanner = new Scanner(System.in);
+    String input = "";
+    while (!input.equals("exit")) {
+      System.out.println(
+          "Enter a number to execute a command (type \"exit\" to exit):\n"
+              + "(1) change to a new file\n"
+              + "(2) to add a Tag\n"
+              + "(3) to remove a Tag\n"
+              + "(4) to get Tags\n"
+              + "(5) to get previous Tags\n"
+              + "(6) to move file\n");
+      input = scanner.nextLine();
+      String output = "";
+      switch (input) {
+        case "1":
+          System.out.println("Where to?");
+          input = scanner.nextLine();
+          imageFile = new ImageFile(input);
+          output = "Changed to " + input;
+          break;
+
+        case "2":
+          System.out.println("What tag should I add?");
+          input = scanner.nextLine();
+          if (imageFile.addTag(input)) {
+            output = "Added " + input;
+          } else {
+            output = "Adding tag failed";
+          }
+          break;
+
+        case "3":
+          System.out.println("What tag should I remove?");
+          input = scanner.nextLine();
+          if (imageFile.removeTag(input)) {
+            output = "Removed " + input;
+          } else {
+            output = "Removing tag failed";
+          }
+
+          break;
+
+        case "4":
+          output = Arrays.toString(imageFile.getTags());
+          break;
+
+        case "5":
+          output = Arrays.toString(imageFile.getPreviousTags());
+
+          break;
+
+        case "6":
+          System.out.println("Where should I move the image?");
+          input = scanner.nextLine();
+          if (imageFile.moveFile(input)) {
+            output = "Moved image" + input;
+          } else {
+            output = "Moving image failed";
+          }
+      }
+      if (output.equals("") && !input.equals("exit")) {
+        output = "This is not a valid input.";
+      }
+      System.out.println(output);
+    }
   }
 
   /**
@@ -157,88 +236,5 @@ public class ImageFileManager {
 
   public File getRoot() {
     return root;
-  }
-
-  public static void main(String[] args) {
-    ImageFileManager imageFileManager1 = new ImageFileManager("/Users/Jeremy/Desktop/test");
-    ImageFile imageFile = new ImageFile("");
-    for (ImageFile thisImageFile : imageFileManager1.getAllImageFiles()) {
-      if (thisImageFile.getName().equals("Sakshi @\"foo\"")) {
-        imageFile = thisImageFile;
-      }
-    }
-
-    Scanner scanner = new Scanner(System.in);
-    String input = "";
-    while (!input.equals("exit")) {
-      System.out.println(
-              "Enter a number to execute a command (type \"exit\" to exit):\n"
-                      + "(1) change to a new file\n"
-                      + "(2) to add a Tag\n"
-                      + "(3) to remove a Tag\n"
-                      + "(4) to get Tags\n"
-                      + "(5) to get previous Tags\n"
-                      + "(6) to move file\n");
-      input = scanner.nextLine();
-      String output = "";
-      switch (input) {
-        case "1":
-          System.out.println("Where to?");
-          input = scanner.nextLine();
-          imageFile = new ImageFile(input);
-          output = "Changed to " + input;
-          break;
-
-        case "2":
-          System.out.println("What tag should I add?");
-          input = scanner.nextLine();
-          if (imageFile.addTag(input)) {
-            output = "Added " + input;
-          } else {
-            output = "Adding tag failed";
-          }
-          break;
-
-        case "3":
-          System.out.println("What tag should I remove?");
-          input = scanner.nextLine();
-          if (imageFile.removeTag(input)) {
-            output = "Removed " + input;
-          } else {
-            output = "Removing tag failed";
-          }
-
-          break;
-
-        case "4":
-          output = Arrays.toString(imageFile.getTags());
-          break;
-
-        case "5":
-          try {
-            output = Arrays.toString(imageFile.getPreviousTags());
-          } catch (IOException e) {
-            output = "Getting previous tags threw error";
-          }
-          break;
-
-        case "6":
-          System.out.println("Where should I move the image?");
-          input = scanner.nextLine();
-          try {
-            if (imageFile.moveFile(input)) {
-              output = "Moved image" + input;
-            } else {
-              output = "Moving image failed";
-            }
-          } catch (IOException e) {
-            output = "Moving Image threw error";
-          }
-      }
-      if (output.equals("") && !input.equals("exit")) {
-        output = "This is not a valid input.";
-      }
-      System.out.println(output);
-    }
   }
 }

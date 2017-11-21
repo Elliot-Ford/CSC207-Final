@@ -58,17 +58,12 @@ public class editImages {
         move.setOnAction(e->{
             DirectoryChooser dc = new DirectoryChooser();
             File file = dc.showDialog(window);
-            try {
                 iFile.moveFile(file.getPath());
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
         });
 
         //button get all tags
         Button getAllTags = new Button("Get all Tags");
         getAllTags.setOnAction(e->{
-            try {
                 List<String> temp1 = Arrays.asList(iFile.getPreviousTags());
                 temp1.addAll(Arrays.asList(iFile.getTags()));
                 String[] temp2 = temp1.toArray(new String[temp1.size()]);
@@ -78,15 +73,11 @@ public class editImages {
                 listView = new ListView<>();
                 listView.getItems().addAll(options);
                 //pass this to open file
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
         });
 
         //button for local log
         Button getLog = new Button("Get Log");
         getLog.setOnAction(e->{
-            try {
                 String[] temp = iFile.getLog();
                 // temp 1 is array display on screen.
                 ObservableList<String> options =
@@ -94,9 +85,6 @@ public class editImages {
                 listView = new ListView<>();
                 listView.getItems().addAll(options);
                 // pass this to openFile
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
         });
         
 
