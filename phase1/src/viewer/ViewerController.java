@@ -283,8 +283,6 @@ public class ViewerController {
     private void updateImageView() {
         if (selectedImageFile != null) {
             imageView.setImage(selectedImageFile.getImage());
-        } else {
-            System.out.println("no Image");
         }
     }
 
