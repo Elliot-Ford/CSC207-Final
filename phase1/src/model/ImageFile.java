@@ -21,7 +21,7 @@ public class ImageFile extends Observable {
 
     private static final String TAG_MARKER = "@";
 
-    private static final String LOG_FILE_SEPARATOR = "/";
+    private static final String LOG_FILE_SEPARATOR = " / ";
 
     private static final String LOG_FILE_PREFIX = ".";
 
@@ -66,77 +66,6 @@ public class ImageFile extends Observable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-    }
-
-    public static void main(String[] args) {
-        ImageFile imageFile = new ImageFile("/Users/Jeremy/Desktop/test/Sakshi.jpg");
-
-        Scanner scanner = new Scanner(System.in);
-        String input = "";
-        while (!input.equals("exit")) {
-            System.out.println(
-                    "Enter a number to execute a command (type \"exit\" to exit):\n"
-                            + "(1) change to a new file\n"
-                            + "(2) to add a Tag\n"
-                            + "(3) to remove a Tag\n"
-                            + "(4) to get Tags\n"
-                            + "(5) to get previous Tags\n"
-                            + "(6) to move file\n");
-            input = scanner.nextLine();
-            String output = "";
-            switch (input) {
-                case "1":
-                    System.out.println("Where to?");
-                    input = scanner.nextLine();
-                    imageFile = new ImageFile(input);
-                    output = "Changed to " + input;
-                    break;
-
-                case "2":
-                    System.out.println("What tag should I add?");
-                    input = scanner.nextLine();
-                    if (imageFile.addTag(input)) {
-                        output = "Added " + input;
-                    } else {
-                        output = "Adding tag failed";
-                    }
-                    break;
-
-                case "3":
-                    System.out.println("What tag should I remove?");
-                    input = scanner.nextLine();
-                    if (imageFile.removeTag(input)) {
-                        output = "Removed " + input;
-                    } else {
-                        output = "Removing tag failed";
-                    }
-
-                    break;
-
-                case "4":
-                    output = Arrays.toString(imageFile.getTags());
-                    break;
-
-                case "5":
-                    output = Arrays.toString(imageFile.getPreviousTags());
-                    break;
-
-                case "6":
-                    System.out.println("Where should I move the image?");
-                    input = scanner.nextLine();
-
-                    if (imageFile.moveFile(input)) {
-                        output = "Moved image" + input;
-                    } else {
-                        output = "Moving image failed";
-                    }
-            }
-            if (output.equals("") && !input.equals("exit")) {
-                output = "This is not a valid input.";
-            }
-            System.out.println(output);
         }
     }
 
@@ -273,16 +202,8 @@ public class ImageFile extends Observable {
             }
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-                writer
-                        .append(
-                                String.format(
-                                        "%s %s %s %s %s",
-                                        lastName,
-                                        LOG_FILE_SEPARATOR,
-                                        newName,
-                                        LOG_FILE_SEPARATOR,
-                                        dateFormat.format(time)))
-                        .append(String.valueOf('\n'));
+                writer.append(lastName).append(LOG_FILE_SEPARATOR).append(newName)
+                        .append(LOG_FILE_SEPARATOR).append(dateFormat.format(time)).append("\n");
                 writer.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -351,7 +272,8 @@ public class ImageFile extends Observable {
             reader = new BufferedReader(new FileReader(log.getPath()));
             String line = reader.readLine();
             while (line != null) {
-                logs.add(line);
+                logs.add(line.replaceFirst(LOG_FILE_SEPARATOR, " -> ")
+                        .replace(LOG_FILE_SEPARATOR, " | "));
                 line = reader.readLine();
             }
             reader.close();
