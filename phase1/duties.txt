@@ -1,2 +1,19 @@
+-Shlok
+It was great working on this assignment with my group. Everyone did their best to contribute to the project and did
+a great job finishing their assigned duties. I was handling the front end bits and pieces of back end as well. In
+building the gui Elliot and Jeremy helped me, guided me and did a great job explaining the back end which helped in merging the
+back end with front fairly simple.
+
+-Elliot
+Hi Elliot
+
+
+
 -Jeremy
+Hi Jeremy
+
+
+
+
+
 	
