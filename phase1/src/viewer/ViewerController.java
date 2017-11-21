@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.event.ActionEvent;
@@ -16,7 +17,6 @@ import model.ImageFile;
 import model.ImageFileManager;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,11 +68,6 @@ public class ViewerController {
     public void handleToggleViewerAction(ActionEvent event) {
         toggle = !toggle;
         updateTreeView();
-    }
-
-    @FXML
-    public void handleChangeDir(ActionEvent actionEvent) {
-        changeDirectory(gp.getScene().getWindow());
     }
 
     private void changeDirectory(Window window) {
@@ -181,10 +176,7 @@ public class ViewerController {
     @FXML
     private void updateAllTagsView() {
         ObservableList allTagsList = FXCollections.observableArrayList();
-        for (ImageFile iFile : imageFileManager.getAllImageFiles()) {
-            allTagsList.addAll(iFile.getTags());
-        }
-
+            allTagsList.addAll(imageFileManager.getAllCurrentTags());
         allTags.setItems(allTagsList);
     }
 
@@ -201,6 +193,8 @@ public class ViewerController {
     private void updateImageView() {
         if (selectedImageFile != null) {
             imageView.setImage(selectedImageFile.getImage());
+        } else {
+            System.out.println("no Image");
         }
     }
 
@@ -212,25 +206,37 @@ public class ViewerController {
     //  The handle methods block.
 
     @FXML
+    public void handleChangeDir(ActionEvent actionEvent) {
+        changeDirectory(gp.getScene().getWindow());
+    }
+
+    @FXML
     public void handleViewerClick(MouseEvent mouseEvent) {
-        ImageFile imageFile = imageFileMap.get(viewer.getSelectionModel().getSelectedItem().getValue());
-        if (imageFile != null) {
-            selectedImageFile = imageFile;
+            ImageFile imageFile = imageFileMap.get(viewer.getSelectionModel().getSelectedItem().getValue());
+            if (imageFile != null) {
+                selectedImageFile = imageFile;
 
-            clicked = true;
-            updateAllTags(clicked);
-            clicked = false;
+                updateAllTags(true);
 
-            updateImageView();
-        }
+                updateImageView();
+            }
+
     }
 
     @FXML
     public void handleAddTag(ActionEvent actionEvent) {
-        if (selectedImageFile != null &&
-                !Arrays.asList(imageFileManager.getAllCurrentTags()).contains(tagToCreate.getText())) {
-            selectedImageFile.addTag(tagToCreate.getText());
-            tagToCreate.clear();
+        //TODO doesn't work rn.
+        if (selectedImageFile != null) {
+            selectedImageFile.addTag(allTags.getSelectionModel().getSelectedItem().toString());
+            updateAllTags(clicked);
+        }
+    }
+
+    @FXML
+    public void handleRestoreTag(ActionEvent actionEvent) {
+        //TODO doesn't work rn.
+        if (selectedImageFile != null) {
+            selectedImageFile.addTag(previousTags.getSelectionModel().getSelectedItem().toString());
             updateAllTags(clicked);
         }
     }

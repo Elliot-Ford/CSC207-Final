@@ -14,8 +14,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="gp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="799.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewer.ViewerController">
+<GridPane fx:id="gp" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="799.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewer.ViewerController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="319.0" minWidth="10.0" prefWidth="209.5" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="481.5" minWidth="10.0" prefWidth="430.5" />
@@ -25,7 +26,7 @@
         <RowConstraints maxHeight="173.0" minHeight="0.33331298828125" prefHeight="35.499969482421875" vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <TreeView fx:id="viewer" onMouseClicked="#handleViewerClick" />
+        <TreeView fx:id="viewer" maxHeight="1.7976931348623157E308" onMouseClicked="#handleViewerClick" />
         <ButtonBar GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
             <buttons>
                 <Button mnemonicParsing="false" onAction="#handleToggleViewerAction" prefHeight="25.0" prefWidth="100.0" text="Toggle View" />
@@ -44,6 +45,7 @@
                 <Button fx:id="removeTag" mnemonicParsing="false" onAction="#handleRemoveTag" text="Remove Tag" />
                 <Button fx:id="addTag" mnemonicParsing="false" onAction="#handleAddTag" text="Add Tag" />
                 <Button fx:id="deleteTag" mnemonicParsing="false" onAction="#handleDeleteTag" text="Delete Tag" />
+            <Button mnemonicParsing="false" onAction="#handleRestoreTag" text="Restore" />
             </buttons>
             <padding>
                 <Insets right="75.0" />
@@ -56,9 +58,7 @@
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="261.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="239.5" minHeight="103.0" prefHeight="104.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="169.0" minHeight="10.0" prefHeight="17.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="169.0" minHeight="10.0" prefHeight="111.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="48.0" minHeight="7.33331298828125" prefHeight="42.0" vgrow="SOMETIMES" />
             </rowConstraints>
@@ -70,24 +70,40 @@
                     <viewport>
                         <Rectangle2D />
                     </viewport>
-               <image>
-                  <Image url="@5871764_keep_calm_and_select_an_image.png" />
-               </image>
+                    <image>
+                        <Image url="@5871764_keep_calm_and_select_an_image.png" />
+                    </image>
                 </ImageView>
-                <Label text="Current Tags" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                <ListView fx:id="currentTags" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
-                <Label text="All Tags" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                <ListView fx:id="allTags" prefHeight="200.0" prefWidth="233.0" GridPane.rowIndex="4" />
-                <Label text="Previous Tags" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                <ListView fx:id="previousTags" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                <Label text="Change Log" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                <ListView fx:id="log" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                     <children>
                         <TextField fx:id="tagToCreate" HBox.hgrow="ALWAYS" />
                         <Button mnemonicParsing="false" onAction="#handleCreateTag" text="Create Tag" />
                     </children>
                 </HBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <children>
+                        <Label contentDisplay="TOP" text="Current Tags" />
+                        <ListView fx:id="currentTags" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <children>
+                        <Label text="Log" />
+                        <ListView fx:id="log" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                    <children>
+                        <Label text="All Tags" />
+                        <ListView fx:id="allTags" prefHeight="200.0" prefWidth="233.0" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                    <children>
+                        <Label alignment="CENTER" text="Previous Tags" />
+                        <ListView fx:id="previousTags" prefHeight="200.0" prefWidth="200.0" />
+                    </children>
+                </VBox>
             </children>
             <padding>
                 <Insets left="10.0" right="10.0" top="10.0" />
