@@ -286,6 +286,10 @@ public class ImageFile extends Observable {
    * @return the actual name of the image file
    */
   public String getActualName() {
-      return getName().substring(0, getName().indexOf(TAG_MARKER));
+    String ret = "";
+    if (getName().contains(TAG_MARKER)) {
+      ret = getName().substring(0, getName().indexOf(TAG_MARKER));
+    }
+    return ret;
   }
 }
