@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
@@ -57,6 +58,7 @@ public class ViewerController {
   public TextField tagToCreate;
 
   public Label imageName;
+  public Image defaultImage;
   /** the Boolean that indicates which mode it is for the TreeView */
   private boolean toggle;
   /** the imageFileManager for this GUI */
@@ -236,8 +238,11 @@ public class ViewerController {
   private void updateImageView() {
     if (selectedImageFile != null) {
       imageView.setImage(selectedImageFile.getImage());
+      imageView.autosize();
+
     } else {
-      imageView.setImage(null);
+      imageView.setImage(defaultImage);
+      imageView.autosize();
     }
   }
 
