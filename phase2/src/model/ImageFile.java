@@ -145,7 +145,7 @@ public class ImageFile extends Observable {
    */
   public boolean addTag(String newTag) {
     boolean success = false;
-    if (!Arrays.asList(getTags()).contains(newTag) && newTag.length() > 0) {
+    if (newTag != null && newTag.length() > 0 && !Arrays.asList(getTags()).contains(newTag)) {
       success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
       setChanged();
       notifyObservers();
@@ -161,8 +161,7 @@ public class ImageFile extends Observable {
    */
   public boolean removeTag(String thisTag) {
     boolean ret = false;
-    // TODO: removeTag only removes the "@" symbol, not the tag in it's entirety.
-    if (file.getName().contains(thisTag) && thisTag.length() > 0) {
+    if (thisTag != null && file.getName().contains(thisTag) && thisTag.length() > 0) {
       ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
     }
     return ret;
