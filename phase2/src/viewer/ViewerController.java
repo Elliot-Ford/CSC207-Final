@@ -14,6 +14,9 @@ import model.ImageFile;
 import model.ImageFileManager;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,29 +56,45 @@ public class ViewerController {
   public ImageView imageView;
 
   /** Displays the String representations of all images */
-  public TreeView<String> viewer;
+  public ListView<ImageFile> viewer;
   /** Gets the String representation for a new Tag */
   public TextField tagToCreate;
 
+  /** The name of the displayed image */
   public Label imageName;
+
+  /** The imaged displayed as default when there's no image available. */
   public Image defaultImage;
+
   /** the Boolean that indicates which mode it is for the TreeView */
   private boolean toggle;
+
   /** the imageFileManager for this GUI */
   private ImageFileManager imageFileManager;
 
   /** the imageFile for this GUI */
   private ImageFile selectedImageFile;
 
-  /** the Map for the name of the file and the ImageFile */
-  private Map<String, ImageFile> imageFileMap;
+  /** the observable list of currentTags */
+  private ObservableList<String> currentTagsList;
+
+  /** the observable list of allTags */
+  private ObservableList<String> allTagsList;
+
+  /** the observable list of viewer */
+  private ObservableList<String> previousTagsList;
+
+  /** the observable list of viewer */
+  private ObservableList<ImageFile> viewerList;
 
   /** Construct a ViewerController. */
   public ViewerController() {
     toggle = false;
     imageFileManager = new ImageFileManager("");
-    imageFileMap = new HashMap<>();
-    imageView = new ImageView();
+    currentTagsList = FXCollections.observableArrayList();
+    allTagsList = FXCollections.observableArrayList();
+    previousTagsList = FXCollections.observableArrayList();
+    viewerList = FXCollections.observableArrayList();
   }
 
   /**
@@ -86,6 +105,10 @@ public class ViewerController {
   @FXML
   void setup(Stage stage) {
     changeDirectory(stage);
+    currentTags.setItems(currentTagsList);
+    allTags.setItems(allTagsList);
+    previousTags.setItems(previousTagsList);
+    viewer.setItems(viewerList);
     updateAll();
   }
 
@@ -147,7 +170,7 @@ public class ViewerController {
   /** Update everything. */
   @FXML
   private void updateAll() {
-    updateTreeView();
+    updateViewer();
     updateCurrentTagsView();
     updatePreviousTagsView();
     updateAllTagsView();
@@ -169,57 +192,66 @@ public class ViewerController {
 
   /** Update the tree view. */
   @FXML
-  private void updateTreeView() {
-    if (imageFileMap.size() > 0) {
-      imageFileMap = new HashMap<>();
-    }
-    if (toggle) {
-      TreeItem<String> root =
-          new TreeItem<>(imageFileManager.getRoot().getName() + " (Recursive View)");
-      root.setExpanded(true);
-      viewer.setRoot(root);
-      for (ImageFile imageFile : imageFileManager.getAllImageFiles()) {
-        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
-        imageFileMap.put(imageFile.getFullName(), imageFile);
+  private void updateViewer() {
+    if (imageFileManager != null) {
+      viewerList.clear();
+      ImageFile[] imageFiles;
+      if (toggle) {
+        imageFiles = imageFileManager.getAllImageFiles();
+
+      } else {
+        imageFiles = imageFileManager.getLocalImageFiles();
       }
-    } else {
-      TreeItem<String> root =
-          new TreeItem<>(imageFileManager.getRoot().getName() + " (Local View)");
-      root.setExpanded(true);
-      viewer.setRoot(root);
-      for (ImageFile imageFile : imageFileManager.getLocalImageFiles()) {
-        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
-        imageFileMap.put(imageFile.getFullName(), imageFile);
-      }
+      viewerList.addAll(imageFiles);
     }
+
+    //    if (imageFileMap.size() > 0) {
+    //      imageFileMap = new HashMap<>();
+    //    }
+    //    if (toggle) {
+    //      TreeItem<ImageFile> root =
+    //          new TreeItem<>(imageFileManager.getRoot().getName() + " (Recursive View)");
+    //      root.setExpanded(true);
+    //      viewer.setRoot(root);
+    //      for (ImageFile imageFile : imageFileManager.getAllImageFiles()) {
+    //        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
+    //        imageFileMap.put(imageFile.getFullName(), imageFile);
+    //      }
+    //    } else {
+    //      TreeItem<String> root =
+    //          new TreeItem<>(imageFileManager.getRoot().getName() + " (Local View)");
+    //      root.setExpanded(true);
+    //      viewer.setRoot(root);
+    //      for (ImageFile imageFile : imageFileManager.getLocalImageFiles()) {
+    //        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
+    //        imageFileMap.put(imageFile.getFullName(), imageFile);
+    //      }
+    //    }
   }
 
   /** Update the current tags view. */
   @FXML
   private void updateCurrentTagsView() {
-    ObservableList<String> availableTagsList = FXCollections.observableArrayList();
+    currentTagsList.clear();
     if (selectedImageFile != null) {
-      availableTagsList.addAll(selectedImageFile.getTags());
+      currentTagsList.addAll(selectedImageFile.getTags());
     }
-    currentTags.setItems(availableTagsList);
   }
 
   /** Update the previous tags view. */
   @FXML
   private void updatePreviousTagsView() {
-    ObservableList<String> previousTagsList = FXCollections.observableArrayList();
+    previousTagsList.clear();
     if (selectedImageFile != null) {
       previousTagsList.addAll(selectedImageFile.getPreviousTags());
     }
-    previousTags.setItems(previousTagsList);
   }
 
   /** Update the all tags view. */
   @FXML
   private void updateAllTagsView() {
-    ObservableList<String> allTagsList = FXCollections.observableArrayList();
+    allTagsList.clear();
     allTagsList.addAll(imageFileManager.getAllCurrentTags());
-    allTags.setItems(allTagsList);
   }
 
   /** Update the log view. */
@@ -261,7 +293,7 @@ public class ViewerController {
   /** Handles the viewer click action. */
   @FXML
   public void handleViewerClick() {
-    ImageFile imageFile = imageFileMap.get(viewer.getSelectionModel().getSelectedItem().getValue());
+    ImageFile imageFile = viewer.getSelectionModel().getSelectedItem();
     if (imageFile != null) {
       selectedImageFile = imageFile;
 
@@ -273,7 +305,7 @@ public class ViewerController {
   @FXML
   public void handleToggleViewerAction() {
     toggle = !toggle;
-    updateTreeView();
+    updateViewer();
   }
 
   /** Handles the change directory action. */
@@ -332,7 +364,6 @@ public class ViewerController {
   public void handleDeleteTag() {
     if (imageFileManager != null) {
       imageFileManager.deleteTag(allTags.getSelectionModel().getSelectedItem());
-      tagToCreate.clear();
       updateAll();
     }
   }

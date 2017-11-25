@@ -293,6 +293,10 @@ public class ImageFile extends Observable {
     return ret;
   }
 
+  public File getFile() {
+    return file;
+  }
+
   /**
    * Return the full name of the image file, suffix and all.
    *
@@ -300,5 +304,10 @@ public class ImageFile extends Observable {
    */
   public String getFullName() {
     return file.getName();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    return o != null && o.getClass() == this.getClass() && ((ImageFile) o).getFile().equals(this.getFile());
   }
 }
