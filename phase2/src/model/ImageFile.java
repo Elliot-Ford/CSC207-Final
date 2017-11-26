@@ -12,7 +12,7 @@ import java.util.*;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
-public class ImageFile extends Observable {
+public class ImageFile extends Observable implements Observer {
 
   private static final String LOG_FILE_SUFFIX = ".log";
 
@@ -309,5 +309,20 @@ public class ImageFile extends Observable {
   @Override
   public boolean equals(Object o) {
     return o != null && o.getClass() == this.getClass() && ((ImageFile) o).getFile().equals(this.getFile());
+  }
+
+  /**
+   * Update the ImageFile when a tag is deleted from the TagManager.
+   *
+   * @param o the observable object that updates the observer ImageFile when a Tag is deleted
+   * @param arg pass in argument
+   */
+  @Override
+  public void update(Observable o, Object arg) {
+    for (String tag : getTags()) {
+      if (!Arrays.asList(((TagManager) o).getTags()).contains(tag)) {
+        removeTag(tag);
+      }
+    }
   }
 }
