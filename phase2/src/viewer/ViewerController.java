@@ -3,10 +3,12 @@ package viewer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -14,13 +16,10 @@ import model.ImageFile;
 import model.ImageFileManager;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ViewerController {
+  /** text to display when there's no image */
+  private static final String DEFAULT_IMAGE_NAME = "No Image";
 
   /** Displays all the current Tags */
   public ListView<String> currentTags;
@@ -29,34 +28,20 @@ public class ViewerController {
   public ListView<String> previousTags;
 
   /** Displays all Tags */
-  public ListView<String> allTags;
+  public ListView<String> directoryTags;
 
   /** Displays all the lines in log */
   public ListView<String> log;
 
-  /** the Button that moves the selected image */
-  public Button move;
-
-  /** the Button that removes the selected Tag */
-  public Button removeTag;
-
-  /** the Button that adds the selected Tag */
-  public Button addTag;
-
-  /** the Button that deletes the selected Tag */
-  public Button deleteTag;
-
   /** the main(root) GridPane */
-  public GridPane gp;
-
-  /** the image GridPane */
-  public GridPane gp2;
+  public BorderPane gp;
 
   /** the image viewer */
   public ImageView imageView;
 
   /** Displays the String representations of all images */
   public ListView<ImageFile> viewer;
+
   /** Gets the String representation for a new Tag */
   public TextField tagToCreate;
 
@@ -78,8 +63,8 @@ public class ViewerController {
   /** the observable list of currentTags */
   private ObservableList<String> currentTagsList;
 
-  /** the observable list of allTags */
-  private ObservableList<String> allTagsList;
+  /** the observable list of directoryTags */
+  private ObservableList<String> directoryTagsList;
 
   /** the observable list of viewer */
   private ObservableList<String> previousTagsList;
@@ -87,14 +72,18 @@ public class ViewerController {
   /** the observable list of viewer */
   private ObservableList<ImageFile> viewerList;
 
+  /** the observable list of log */
+  private ObservableList<String> logList;
+
   /** Construct a ViewerController. */
   public ViewerController() {
     toggle = false;
     imageFileManager = new ImageFileManager("");
     currentTagsList = FXCollections.observableArrayList();
-    allTagsList = FXCollections.observableArrayList();
+    directoryTagsList = FXCollections.observableArrayList();
     previousTagsList = FXCollections.observableArrayList();
     viewerList = FXCollections.observableArrayList();
+    logList = FXCollections.observableArrayList();
   }
 
   /**
@@ -106,9 +95,10 @@ public class ViewerController {
   void setup(Stage stage) {
     changeDirectory(stage);
     currentTags.setItems(currentTagsList);
-    allTags.setItems(allTagsList);
+    directoryTags.setItems(directoryTagsList);
     previousTags.setItems(previousTagsList);
     viewer.setItems(viewerList);
+    log.setItems(logList);
     updateAll();
   }
 
@@ -165,36 +155,21 @@ public class ViewerController {
     } while (newDirectory != null && !newDirectory.exists());
   }
 
-  // the Update methods block.
+  // Start of all the Update methods.
 
   /** Update everything. */
   @FXML
   private void updateAll() {
-    updateViewer();
-    updateCurrentTagsView();
-    updatePreviousTagsView();
-    updateAllTagsView();
-    updateLogView();
-    updateImageView();
-    updateImageName();
+    updateImageFileManagerViews();
+    updateImageFileViews();
   }
 
-  /** Update everything that's image related. */
+  /** Updates all the ImageFileManager related views. */
   @FXML
-  private void updateAllImageRelated() {
-    updateCurrentTagsView();
-    updatePreviousTagsView();
-    updateAllTagsView();
-    updateLogView();
-    updateImageView();
-    updateImageName();
-  }
-
-  /** Update the tree view. */
-  @FXML
-  private void updateViewer() {
+  private void updateImageFileManagerViews() {
+    viewerList.clear();
+    directoryTagsList.clear();
     if (imageFileManager != null) {
-      viewerList.clear();
       ImageFile[] imageFiles;
       if (toggle) {
         imageFiles = imageFileManager.getAllImageFiles();
@@ -203,92 +178,42 @@ public class ViewerController {
         imageFiles = imageFileManager.getLocalImageFiles();
       }
       viewerList.addAll(imageFiles);
+      directoryTagsList.addAll(imageFileManager.getAllCurrentTags());
     }
-
-    //    if (imageFileMap.size() > 0) {
-    //      imageFileMap = new HashMap<>();
-    //    }
-    //    if (toggle) {
-    //      TreeItem<ImageFile> root =
-    //          new TreeItem<>(imageFileManager.getRoot().getName() + " (Recursive View)");
-    //      root.setExpanded(true);
-    //      viewer.setRoot(root);
-    //      for (ImageFile imageFile : imageFileManager.getAllImageFiles()) {
-    //        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
-    //        imageFileMap.put(imageFile.getFullName(), imageFile);
-    //      }
-    //    } else {
-    //      TreeItem<String> root =
-    //          new TreeItem<>(imageFileManager.getRoot().getName() + " (Local View)");
-    //      root.setExpanded(true);
-    //      viewer.setRoot(root);
-    //      for (ImageFile imageFile : imageFileManager.getLocalImageFiles()) {
-    //        viewer.getRoot().getChildren().add(new TreeItem<>(imageFile.getFullName()));
-    //        imageFileMap.put(imageFile.getFullName(), imageFile);
-    //      }
-    //    }
   }
 
-  /** Update the current tags view. */
+  /** Updates all the ImageFile related views */
   @FXML
-  private void updateCurrentTagsView() {
+  private void updateImageFileViews() {
+    // Clear everything that is to be updated
     currentTagsList.clear();
-    if (selectedImageFile != null) {
-      currentTagsList.addAll(selectedImageFile.getTags());
-    }
-  }
-
-  /** Update the previous tags view. */
-  @FXML
-  private void updatePreviousTagsView() {
     previousTagsList.clear();
+    logList.clear();
+    imageName.setText(DEFAULT_IMAGE_NAME);
+    imageView.setImage(defaultImage);
+
+    // If there's a selected ImageFile then update the views with the new ImageFile related
+    // material.
     if (selectedImageFile != null) {
+      // Update the list of tags currently assigned to the Image
+      currentTagsList.addAll(selectedImageFile.getTags());
+      // Update the list of all the previous tags that were assigned to the Image
       previousTagsList.addAll(selectedImageFile.getPreviousTags());
-    }
-  }
-
-  /** Update the all tags view. */
-  @FXML
-  private void updateAllTagsView() {
-    allTagsList.clear();
-    allTagsList.addAll(imageFileManager.getAllCurrentTags());
-  }
-
-  /** Update the log view. */
-  @FXML
-  private void updateLogView() {
-    ObservableList<String> logList = FXCollections.observableArrayList();
-    if (selectedImageFile != null) {
+      // Update the log of all the changes to the Image
       logList.addAll(selectedImageFile.getLog());
-    }
-    log.setItems(logList);
-    log.scrollTo(logList.size() - 1);
-  }
-
-  /** Update the image view. */
-  @FXML
-  private void updateImageView() {
-    if (selectedImageFile != null) {
-      imageView.setImage(selectedImageFile.getImage());
-      imageView.autosize();
-
-    } else {
-      imageView.setImage(defaultImage);
-      imageView.autosize();
-    }
-  }
-
-  /** Update the image name. */
-  @FXML
-  private void updateImageName() {
-    if (selectedImageFile != null) {
+      // Update the name of the Image.
       imageName.setText(selectedImageFile.getName());
-    } else {
-      imageName.setText("No Image");
+      // Update the
+      imageView.setImage(selectedImageFile.getImage());
     }
+    // keep the log up to date
+    log.scrollTo(logList.size() - 1);
+    // Resize the imageView to match the given space.
+    imageView.autosize();
   }
 
-  //  The handle methods block.
+  // End of all the Update methods.
+  // Start of all the handle methods.
 
   /** Handles the viewer click action. */
   @FXML
@@ -297,7 +222,7 @@ public class ViewerController {
     if (imageFile != null) {
       selectedImageFile = imageFile;
 
-      updateAllImageRelated();
+      updateAll();
     }
   }
 
@@ -305,7 +230,7 @@ public class ViewerController {
   @FXML
   public void handleToggleViewerAction() {
     toggle = !toggle;
-    updateViewer();
+    updateImageFileManagerViews();
   }
 
   /** Handles the change directory action. */
@@ -318,18 +243,20 @@ public class ViewerController {
   @FXML
   public void handleAddTag() {
     if (selectedImageFile != null) {
-      selectedImageFile.addTag(allTags.getSelectionModel().getSelectedItem());
-      updateAll();
+      if (selectedImageFile.addTag(directoryTags.getSelectionModel().getSelectedItem())) {
+        updateAll();
+      }
     }
   }
 
   /** Handles the restore Tag action. */
   @FXML
   public void handleRestoreTag() {
-    // TODO doesn't work rn.
+    // TODO doesn't work rn. Backend problem
     if (selectedImageFile != null) {
-      selectedImageFile.addTag(previousTags.getSelectionModel().getSelectedItem());
-      updateAll();
+      if (selectedImageFile.addTag(previousTags.getSelectionModel().getSelectedItem())) {
+        updateAll();
+      }
     }
   }
 
@@ -337,9 +264,10 @@ public class ViewerController {
   @FXML
   public void handleCreateTag() {
     if (selectedImageFile != null) {
-      selectedImageFile.addTag(tagToCreate.getText());
-      tagToCreate.clear();
-      updateAll();
+      if (selectedImageFile.addTag(tagToCreate.getText())) {
+        tagToCreate.clear();
+        updateAll();
+      }
     }
   }
 
@@ -353,9 +281,9 @@ public class ViewerController {
   @FXML
   public void handleRemoveTag() {
     if (selectedImageFile != null) {
-      selectedImageFile.removeTag(currentTags.getSelectionModel().getSelectedItem());
-      tagToCreate.clear();
-      updateAll();
+      if (selectedImageFile.removeTag(currentTags.getSelectionModel().getSelectedItem())) {
+        updateAll();
+      }
     }
   }
 
@@ -363,8 +291,10 @@ public class ViewerController {
   @FXML
   public void handleDeleteTag() {
     if (imageFileManager != null) {
-      imageFileManager.deleteTag(allTags.getSelectionModel().getSelectedItem());
-      updateAll();
+      if (imageFileManager.deleteTag(directoryTags.getSelectionModel().getSelectedItem())) {
+        updateAll();
+      }
     }
   }
+  // End of all the handle methods.
 }
