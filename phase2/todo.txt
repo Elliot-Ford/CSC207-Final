@@ -1,9 +1,9 @@
 =====November 22, 2017=====
------Some things to fix----
--We don't need to check if a set contains a String (I looked into this and not sure how we were having
- this problem in the first place)                                                                       (Shadman)
--the way we're updating the views probably isn't necessary,
- we should try creating a bunch of class level observable lists and see if changing them with the       (Elliot)
+-----Some things to fix-----
+-We don't need to check if a set contains a String (I looked into this and not sure how we were having  (Shadman)
+ this problem in the first place)
+-the way we're updating the views probably isn't necessary,                                             (Elliot)
+ we should try creating a bunch of class level observable lists and see if changing them with the
  program is automatically reflected in the views.
 -if you make a selection in treeView that isn't an item on the list it returns null which crashes the   (Shlok)
  program.
@@ -35,3 +35,17 @@
 
 There's probably more things to do, but this is a good start
 ===========================
+=====November 25, 2017=====
+-----Things completed-----
+-We don't need to check if a set contains a String (I looked into this and not sure how we were having  (Shadman)
+ this problem in the first place)
+-if you make a selection in treeView that isn't an item on the list it returns null which crashes the   (Shlok)
+ program.
+-Currently implementing the Observer, Observable design between TagManager (Observer) and               (Jeremy)
+ ImageFile (Observable) for when ImageFile has a tag added to it. We should implement the same design
+ (With TagManager as the Observable and ImageFile as the Observer) for when a tag is deleted from
+ TagManager.
+-----Some things to fix-----
+-the way we're updating the views probably isn't necessary,                                             (Elliot)
+ we should try creating a bunch of class level observable lists and see if changing them with the
+ program is automatically reflected in the views. (this is currently being worked on)
