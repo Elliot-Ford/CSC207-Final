@@ -2,12 +2,15 @@ package viewer;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -264,7 +267,7 @@ public class ViewerController {
   @FXML
   public void handleCreateTag() {
     if (selectedImageFile != null) {
-      if (selectedImageFile.addTag(tagToCreate.getText())) {
+      if (imageFileManager.addTag(tagToCreate.getText())) {
         tagToCreate.clear();
         updateAll();
       }
@@ -292,9 +295,17 @@ public class ViewerController {
   public void handleDeleteTag() {
     if (imageFileManager != null) {
       if (imageFileManager.deleteTag(directoryTags.getSelectionModel().getSelectedItem())) {
-        updateAll();
       }
+      updateAll();
     }
   }
+
+  public void handleKeyPressed(KeyEvent keyEvent) {
+    if(keyEvent.getCode() == KeyCode.ENTER) {
+      handleCreateTag();
+    }
+  }
+
+
   // End of all the handle methods.
 }
