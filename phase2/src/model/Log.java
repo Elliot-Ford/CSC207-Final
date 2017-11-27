@@ -7,22 +7,18 @@ import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /** Manages the log file for the target class (ImageFile and TagManager in our model). */
 public class Log {
 
+    private static final String LOG_FILE_SUFFIX = ".log";
+    private static final String LOG_FILE_SEPARATOR = " / ";
+    private static final String LOG_FILE_PREFIX = ".";
     /** the log file for the target class. */
     private File log;
 
-    private static final String LOG_FILE_SUFFIX = ".log";
-
-    private static final String LOG_FILE_SEPARATOR = " / ";
-
-    private static final String LOG_FILE_PREFIX = ".";
-
-    private static final String TAG_MARKER = "@";
+//    private static final String TAG_MARKER = "@";
 
     /**
      * Creates a log file for a file
@@ -78,30 +74,26 @@ public class Log {
     public boolean rename(String lastName, String newName, String newLogName) {
         boolean ret = true;
         // get the time
-        Date time = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        File newLog = new File(log.getParentFile(), LOG_FILE_PREFIX + newLogName + LOG_FILE_SUFFIX);
-        if (!newLog.exists()) {
+        File newLog = new File(log.getParentFile(), String.format("%s%s%",LOG_FILE_PREFIX, newLogName, LOG_FILE_SUFFIX));
+//        if (!newLog.exists()) {
             ret = log.renameTo(newLog);
-            log = newLog;
-        }
-        if (ret) {
+            if(ret) {
+                log = newLog;
+            }
+//        }
+//        if (ret) {
             // Add the new line into the now log file.
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
                 writer
-                        .append(lastName)
-                        .append(LOG_FILE_SEPARATOR)
-                        .append(newName)
-                        .append(LOG_FILE_SEPARATOR)
-                        .append(dateFormat.format(time))
-                        .append("\n");
+                        .append(String.format("%s%s%s%s%tD %tT\n", lastName, LOG_FILE_SEPARATOR, newName, LOG_FILE_SEPARATOR));
                 writer.close();
             } catch (IOException ex) {
                 ex.printStackTrace();
                 ret = false;
             }
-        }
+//        }
         return ret;
     }
 
@@ -113,13 +105,13 @@ public class Log {
     String[] getLog() {
         List<String> logs = new ArrayList<>();
         BufferedReader reader;
-        if (!log.exists()) {
-            try {
-                log.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (!log.exists()) {
+//            try {
+//                log.createNewFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         try {
             reader = new BufferedReader(new FileReader(log.getPath()));
             String line = reader.readLine();
@@ -135,22 +127,22 @@ public class Log {
         return logs.toArray(new String[logs.size()]);
     }
 
-    /**
-     * Return if this log file exits.
-     *
-     * @return return true if this log file exist, false if not
-     */
-    boolean exists() {
-        return log.exists();
-    }
+//    /**
+//     * Return if this log file exits.
+//     *
+//     * @return return true if this log file exist, false if not
+//     */
+//    boolean exists() {
+//        return log.exists();
+//    }
 
-    /**
-     * Return the physical log file of this Log Object.
-     *
-     * @return the physical log file
-     */
-    File getFile() {
-        return log;
-    }
+//    /**
+//     * Return the physical log file of this Log Object.
+//     *
+//     * @return the physical log file
+//     */
+//    File getFile() {
+//        return log;
+//    }
 
 }
