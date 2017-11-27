@@ -56,9 +56,9 @@ public class Log {
      * @param file the target file of this log file
      * @return Whether this moving the files was successful
      */
-    public boolean moveFile(String newPath, File file) {
+    boolean moveFile(String newPath, File file, boolean ret1) {
         File newLog = new File(newPath, LOG_FILE_PREFIX + file.getName() + LOG_FILE_SUFFIX);
-        boolean ret = log.renameTo(newLog);
+        boolean ret = ret1 && log.renameTo(newLog);
         if (ret) {
             if (newLog.exists()) {
                 log = newLog;
@@ -72,17 +72,15 @@ public class Log {
      *
      * @param lastName the last name of the target file
      * @param newName the new name of the target file
-     * @param file the target file
-     * @return Whether this recording in the log file was successful
+     * @param newLog the new log file
+     * @return the log file after recording the renaming
      */
-    public boolean rename(String lastName, String newName, File file) {
-        File newLog = new File(log.getParent(), LOG_FILE_PREFIX + newName + LOG_FILE_SUFFIX);
-        boolean ret = false;
+    boolean rename(String lastName, String newName, File newLog, boolean ret) {
         // get the time
         Date time = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         if (!newLog.exists()) {
-            ret = log.renameTo(newLog);
+            ret = ret && log.renameTo(newLog);
         }
         if (ret) {
             if (newLog.exists()) {
@@ -111,7 +109,7 @@ public class Log {
      *
      * @return the list of String representations
      */
-    public String[] getLog() {
+    String[] getLog() {
         List<String> logs = new ArrayList<>();
         BufferedReader reader;
         if (!log.exists()) {
@@ -134,6 +132,24 @@ public class Log {
         }
 
         return logs.toArray(new String[logs.size()]);
+    }
+
+    /**
+     * Return if this log file exits.
+     *
+     * @return return true if this log file exist, false if not
+     */
+    boolean exists() {
+        return log.exists();
+    }
+
+    /**
+     * Return the physical log file of this Log Object.
+     *
+     * @return the physical log file
+     */
+    File getFile() {
+        return log;
     }
 
 }

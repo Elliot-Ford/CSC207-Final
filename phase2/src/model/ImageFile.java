@@ -26,7 +26,7 @@ public class ImageFile extends Observable implements Observer {
   private File file;
 
   /** the previous names for the file */
-  private File log;
+  private Log log;
 
   /**
    * Construct a new ImageFile object with a given path.
@@ -44,23 +44,7 @@ public class ImageFile extends Observable implements Observer {
    */
   public ImageFile(File file) {
     this.file = file;
-    log = new File(file.getParent(), LOG_FILE_PREFIX + getName() + LOG_FILE_SUFFIX);
-    if (!log.exists() && file.exists()) {
-      try {
-        log.createNewFile();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    if (System.getProperty("os.name").contains("Windows")) {
-      Path logPath =
-          FileSystems.getDefault().getPath(log.getParentFile().getAbsolutePath(), log.getName());
-      try {
-        Files.setAttribute(logPath, "dos:hidden", true);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+    log = new Log(file);
   }
 
   /**
@@ -71,14 +55,12 @@ public class ImageFile extends Observable implements Observer {
    */
   public boolean moveFile(String newPath) {
     File newFile = new File(newPath, getName() + getSuffix());
-    File newLog = new File(newPath, LOG_FILE_PREFIX + getName() + LOG_FILE_SUFFIX);
-    boolean ret = file.renameTo(newFile) && log.renameTo(newLog);
+    boolean ret1 = file.renameTo(newFile);
+    boolean ret2 = log.moveFile(newPath, file, ret1);
+    boolean ret = ret1 && ret2;
     if (ret) {
       if (newFile.exists()) {
         file = newFile;
-      }
-      if (newLog.exists()) {
-        log = newLog;
       }
     }
     return ret;
@@ -116,7 +98,7 @@ public class ImageFile extends Observable implements Observer {
   public String[] getPreviousTags() {
     Set<String> tags = new HashSet<>();
     String[] currentTags = getTags();
-    String[] logs = getLog();
+    String[] logs = log.getLog();
     for (String log : logs) {
       String[] potentialTags = extractTags(log.split(LOG_FILE_SEPARATOR)[0]);
       for (String potentialTag : potentialTags) {
@@ -177,34 +159,17 @@ public class ImageFile extends Observable implements Observer {
   public boolean rename(String newName) {
     String lastName = getName();
     File newFile = new File(file.getParent(), newName + getSuffix());
-    File newLog = new File(log.getParent(), LOG_FILE_PREFIX + newName + LOG_FILE_SUFFIX);
     boolean ret = false;
-    // get the time
-    Date time = new Date();
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-    if (!newFile.exists() && !newLog.exists()) {
-      ret = file.renameTo(newFile) && log.renameTo(newLog);
+    if (!newFile.exists()) {
+      ret = file.renameTo(newFile);
     }
     if (ret) {
       if (newFile.exists()) {
         file = newFile;
       }
-      if (newLog.exists()) {
-        log = newLog;
-      }
-      try {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-        writer
-            .append(lastName)
-            .append(LOG_FILE_SEPARATOR)
-            .append(newName)
-            .append(LOG_FILE_SEPARATOR)
-            .append(dateFormat.format(time))
-            .append("\n");
-        writer.close();
-      } catch (IOException ex) {
-        ex.printStackTrace();
-        ret = false;
+      if (newFile.exists()) {
+        Log newLog = new Log(newFile);
+        ret = log.rename(lastName, newName, newLog.getFile(), true);
       }
     }
     return ret;
@@ -248,36 +213,6 @@ public class ImageFile extends Observable implements Observer {
    */
   public Image getImage() {
     return new Image("file:" + file.getAbsolutePath());
-  }
-
-  /**
-   * Return a list of String representations of the lines in the log file.
-   *
-   * @return the list of String representation
-   */
-  public String[] getLog() {
-    List<String> logs = new ArrayList<>();
-    BufferedReader reader;
-    if (!log.exists()) {
-      try {
-        log.createNewFile();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    try {
-      reader = new BufferedReader(new FileReader(log.getPath()));
-      String line = reader.readLine();
-      while (line != null) {
-        logs.add(line.replaceFirst(LOG_FILE_SEPARATOR, " -> ").replace(LOG_FILE_SEPARATOR, " | "));
-        line = reader.readLine();
-      }
-      reader.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    return logs.toArray(new String[logs.size()]);
   }
 
   /**
