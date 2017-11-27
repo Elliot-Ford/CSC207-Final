@@ -72,6 +72,7 @@ public class ImageFileManager {
     for (int i = 0; i < ret.length; i++) {
       ret[i] = new ImageFile(matchingFiles.get(i));
       ret[i].addObserver(tagManager);
+      tagManager.addObserver(ret[i]);
     }
     return ret;
   }
@@ -115,18 +116,11 @@ public class ImageFileManager {
    * @return true if it succeeds, false if it doesn't.
    */
   public boolean deleteTag(String tag) {
-    boolean ret = true;
-    if (!tagManager.removeTag(tag)) {
-      ret = false;
-    }
-    if (ret) {
-      for (ImageFile imageFile : getAllImageFiles()) {
-        if (!imageFile.removeTag(tag)) {
-          ret = false;
-        }
-      }
-    }
-    return ret;
+    return tagManager.removeTag(tag);
+  }
+
+  public boolean addTag(String tag) {
+    return tagManager.addTag(tag);
   }
 
   /**
