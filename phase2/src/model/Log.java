@@ -72,40 +72,20 @@ public class Log {
      *
      * @param lastName the last name of the target file
      * @param newName the new name of the target file
-     * @param newLog the new log file
+     * @param newLogName the new log file
      * @return the log file after recording the renaming
      */
-    boolean rename(String lastName, String newName, File newLog) {
+    public boolean rename(String lastName, String newName, String newLogName) {
         boolean ret = true;
         // get the time
         Date time = new Date();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        File newLog = new File(log.getParentFile(), LOG_FILE_PREFIX + newLogName + LOG_FILE_SUFFIX);
         if (!newLog.exists()) {
             ret = log.renameTo(newLog);
+            log = newLog;
         }
         if (ret) {
-            if (newLog.exists()) {
-                // Write everything from the previous log file into the new log file.
-                try {
-                    BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(newLog, true));
-                    String line = reader.readLine();
-                    while (line != null) {
-                        writer.append(line);
-                        writer.append("\n");
-                        line = reader.readLine();
-                    }
-                    reader.close();
-                    writer.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    ret = false;
-                }
-                // Assign the log file pointer to the new log file.
-                File oldLog = log;
-                log = newLog;
-                oldLog.delete();
-            }
             // Add the new line into the now log file.
             try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
