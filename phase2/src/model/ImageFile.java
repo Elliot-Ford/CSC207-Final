@@ -159,17 +159,9 @@ public class ImageFile extends Observable implements Observer {
     String lastName = getName();
     File newFile = new File(file.getParent(), newName + getSuffix());
     boolean ret = false;
-    if (!newFile.exists()) {
-      ret = file.renameTo(newFile);
-    }
-    if (ret) {
-      if (newFile.exists()) {
+    if (!newFile.exists() && file.renameTo(newFile)) {
         file = newFile;
-      }
-      if (newFile.exists()) {
-        Log newLog = new Log(newFile);
-        ret = log.rename(lastName, newName, newLog.getFile());
-      }
+        ret = log.rename(lastName, newName, file.getName());
     }
     return ret;
   }
