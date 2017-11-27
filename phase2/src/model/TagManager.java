@@ -3,7 +3,7 @@ package model;
 import java.util.*;
 
 /** manages a collection of tags. */
-public class TagManager extends Observable implements Observer {
+public class TagManager extends Observable implements Observer, Taggable {
   /** A set of tags. */
   private Set<String> tags;
 
@@ -27,12 +27,8 @@ public class TagManager extends Observable implements Observer {
    * @param newTag the string representation for this new tag
    * @return a boolean indicating whether the adding of this tag succeeded
    */
-  boolean addTag(String newTag) {
-    boolean ret = false;
-//    if (!tags.contains(newTag)) {
-      ret = tags.add(newTag);
-//    }
-    return ret;
+  public boolean addTag(String newTag) {
+      return tags.add(newTag);
   }
 
   /**
@@ -41,10 +37,12 @@ public class TagManager extends Observable implements Observer {
    * @param thisTag the string representation for this new tag
    * @return a boolean indicating whether the removal of this tag succeeded
    */
-  boolean removeTag(String thisTag) {
+  public boolean removeTag(String thisTag) {
     boolean success =  tags.remove(thisTag);
-    setChanged();
-    notifyObservers();
+    if(success) {
+      setChanged();
+      notifyObservers();
+    }
     return success;
   }
 
