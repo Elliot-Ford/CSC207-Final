@@ -168,7 +168,7 @@ public class ImageFile extends Observable implements Observer {
       }
       if (newFile.exists()) {
         Log newLog = new Log(newFile);
-        ret = log.rename(lastName, newName, newLog.getFile(), true);
+        ret = log.rename(lastName, newName, newLog.getFile());
       }
     }
     return ret;
@@ -258,5 +258,14 @@ public class ImageFile extends Observable implements Observer {
         removeTag(tag);
       }
     }
+  }
+
+  /**
+   *
+   *
+   * @return
+   */
+  public String[] getLog() {
+    return log.getLog();
   }
 }
