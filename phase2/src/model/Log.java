@@ -42,24 +42,9 @@ public class Log {
     }
   }
 
-  public Log() {
-    log = new File(".", "TagManager");
-    if (!log.exists()) {
-      try {
-        log.createNewFile();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    if (System.getProperty("os.name").contains("Windows")) {
-      Path logPath =
-              FileSystems.getDefault().getPath(log.getParentFile().getAbsolutePath(), log.getName());
-      try {
-        Files.setAttribute(logPath, "dos:hidden", true);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
+  /** @param fileName */
+  public Log(String root, String fileName) {
+    this(new File(root, fileName));
   }
 
   /**
@@ -89,18 +74,15 @@ public class Log {
    * @return the log file after recording the renaming
    */
   public boolean rename(String lastName, String newName, String newLogName) {
-    boolean ret = true;
     File newLog =
         new File(
             log.getParentFile(),
             String.format("%s%s%s", LOG_FILE_PREFIX, newLogName, LOG_FILE_SUFFIX));
     //        if (!newLog.exists()) {
-    ret = log.renameTo(newLog);
+    boolean ret = log.renameTo(newLog);
     if (ret) {
       log = newLog;
     }
-    //        }
-    //        if (ret) {
     // Add the new line into the now log file.
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
@@ -118,34 +100,29 @@ public class Log {
       ex.printStackTrace();
       ret = false;
     }
-    //        }
     return ret;
   }
 
-  void rename(String lastName, String newName) {
-    rename(lastName, newName, log.getName().substring(0, log.getName().lastIndexOf(LOG_FILE_SUFFIX)));
+  public void rename(String lastName, String newName) {
+    rename(lastName, newName, log.getName().substring(1, log.getName().lastIndexOf(".")));
   }
 
   /**
-   * Return a list of String representations of the recording of the tag changes in the log file.
+   * Return a list of String representations of the recording of the tag changes in the log file. a
+   * String in the String[] has the following format:
+   *
+   * <p>"firstData / secondData / MM/DD/YY HH:MM:SS"
    *
    * @return the list of String representations
    */
   public String[] getLog() {
     List<String> logs = new ArrayList<>();
     BufferedReader reader;
-    //        if (!log.exists()) {
-    //            try {
-    //                log.createNewFile();
-    //            } catch (IOException e) {
-    //                e.printStackTrace();
-    //            }
-    //        }
     try {
       reader = new BufferedReader(new FileReader(log.getPath()));
       String line = reader.readLine();
       while (line != null) {
-        logs.add(line.replaceFirst(LOG_FILE_SEPARATOR, " -> ").replace(LOG_FILE_SEPARATOR, " | "));
+        logs.add(line);
         line = reader.readLine();
       }
       reader.close();
@@ -154,6 +131,25 @@ public class Log {
     }
 
     return logs.toArray(new String[logs.size()]);
+  }
+
+  /**
+   * Returns the column of entries at the given number between 0-2.
+   *
+   * @column: the column of data to get, should be a value between 0-2 inclusive.
+   */
+  public String[] getColumn(int column) {
+    List<List<String>> tabledLog = new ArrayList<>();
+    List<String> ret = new ArrayList<>();
+    for (String logEntry : getLog()) {
+      List<String> inner = new ArrayList<>();
+      inner.addAll(Arrays.asList(logEntry.split(LOG_FILE_SEPARATOR)));
+      tabledLog.add(inner);
+    }
+    for (List<String> logRow : tabledLog) {
+      ret.add(logRow.get(column));
+    }
+    return ret.toArray(new String[ret.size()]);
   }
 
   //    /**
@@ -165,40 +161,40 @@ public class Log {
   //        return log.exists();
   //    }
 
-      /**
-       * Return the physical log file of this Log Object.
-       *
-       * @return the physical log file
-       */
-      public File getFile() {
-          return log;
-      }
+  /**
+   * Return the physical log file of this Log Object.
+   *
+   * @return the physical log file
+   */
+  public File getFile() {
+    return log;
+  }
 
-      Set<String> getPreviousGlobalTags() {
-          Set<String> tags = new HashSet<>();
-          try {
-              BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
-              String line = reader.readLine();
-              while (line != null) {
-                  String curr = line;
-                  line = reader.readLine();
-                  if (line == null) {
-                      String[] lineList = curr.split(LOG_FILE_SEPARATOR);
-                      String set = lineList[1];
-                      String[] tagSet = set.split(",");
-                      for (String s : tagSet) {
-                          s = s.replaceFirst("\\[", "");
-                          s = s.replaceFirst("]", "");
-                          s = s.trim();
-                          tags.add(s);
-                      }
-                  }
-                  line = reader.readLine();
-              }
-              reader.close();
-          } catch (IOException e) {
-              e.printStackTrace();
+  Set<String> getPreviousGlobalTags() {
+    Set<String> tags = new HashSet<>();
+    try {
+      BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
+      String line = reader.readLine();
+      while (line != null) {
+        String curr = line;
+        line = reader.readLine();
+        if (line == null) {
+          String[] lineList = curr.split(LOG_FILE_SEPARATOR);
+          String set = lineList[1];
+          String[] tagSet = set.split(",");
+          for (String s : tagSet) {
+            s = s.replaceFirst("\\[", "");
+            s = s.replaceFirst("]", "");
+            s = s.trim();
+            tags.add(s);
           }
-          return tags;
+        }
+        line = reader.readLine();
       }
+      reader.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return tags;
+  }
 }
