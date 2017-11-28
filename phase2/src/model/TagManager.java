@@ -83,7 +83,7 @@ public class TagManager extends Observable implements Observer, Taggable {
     }
   }
 
-  public Set<String> getPreviousGlobalTags() {
-    return log.getPreviousGlobalTags();
-  }
+//  public Set<String> getPreviousGlobalTags() {
+//    return log.getPreviousGlobalTags();
+//  }
 }

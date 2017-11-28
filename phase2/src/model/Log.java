@@ -103,7 +103,7 @@ public class Log {
     return ret;
   }
 
-  public void rename(String lastName, String newName) {
+  void rename(String lastName, String newName) {
     rename(lastName, newName, log.getName().substring(1, log.getName().lastIndexOf(".")));
   }
 
@@ -138,7 +138,7 @@ public class Log {
    *
    * @column: the column of data to get, should be a value between 0-2 inclusive.
    */
-  public String[] getColumn(int column) {
+  String[] getColumn(int column) {
     List<List<String>> tabledLog = new ArrayList<>();
     List<String> ret = new ArrayList<>();
     for (String logEntry : getLog()) {
@@ -167,40 +167,40 @@ public class Log {
   //        return log.exists();
   //    }
 
-  /**
-   * Return the physical log file of this Log Object.
-   *
-   * @return the physical log file
-   */
-  public File getFile() {
-    return log;
-  }
+//  /**
+//   * Return the physical log file of this Log Object.
+//   *
+//   * @return the physical log file
+//   */
+//  public File getFile() {
+//    return log;
+//  }
 
-  Set<String> getPreviousGlobalTags() {
-    Set<String> tags = new HashSet<>();
-    try {
-      BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
-      String line = reader.readLine();
-      while (line != null) {
-        String curr = line;
-        line = reader.readLine();
-        if (line == null) {
-          String[] lineList = curr.split(LOG_FILE_SEPARATOR);
-          String set = lineList[1];
-          String[] tagSet = set.split(",");
-          for (String s : tagSet) {
-            s = s.replaceFirst("\\[", "");
-            s = s.replaceFirst("]", "");
-            s = s.trim();
-            tags.add(s);
-          }
-        }
-        line = reader.readLine();
-      }
-      reader.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return tags;
-  }
+//  Set<String> getPreviousGlobalTags() {
+//    Set<String> tags = new HashSet<>();
+//    try {
+//      BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
+//      String line = reader.readLine();
+//      while (line != null) {
+//        String curr = line;
+//        line = reader.readLine();
+//        if (line == null) {
+//          String[] lineList = curr.split(LOG_FILE_SEPARATOR);
+//          String set = lineList[1];
+//          String[] tagSet = set.split(",");
+//          for (String s : tagSet) {
+//            s = s.replaceFirst("\\[", "");
+//            s = s.replaceFirst("]", "");
+//            s = s.trim();
+//            tags.add(s);
+//          }
+//        }
+//        line = reader.readLine();
+//      }
+//      reader.close();
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
+//    return tags;
+//  }
 }

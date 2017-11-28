@@ -3,24 +3,24 @@ package model;
 import javafx.scene.image.Image;
 
 import java.io.*;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+//import java.nio.file.FileSystems;
+//import java.nio.file.Files;
+//import java.nio.file.Path;
+//import java.text.DateFormat;
+//import java.text.SimpleDateFormat;
 import java.util.*;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
 public class ImageFile extends Observable implements Observer {
 
-  private static final String LOG_FILE_SUFFIX = ".log";
+//  private static final String LOG_FILE_SUFFIX = ".log";
 
   private static final String TAG_MARKER = "@";
 
   private static final String LOG_FILE_SEPARATOR = " / ";
 
-  private static final String LOG_FILE_PREFIX = ".";
+//  private static final String LOG_FILE_PREFIX = ".";
 
   /** the image file in the system */
   private File file;
@@ -223,14 +223,14 @@ public class ImageFile extends Observable implements Observer {
     return file;
   }
 
-  /**
-   * Return the full name of the image file, suffix and all.
-   *
-   * @return the full name of the image file
-   */
-  public String getFullName() {
-    return file.getName();
-  }
+//  /**
+//   * Return the full name of the image file, suffix and all.
+//   *
+//   * @return the full name of the image file
+//   */
+//  public String getFullName() {
+//    return file.getName();
+//  }
 
   @Override
   public boolean equals(Object o) {
@@ -253,9 +253,9 @@ public class ImageFile extends Observable implements Observer {
   }
 
   /**
+   * Return a list of String representation of tags in the log file.
    *
-   *
-   * @return
+   * @return A list of String representation of tags in log
    */
   public String[] getLog() {
     return log.getLog();
