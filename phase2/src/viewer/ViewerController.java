@@ -203,7 +203,9 @@ public class ViewerController {
       // Update the list of all the previous tags that were assigned to the Image
       previousTagsList.addAll(selectedImageFile.getPreviousTags());
       // Update the log of all the changes to the Image
-      logList.addAll(selectedImageFile.getLog());
+      for(String logEntry: selectedImageFile.getLog()) {
+        logList.add(logEntry.replaceFirst("/", "->").replaceFirst("/", "|"));
+      }
       // Update the name of the Image.
       imageName.setText(selectedImageFile.getName());
       // Update the
@@ -252,7 +254,7 @@ public class ViewerController {
     }
   }
 
-  /** Handles the restore Tag action. */
+  /** Handles the restore  Tag action. */
   @FXML
   public void handleRestoreTag() {
     // TODO doesn't work rn. Backend problem
