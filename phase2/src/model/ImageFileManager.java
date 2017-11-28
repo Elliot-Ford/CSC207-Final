@@ -146,7 +146,6 @@ public class ImageFileManager {
     if (root.exists()) {
       ret = true;
       this.root = root;
-      tagManager = new TagManager();
       for (ImageFile image : getAllImageFiles()) {
         for (String tag : image.getTags()) {
           tagManager.addTag(tag);
