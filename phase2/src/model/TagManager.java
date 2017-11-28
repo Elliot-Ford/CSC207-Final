@@ -9,6 +9,8 @@ public class TagManager extends Observable implements Observer, Taggable {
 
   private Log log;
 
+  private String lastErasedTag;
+
   private static final String LOG_FILE_NAME = "TagManager";
 
   /** Construct a new TagManager with no existing tag. */
@@ -54,6 +56,7 @@ public class TagManager extends Observable implements Observer, Taggable {
     Set<String> oldSet = new HashSet<>(tags);
     boolean success =  tags.remove(thisTag);
     if(success) {
+      lastErasedTag = thisTag;
       setChanged();
       notifyObservers();
       log.rename(oldSet.toString(), tags.toString());
@@ -81,6 +84,10 @@ public class TagManager extends Observable implements Observer, Taggable {
     for (String tag : ((ImageFile) o).getTags()) {
       addTag(tag);
     }
+  }
+
+  public String getLastErasedTag() {
+    return lastErasedTag;
   }
 
 //  public Set<String> getPreviousGlobalTags() {

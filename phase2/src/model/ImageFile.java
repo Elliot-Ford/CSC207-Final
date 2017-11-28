@@ -144,7 +144,11 @@ public class ImageFile extends Observable implements Observer {
   public boolean removeTag(String thisTag) {
     boolean ret = false;
     if (thisTag != null && file.getName().contains(thisTag) && thisTag.length() > 0) {
-      ret = rename(getName().replace(String.format(" %s%s", TAG_MARKER, thisTag), ""));
+      if (getName().contains(String.format(" %s%s ", TAG_MARKER, thisTag))) {
+        ret = rename(getName().replace(String.format(" %s%s ", TAG_MARKER, thisTag), " "));
+      } else {
+        ret = rename(getName().replace(String.format(" %s%s.", TAG_MARKER, thisTag), "."));
+      }
     }
     return ret;
   }
@@ -245,11 +249,7 @@ public class ImageFile extends Observable implements Observer {
    */
   @Override
   public void update(Observable o, Object arg) {
-    for (String tag : getTags()) {
-      if (!Arrays.asList(((TagManager) o).getTags()).contains(tag)) {
-        removeTag(tag);
-      }
-    }
+    removeTag(((TagManager) o).getLastErasedTag());
   }
 
   /**

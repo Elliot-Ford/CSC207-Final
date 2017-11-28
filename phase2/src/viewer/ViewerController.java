@@ -296,8 +296,7 @@ public class ViewerController {
   @FXML
   public void handleDeleteTag() {
     if (imageFileManager != null) {
-      if (imageFileManager.deleteTag(directoryTags.getSelectionModel().getSelectedItem())) {
-      }
+      imageFileManager.deleteTag(directoryTags.getSelectionModel().getSelectedItem());
       updateAll();
     }
   }
@@ -307,7 +306,6 @@ public class ViewerController {
       handleCreateTag();
     }
   }
-
 
   // End of all the handle methods.
 }
