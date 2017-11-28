@@ -7,9 +7,12 @@ public class TagManager extends Observable implements Observer, Taggable {
   /** A set of tags. */
   private Set<String> tags;
 
+  private Log log;
+
   /** Construct a new TagManager with no existing tag. */
   public TagManager() {
     tags = new HashSet<>();
+    log = new Log();
   }
 
   /**
@@ -28,7 +31,14 @@ public class TagManager extends Observable implements Observer, Taggable {
    * @return a boolean indicating whether the adding of this tag succeeded
    */
   public boolean addTag(String newTag) {
-      return tags.add(newTag);
+      Set<String> oldSet = new HashSet<>(tags);
+    boolean success =  tags.add(newTag);
+    if(success) {
+      setChanged();
+      notifyObservers();
+      log.rename(oldSet.toString(), tags.toString(), log.getFile().getName());
+    }
+    return success;
   }
 
   /**
@@ -38,10 +48,12 @@ public class TagManager extends Observable implements Observer, Taggable {
    * @return a boolean indicating whether the removal of this tag succeeded
    */
   public boolean removeTag(String thisTag) {
+    Set<String> oldSet = new HashSet<>(tags);
     boolean success =  tags.remove(thisTag);
     if(success) {
       setChanged();
       notifyObservers();
+      log.rename(oldSet.toString(), tags.toString());
     }
     return success;
   }

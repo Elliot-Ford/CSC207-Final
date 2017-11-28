@@ -34,6 +34,11 @@
 -unit test for at least 2 classes (ImageFile and ImageFileManager would be a good two to do)            (Elliot)
 
 There's probably more things to do, but this is a good start
+
+
+------Just something-------
+- update log for TagManager
+- getGlobalTags
 ===========================
 =====November 25, 2017=====
 -----Things completed-----

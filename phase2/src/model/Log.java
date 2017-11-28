@@ -44,6 +44,26 @@ public class Log {
     }
   }
 
+  public Log() {
+    log = new File(".", "TagManager");
+    if (!log.exists()) {
+      try {
+        log.createNewFile();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+    if (System.getProperty("os.name").contains("Windows")) {
+      Path logPath =
+              FileSystems.getDefault().getPath(log.getParentFile().getAbsolutePath(), log.getName());
+      try {
+        Files.setAttribute(logPath, "dos:hidden", true);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   /**
    * When the file is moved, move this log file as well.
    *
@@ -104,6 +124,10 @@ public class Log {
     return ret;
   }
 
+  void rename(String lastName, String newName) {
+    rename(lastName, newName, log.getName().substring(0, log.getName().lastIndexOf(LOG_FILE_SUFFIX)));
+  }
+
   /**
    * Return a list of String representations of the recording of the tag changes in the log file.
    *
@@ -143,13 +167,13 @@ public class Log {
   //        return log.exists();
   //    }
 
-  //    /**
-  //     * Return the physical log file of this Log Object.
-  //     *
-  //     * @return the physical log file
-  //     */
-  //    File getFile() {
-  //        return log;
-  //    }
+      /**
+       * Return the physical log file of this Log Object.
+       *
+       * @return the physical log file
+       */
+      public File getFile() {
+          return log;
+      }
 
 }
