@@ -1,5 +1,9 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 /** manages a collection of tags. */
@@ -9,10 +13,35 @@ public class TagManager extends Observable implements Observer, Taggable {
 
   private Log log;
 
+  private static final String LOG_FILE_SEPARATOR = " / ";
+
   /** Construct a new TagManager with no existing tag. */
   public TagManager() {
     tags = new HashSet<>();
-    log = new Log();
+    try {
+      FileReader fileReader = new FileReader(".TagManager.log");
+      BufferedReader reader = new BufferedReader(fileReader);
+      String line = reader.readLine();
+      while (line != null) {
+        String curr = line;
+        line = reader.readLine();
+        if (line == null) {
+          String[] lineList = curr.split(LOG_FILE_SEPARATOR);
+          String set = lineList[1];
+          String[] tagSet = set.split(",");
+          for (String s : tagSet) {
+            s = s.replaceFirst("\\[", "");
+            s = s.replaceFirst("]", "");
+            s = s.trim();
+            tags.add(s);
+          }
+        }
+      }
+      reader.close();
+      fileReader.close();
+    } catch (IOException e1) {
+      log = new Log();
+    }
   }
 
   /**
@@ -78,5 +107,9 @@ public class TagManager extends Observable implements Observer, Taggable {
     for (String tag : ((ImageFile) o).getTags()) {
       addTag(tag);
     }
+  }
+
+  public Set<String> getPreviousGlobalTags() {
+    return log.getPreviousGlobalTags();
   }
 }
