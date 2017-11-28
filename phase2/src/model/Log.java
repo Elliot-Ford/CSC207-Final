@@ -4,9 +4,7 @@ import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /** Manages the log file for the target class (ImageFile and TagManager in our model). */
 public class Log {
@@ -176,4 +174,31 @@ public class Log {
           return log;
       }
 
+      Set<String> getPreviousGlobalTags() {
+          Set<String> tags = new HashSet<>();
+          try {
+              BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
+              String line = reader.readLine();
+              while (line != null) {
+                  String curr = line;
+                  line = reader.readLine();
+                  if (line == null) {
+                      String[] lineList = curr.split(LOG_FILE_SEPARATOR);
+                      String set = lineList[1];
+                      String[] tagSet = set.split(",");
+                      for (String s : tagSet) {
+                          s = s.replaceFirst("\\[", "");
+                          s = s.replaceFirst("]", "");
+                          s = s.trim();
+                          tags.add(s);
+                      }
+                  }
+                  line = reader.readLine();
+              }
+              reader.close();
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+          return tags;
+      }
 }
