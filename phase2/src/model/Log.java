@@ -147,7 +147,13 @@ public class Log {
       tabledLog.add(inner);
     }
     for (List<String> logRow : tabledLog) {
-      ret.add(logRow.get(column));
+      String[] tagSet = (logRow.get(column).split(","));
+      for (String s : tagSet) {
+        s = s.replaceFirst("\\[", "");
+        s = s.replaceFirst("]", "");
+        s = s.trim();
+        ret.add(s);
+      }
     }
     return ret.toArray(new String[ret.size()]);
   }
