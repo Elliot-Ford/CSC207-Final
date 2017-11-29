@@ -118,13 +118,15 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   /**
    * Tries to remove the given tag from the image.
    *
-   * @param thisTag the tag to try and remove.
+   * @param thisTags the Array of String representations of tags being tried to removed.
    * @return true if removal is successful, false if it isn't.
    */
-  public boolean removeTag(String thisTag) {
+  public boolean removeTag(String[] thisTags) {
     boolean ret = false;
-    if (thisTag != null && file.getName().contains(thisTag) && thisTag.length() > 0) {
-      ret = rename(getName().replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, thisTag), ""));
+    for (String tag : thisTags) {
+      if (tag != null && file.getName().contains(tag) && tag.length() > 0) {
+        ret = rename(getName().replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, tag), ""));
+      }
     }
     return ret;
   }

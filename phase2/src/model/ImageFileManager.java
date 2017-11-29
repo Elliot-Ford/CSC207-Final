@@ -121,15 +121,15 @@ public class ImageFileManager {
   /**
    * Deletes Tag from all files and tagManager
    *
-   * @param tag the tag to delete
+   * @param tags the Array of String representations of tags to delete
    * @return true if it succeeds, false if it doesn't.
    */
-  public boolean deleteTag(String tag) {
-    return tagManager.removeTag(tag);
+  public boolean deleteTag(String[] tags) {
+    return tagManager.removeTag(tags);
   }
 
-  public boolean addTag(String tag) {
-    return tagManager.addTag(tag);
+  public boolean addTag(String[] tags) {
+    return tagManager.addTag(tags);
   }
 
   /**
@@ -156,9 +156,7 @@ public class ImageFileManager {
       ret = true;
       this.root = root;
       for (AbsTaggableFile image : getAllImageFiles()) {
-        for (String tag : image.getTags()) {
-          tagManager.addTag(tag);
-        }
+        tagManager.addTag(image.getTags());
       }
     }
     return ret;
