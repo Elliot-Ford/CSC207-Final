@@ -38,7 +38,7 @@ public class ImageFileManager {
    * @return a ImageFile[] of all image files anywhere under the root directory.
    */
   @SuppressWarnings("ConstantConditions")
-  public ImageFile[] getAllImageFiles() {
+  public AbsTaggableFile[] getAllImageFiles() {
     List<File> matchingFiles = new ArrayList<>();
     if (root.isDirectory() || (root.isFile() && root.getName().matches(FILE_MATCH_STRING))) {
       matchingFiles.add(root);
@@ -68,7 +68,7 @@ public class ImageFileManager {
         }
       }
     }
-    ImageFile[] ret = new ImageFile[matchingFiles.size()];
+    AbsTaggableFile[] ret = new AbsTaggableFile[matchingFiles.size()];
     for (int i = 0; i < ret.length; i++) {
       ret[i] = new ImageFile(matchingFiles.get(i));
       ret[i].addObserver(tagManager);
@@ -83,7 +83,7 @@ public class ImageFileManager {
    * @return a ImageFile[] of all images files directly under the root directory.
    */
   @SuppressWarnings("ConstantConditions")
-  public ImageFile[] getLocalImageFiles() {
+  public AbsTaggableFile[] getLocalImageFiles() {
     List<File> matchingFiles = new ArrayList<>();
     if (root.list() != null) {
       for (File file : root.listFiles()) {
@@ -92,7 +92,7 @@ public class ImageFileManager {
         }
       }
     }
-    ImageFile[] ret = new ImageFile[matchingFiles.size()];
+    AbsTaggableFile[] ret = new AbsTaggableFile[matchingFiles.size()];
     for (int i = 0; i < ret.length; i++) {
       ret[i] = new ImageFile(matchingFiles.get(i));
       ret[i].addObserver(tagManager);
@@ -147,7 +147,7 @@ public class ImageFileManager {
     if (root.exists()) {
       ret = true;
       this.root = root;
-      for (ImageFile image : getAllImageFiles()) {
+      for (AbsTaggableFile image : getAllImageFiles()) {
         for (String tag : image.getTags()) {
           tagManager.addTag(tag);
         }

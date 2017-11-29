@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import model.AbsTaggableFile;
 import model.ImageFile;
 import model.ImageFileManager;
 
@@ -43,7 +44,7 @@ public class ViewerController {
   public ImageView imageView;
 
   /** Displays the String representations of all images */
-  public ListView<ImageFile> viewer;
+  public ListView<AbsTaggableFile> viewer;
 
   /** Gets the String representation for a new Tag */
   public TextField tagToCreate;
@@ -61,7 +62,7 @@ public class ViewerController {
   private ImageFileManager imageFileManager;
 
   /** the imageFile for this GUI */
-  private ImageFile selectedImageFile;
+  private AbsTaggableFile selectedImageFile;
 
   /** the observable list of currentTags */
   private ObservableList<String> currentTagsList;
@@ -73,7 +74,7 @@ public class ViewerController {
   private ObservableList<String> previousTagsList;
 
   /** the observable list of viewer */
-  private ObservableList<ImageFile> viewerList;
+  private ObservableList<AbsTaggableFile> viewerList;
 
   /** the observable list of log */
   private ObservableList<String> logList;
@@ -173,7 +174,7 @@ public class ViewerController {
     viewerList.clear();
     directoryTagsList.clear();
     if (imageFileManager != null) {
-      ImageFile[] imageFiles;
+      AbsTaggableFile[] imageFiles;
       if (toggle) {
         imageFiles = imageFileManager.getAllImageFiles();
 
@@ -223,7 +224,7 @@ public class ViewerController {
   /** Handles the viewer click action. */
   @FXML
   public void handleViewerClick() {
-    ImageFile imageFile = viewer.getSelectionModel().getSelectedItem();
+    AbsTaggableFile imageFile = viewer.getSelectionModel().getSelectedItem();
     if (imageFile != null) {
       selectedImageFile = imageFile;
 
