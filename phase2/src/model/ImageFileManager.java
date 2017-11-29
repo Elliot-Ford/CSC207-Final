@@ -96,6 +96,7 @@ public class ImageFileManager {
     for (int i = 0; i < ret.length; i++) {
       ret[i] = new ImageFile(matchingFiles.get(i));
       ret[i].addObserver(tagManager);
+      tagManager.addObserver(ret[i]);
     }
     return ret;
   }
