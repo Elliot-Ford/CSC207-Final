@@ -9,7 +9,7 @@ public class TagManager extends Observable implements Observer, Taggable {
 
   private Log log;
 
-  private String lastErasedTag;
+  private String[] lastErasedTags;
 
   private static final String LOG_FILE_NAME = "TagManager";
 
@@ -32,12 +32,15 @@ public class TagManager extends Observable implements Observer, Taggable {
   /**
    * Add a new tag to the TagManager.
    *
-   * @param newTag the string representation for this new tag
+   * @param newTags the Array of the string representations for new Tags to be added
    * @return a boolean indicating whether the adding of this tag succeeded
    */
-  public boolean addTag(String newTag) {
+  public boolean addTag(String[] newTags) {
     Set<String> oldSet = new HashSet<>(tags);
-    boolean success = tags.add(newTag);
+    boolean success = false;
+    for (String tag : newTags) {
+      success = tags.add(tag);
+    }
     if (success) {
       setChanged();
       notifyObservers();
@@ -49,17 +52,20 @@ public class TagManager extends Observable implements Observer, Taggable {
   /**
    * Remove a tag from the TagManager.
    *
-   * @param thisTag the string representation for this new tag
+   * @param tags the Array of string representations for Tags to be removed
    * @return a boolean indicating whether the removal of this tag succeeded
    */
-  public boolean removeTag(String thisTag) {
-    Set<String> oldSet = new HashSet<>(tags);
-    boolean success = tags.remove(thisTag);
+  public boolean removeTag(String[] tags) {
+    Set<String> oldSet = new HashSet<>(this.tags);
+    boolean success = false;
+    for (String tag : tags) {
+      success = this.tags.remove(tag);
+    }
     if (success) {
-      lastErasedTag = thisTag;
+      lastErasedTags = tags.clone();
       setChanged();
       notifyObservers();
-      log.rename(oldSet.toString(), tags.toString());
+      log.rename(oldSet.toString(), this.tags.toString());
     }
     return success;
   }
@@ -81,13 +87,11 @@ public class TagManager extends Observable implements Observer, Taggable {
    */
   @Override
   public void update(Observable o, Object arg) {
-    for (String tag : ((AbsTaggableFile) o).getTags()) {
-      addTag(tag);
-    }
+    addTag(((AbsTaggableFile) o).getTags());
   }
 
-  public String getLastErasedTag() {
-    return lastErasedTag;
+  public String[] getLastErasedTag() {
+    return lastErasedTags;
   }
 
   //  public Set<String> getPreviousGlobalTags() {
