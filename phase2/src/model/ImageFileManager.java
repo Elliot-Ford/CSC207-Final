@@ -7,8 +7,8 @@ import java.util.List;
 /** Manages all the imageFiles under a root folder */
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class ImageFileManager {
-  /** String to match all tagable files */
-  private static final String FILE_MATCH_STRING =
+  /** String to match all image files */
+  private static final String IMAGE_FILE =
       ".*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)";
 
   /** the root of the directory */
@@ -40,7 +40,7 @@ public class ImageFileManager {
   @SuppressWarnings("ConstantConditions")
   public AbsTaggableFile[] getAllImageFiles() {
     List<File> matchingFiles = new ArrayList<>();
-    if (root.isDirectory() || (root.isFile() && root.getName().matches(FILE_MATCH_STRING))) {
+    if (root.isDirectory() || (root.isFile() && root.getName().matches(IMAGE_FILE))) {
       matchingFiles.add(root);
 
       int i = 0;
@@ -53,7 +53,7 @@ public class ImageFileManager {
           if (matchingFiles.get(i).list() != null) {
             // Element at i has children, so add children to the ArrayList if they match the regEx.
             for (File file : matchingFiles.get(i).listFiles()) {
-              if (file.getName().matches(FILE_MATCH_STRING) || file.isDirectory()) {
+              if (file.getName().matches(IMAGE_FILE) || file.isDirectory()) {
                 matchingFiles.add(file);
               }
             }
@@ -70,7 +70,11 @@ public class ImageFileManager {
     }
     AbsTaggableFile[] ret = new AbsTaggableFile[matchingFiles.size()];
     for (int i = 0; i < ret.length; i++) {
-      ret[i] = new ImageFile(matchingFiles.get(i));
+      if(matchingFiles.get(i).getName().matches(IMAGE_FILE)) {
+        ret[i] = new ImageFile(matchingFiles.get(i));
+      } else {
+        ret[i] = new GeneralFile(matchingFiles.get(i));
+      }
       ret[i].addObserver(tagManager);
       tagManager.addObserver(ret[i]);
     }
@@ -87,14 +91,18 @@ public class ImageFileManager {
     List<File> matchingFiles = new ArrayList<>();
     if (root.list() != null) {
       for (File file : root.listFiles()) {
-        if (file.isFile() && file.getName().matches(FILE_MATCH_STRING)) {
+        if (file.isFile() && file.getName().matches(IMAGE_FILE)) {
           matchingFiles.add(file);
         }
       }
     }
     AbsTaggableFile[] ret = new AbsTaggableFile[matchingFiles.size()];
     for (int i = 0; i < ret.length; i++) {
-      ret[i] = new ImageFile(matchingFiles.get(i));
+      if(matchingFiles.get(i).getName().matches(IMAGE_FILE)) {
+        ret[i] = new ImageFile(matchingFiles.get(i));
+      } else {
+        ret[i] = new GeneralFile(matchingFiles.get(i));
+      }
       ret[i].addObserver(tagManager);
       tagManager.addObserver(ret[i]);
     }
