@@ -48,11 +48,11 @@ public class ImageFileManagerTests {
     Assert.assertArrayEquals(expectedResults, imageFileManager.getAllImageFiles());
   }
 
-  @Test
-  public void testGetAllTags() {
-    String[] expectedResults = new String[] {"Tag1", "Tag2"};
-    Assert.assertArrayEquals(expectedResults, imageFileManager.getAllCurrentTags());
-  }
+//  @Test
+//  public void testGetAllTags() {
+//    String[] expectedResults = new String[] {"Tag1", "Tag2"};
+//    Assert.assertArrayEquals(expectedResults, imageFileManager.getAllCurrentTags());
+//  }
 
   @Test
   public void testGetRoot() {
