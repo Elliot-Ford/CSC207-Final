@@ -45,12 +45,40 @@ public class LogTests {
   }
 
   @Test
-  public void testGetLog() throws IOException {
+  public void testGetColumnWithAlphaEntries() throws IOException {
     File file = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
-    BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.append("oldname / newname / time");
     writer.close();
-    String[] expectedResults = new String[] {"oldname -> newname | time"};
+    String[] expectedResultsColumn0 = new String[]{"oldname"};
+    String[] expectedResultsColumn1 = new String[]{"newname"};
+    String[] expectedResultsColumn2 = new String[]{"time"};
+    Assert.assertArrayEquals(expectedResultsColumn0, log.getColumn(0));
+    Assert.assertArrayEquals(expectedResultsColumn1, log.getColumn(1));
+    Assert.assertArrayEquals(expectedResultsColumn2, log.getColumn(2));
+  }
+
+  @Test
+  public void testGetColumnWithSpecialEntries() throws IOException {
+    File file = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
+    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    writer.append("!@#$%^&*() / ,.<>;:'\"[]{}\\|? / `~-_=+");
+    writer.close();
+    String[] expectedResultsColumn0 = new String[]{"!@#$%^&*()"};
+    String[] expectedResultsColumn1 = new String[]{",.<>;:'\"[]{}\\|?"};
+    String[] expectedResultsColumn2 = new String[]{"`~-_=+"};
+    Assert.assertArrayEquals(expectedResultsColumn0, log.getColumn(0));
+    Assert.assertArrayEquals(expectedResultsColumn1, log.getColumn(1));
+    Assert.assertArrayEquals(expectedResultsColumn2, log.getColumn(2));
+  }
+
+  @Test
+  public void testGetLog() throws IOException {
+    File file = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
+    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+    writer.append("oldname / newname / time");
+    writer.close();
+    String[] expectedResults = new String[] {"oldname / newname / time"};
     Assert.assertArrayEquals(expectedResults, log.getLog());
   }
 }
