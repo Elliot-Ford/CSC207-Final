@@ -2,7 +2,6 @@ package viewer;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -16,7 +15,6 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.AbsTaggableFile;
-import model.ImageFile;
 import model.ImageFileManager;
 
 import java.io.File;
@@ -204,7 +202,7 @@ public class ViewerController {
       // Update the list of all the previous tags that were assigned to the Image
       previousTagsList.addAll(selectedImageFile.getPreviousTags());
       // Update the log of all the changes to the Image
-      for(String logEntry: selectedImageFile.getLog()) {
+      for (String logEntry : selectedImageFile.getLog()) {
         logList.add(logEntry.replaceFirst("/", "->").replaceFirst("/", "|"));
       }
       // Update the name of the Image.
@@ -255,10 +253,9 @@ public class ViewerController {
     }
   }
 
-  /** Handles the restore  Tag action. */
+  /** Handles the restore Tag action. */
   @FXML
   public void handleRestoreTag() {
-    // TODO doesn't work rn. Backend problem
     if (selectedImageFile != null) {
       if (selectedImageFile.addTag(previousTags.getSelectionModel().getSelectedItem())) {
         updateAll();
@@ -303,7 +300,7 @@ public class ViewerController {
   }
 
   public void handleKeyPressed(KeyEvent keyEvent) {
-    if(keyEvent.getCode() == KeyCode.ENTER) {
+    if (keyEvent.getCode() == KeyCode.ENTER) {
       handleCreateTag();
     }
   }

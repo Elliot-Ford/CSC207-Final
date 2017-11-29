@@ -15,8 +15,6 @@ public class Log {
   /** the log file for the target class. */
   private File log;
 
-  //    private static final String TAG_MARKER = "@";
-
   /**
    * Creates a log file for a file
    *
@@ -158,49 +156,31 @@ public class Log {
     return ret.toArray(new String[ret.size()]);
   }
 
-  //    /**
-  //     * Return if this log file exits.
-  //     *
-  //     * @return return true if this log file exist, false if not
-  //     */
-  //    boolean exists() {
-  //        return log.exists();
+  //  Set<String> getPreviousGlobalTags() {
+  //    Set<String> tags = new HashSet<>();
+  //    try {
+  //      BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
+  //      String line = reader.readLine();
+  //      while (line != null) {
+  //        String curr = line;
+  //        line = reader.readLine();
+  //        if (line == null) {
+  //          String[] lineList = curr.split(LOG_FILE_SEPARATOR);
+  //          String set = lineList[1];
+  //          String[] tagSet = set.split(",");
+  //          for (String s : tagSet) {
+  //            s = s.replaceFirst("\\[", "");
+  //            s = s.replaceFirst("]", "");
+  //            s = s.trim();
+  //            tags.add(s);
+  //          }
+  //        }
+  //        line = reader.readLine();
+  //      }
+  //      reader.close();
+  //    } catch (IOException e) {
+  //      e.printStackTrace();
   //    }
-
-//  /**
-//   * Return the physical log file of this Log Object.
-//   *
-//   * @return the physical log file
-//   */
-//  public File getFile() {
-//    return log;
-//  }
-
-//  Set<String> getPreviousGlobalTags() {
-//    Set<String> tags = new HashSet<>();
-//    try {
-//      BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
-//      String line = reader.readLine();
-//      while (line != null) {
-//        String curr = line;
-//        line = reader.readLine();
-//        if (line == null) {
-//          String[] lineList = curr.split(LOG_FILE_SEPARATOR);
-//          String set = lineList[1];
-//          String[] tagSet = set.split(",");
-//          for (String s : tagSet) {
-//            s = s.replaceFirst("\\[", "");
-//            s = s.replaceFirst("]", "");
-//            s = s.trim();
-//            tags.add(s);
-//          }
-//        }
-//        line = reader.readLine();
-//      }
-//      reader.close();
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    return tags;
-//  }
+  //    return tags;
+  //  }
 }

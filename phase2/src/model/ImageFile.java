@@ -2,19 +2,10 @@ package model;
 
 import javafx.scene.image.Image;
 
-import java.io.*;
-//import java.nio.file.FileSystems;
-//import java.nio.file.Files;
-//import java.nio.file.Path;
-//import java.text.DateFormat;
-//import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.File;
 
 /** Represents a physical image file in a filesystem. */
-@SuppressWarnings("WeakerAccess")
-public class ImageFile extends AbsTaggableFile implements Observer {
+public class ImageFile extends AbsTaggableFile {
 
   /**
    * Construct a new ImageFile object with a given path.
@@ -42,5 +33,4 @@ public class ImageFile extends AbsTaggableFile implements Observer {
   public Image getImage() {
     return new Image("file:" + super.getFile().getAbsolutePath());
   }
-
 }

@@ -36,9 +36,9 @@ public class TagManager extends Observable implements Observer, Taggable {
    * @return a boolean indicating whether the adding of this tag succeeded
    */
   public boolean addTag(String newTag) {
-      Set<String> oldSet = new HashSet<>(tags);
-    boolean success =  tags.add(newTag);
-    if(success) {
+    Set<String> oldSet = new HashSet<>(tags);
+    boolean success = tags.add(newTag);
+    if (success) {
       setChanged();
       notifyObservers();
       log.rename(oldSet.toString(), tags.toString());
@@ -54,8 +54,8 @@ public class TagManager extends Observable implements Observer, Taggable {
    */
   public boolean removeTag(String thisTag) {
     Set<String> oldSet = new HashSet<>(tags);
-    boolean success =  tags.remove(thisTag);
-    if(success) {
+    boolean success = tags.remove(thisTag);
+    if (success) {
       lastErasedTag = thisTag;
       setChanged();
       notifyObservers();
@@ -81,7 +81,7 @@ public class TagManager extends Observable implements Observer, Taggable {
    */
   @Override
   public void update(Observable o, Object arg) {
-    for (String tag : ((ImageFile) o).getTags()) {
+    for (String tag : ((AbsTaggableFile) o).getTags()) {
       addTag(tag);
     }
   }
@@ -90,7 +90,7 @@ public class TagManager extends Observable implements Observer, Taggable {
     return lastErasedTag;
   }
 
-//  public Set<String> getPreviousGlobalTags() {
-//    return log.getPreviousGlobalTags();
-//  }
+  //  public Set<String> getPreviousGlobalTags() {
+  //    return log.getPreviousGlobalTags();
+  //  }
 }
