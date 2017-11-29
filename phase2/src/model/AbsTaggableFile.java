@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
-public class AbsTaggableFile extends Observable implements Observer {
+public abstract class AbsTaggableFile extends Observable implements Observer {
 
 //  private static final String LOG_FILE_SUFFIX = ".log";
 
@@ -195,9 +195,7 @@ public class AbsTaggableFile extends Observable implements Observer {
      *
      * @return the physical Image File.
      */
-    public Image getImage() {
-        return new Image("file:" + file.getAbsolutePath());
-    }
+    public abstract Image getImage();
 
     /**
      * Return the name of the image file without any String representations of the Tags.
