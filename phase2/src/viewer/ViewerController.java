@@ -1,11 +1,15 @@
 package viewer;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -15,6 +19,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.AbsTaggableFile;
+import javafx.util.Callback;
+import model.ImageFile;
 import model.ImageFileManager;
 
 import java.io.File;
@@ -101,6 +107,16 @@ public class ViewerController {
     previousTags.setItems(previousTagsList);
     viewer.setItems(viewerList);
     log.setItems(logList);
+    currentTags.setCellFactory(CheckBoxListCell.forListView(new Callback<String, ObservableValue<Boolean>>() {
+      @Override
+      public ObservableValue<Boolean> call(String item) {
+        BooleanProperty observable = new SimpleBooleanProperty();
+        observable.addListener((obs, wasSelected, isNowSelected) ->
+                System.out.println("Check box for "+item+" changed from "+wasSelected+" to "+isNowSelected)
+        );
+        return observable;
+      }
+    }));
     updateAll();
   }
 
