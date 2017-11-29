@@ -9,6 +9,8 @@ import java.io.*;
 //import java.text.DateFormat;
 //import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /** Represents a physical image file in a filesystem. */
 @SuppressWarnings("WeakerAccess")
@@ -98,9 +100,9 @@ public class ImageFile extends Observable implements Observer {
   public String[] getPreviousTags() {
     Set<String> tags = new HashSet<>();
     String[] currentTags = getTags();
-    String[] logs = log.getLog();
-    for (String log : logs) {
-      String[] potentialTags = extractTags(log.split(LOG_FILE_SEPARATOR)[0]);
+    String[] previousNames = log.getColumn(0);
+    for (String previousName : previousNames) {
+      String[] potentialTags = extractTags(previousName);
       for (String potentialTag : potentialTags) {
         if (!Arrays.asList(currentTags).contains(potentialTag)) {
           tags.add(potentialTag);
@@ -144,11 +146,7 @@ public class ImageFile extends Observable implements Observer {
   public boolean removeTag(String thisTag) {
     boolean ret = false;
     if (thisTag != null && file.getName().contains(thisTag) && thisTag.length() > 0) {
-      if (getName().contains(String.format(" %s%s ", TAG_MARKER, thisTag))) {
-        ret = rename(getName().replace(String.format(" %s%s ", TAG_MARKER, thisTag), " "));
-      } else {
-        ret = rename(getName().replace(String.format(" %s%s.", TAG_MARKER, thisTag), "."));
-      }
+        ret = rename(getName().replaceAll(" " + TAG_MARKER + "\\b" + thisTag + "\\b", ""));
     }
     return ret;
   }
