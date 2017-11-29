@@ -134,9 +134,9 @@ public class Log {
   /**
    * Returns the column of entries at the given number between 0-2.
    *
-   * @column: the column of data to get, should be a value between 0-2 inclusive.
+   * @param column the column of data to get, should be a value between 0-2 inclusive.
    */
-  String[] getColumn(int column) {
+  public String[] getColumn(int column) {
     List<List<String>> tabledLog = new ArrayList<>();
     List<String> ret = new ArrayList<>();
     for (String logEntry : getLog()) {
@@ -144,14 +144,8 @@ public class Log {
       inner.addAll(Arrays.asList(logEntry.split(LOG_FILE_SEPARATOR)));
       tabledLog.add(inner);
     }
-    for (List<String> logRow : tabledLog) {
-      String[] tagSet = (logRow.get(column).split(","));
-      for (String s : tagSet) {
-        s = s.replaceFirst("\\[", "");
-        s = s.replaceFirst("]", "");
-        s = s.trim();
-        ret.add(s);
-      }
+    for(List<String> row: tabledLog) {
+      ret.add(row.get(column));
     }
     return ret.toArray(new String[ret.size()]);
   }

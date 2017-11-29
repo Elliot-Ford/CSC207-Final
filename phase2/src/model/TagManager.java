@@ -4,20 +4,28 @@ import java.util.*;
 
 /** manages a collection of tags. */
 public class TagManager extends Observable implements Observer, Taggable {
+  private static final String LOG_FILE_NAME = "TagManager";
   /** A set of tags. */
   private Set<String> tags;
 
   private Log log;
-
   private String lastErasedTag;
-
-  private static final String LOG_FILE_NAME = "TagManager";
 
   /** Construct a new TagManager with no existing tag. */
   public TagManager() {
     tags = new HashSet<>();
     log = new Log(".", LOG_FILE_NAME);
-    tags.addAll(Arrays.asList(log.getColumn(1)));
+    // Get the tags of the previous session of the program.
+    String[] column1 = log.getColumn(1);
+    String[] tagSet = (column1[column1.length-1].replaceFirst("\\[", "").replaceFirst("]", "").split(","));
+    for (String s : tagSet) {
+      s = s.replaceFirst("\\[", "");
+      s = s.replaceFirst("]", "");
+      s = s.trim();
+      if(s.length() > 0) {
+        tags.add(s);
+      }
+    }
   }
 
   /**
