@@ -18,9 +18,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import model.AbsTaggableFile;
 import javafx.util.Callback;
-import model.ImageFile;
+import model.AbsTaggableFile;
 import model.ImageFileManager;
 
 import java.io.File;
@@ -59,6 +58,9 @@ public class ViewerController {
   /** The imaged displayed as default when there's no image available. */
   public Image defaultImage;
 
+  /** the list of previousStates for an image */
+  public ListView<String> previousStates;
+
   /** the Boolean that indicates which mode it is for the TreeView */
   private boolean toggle;
 
@@ -83,6 +85,9 @@ public class ViewerController {
   /** the observable list of log */
   private ObservableList<String> logList;
 
+  /** the observable list of previousStates */
+  private ObservableList<String> previousStateList;
+
   /** Construct a ViewerController. */
   public ViewerController() {
     toggle = false;
@@ -92,6 +97,7 @@ public class ViewerController {
     previousTagsList = FXCollections.observableArrayList();
     viewerList = FXCollections.observableArrayList();
     logList = FXCollections.observableArrayList();
+    previousStateList = FXCollections.observableArrayList();
   }
 
   /**
@@ -107,16 +113,25 @@ public class ViewerController {
     previousTags.setItems(previousTagsList);
     viewer.setItems(viewerList);
     log.setItems(logList);
-    currentTags.setCellFactory(CheckBoxListCell.forListView(new Callback<String, ObservableValue<Boolean>>() {
-      @Override
-      public ObservableValue<Boolean> call(String item) {
-        BooleanProperty observable = new SimpleBooleanProperty();
-        observable.addListener((obs, wasSelected, isNowSelected) ->
-                System.out.println("Check box for "+item+" changed from "+wasSelected+" to "+isNowSelected)
-        );
-        return observable;
-      }
-    }));
+    previousStates.setItems(previousStateList);
+    currentTags.setCellFactory(
+        CheckBoxListCell.forListView(
+            new Callback<String, ObservableValue<Boolean>>() {
+              @Override
+              public ObservableValue<Boolean> call(String item) {
+                BooleanProperty observable = new SimpleBooleanProperty();
+                observable.addListener(
+                    (obs, wasSelected, isNowSelected) ->
+                        System.out.println(
+                            "Check box for "
+                                + item
+                                + " changed from "
+                                + wasSelected
+                                + " to "
+                                + isNowSelected));
+                return observable;
+              }
+            }));
     updateAll();
   }
 
@@ -190,10 +205,10 @@ public class ViewerController {
     if (imageFileManager != null) {
       AbsTaggableFile[] imageFiles;
       if (toggle) {
-        imageFiles = imageFileManager.getAllImageFiles();
+        imageFiles = imageFileManager.getAllImageFiles("");
 
       } else {
-        imageFiles = imageFileManager.getLocalImageFiles();
+        imageFiles = imageFileManager.getLocalImageFiles("");
       }
       viewerList.addAll(imageFiles);
       directoryTagsList.addAll(imageFileManager.getAllCurrentTags());
@@ -207,6 +222,7 @@ public class ViewerController {
     currentTagsList.clear();
     previousTagsList.clear();
     logList.clear();
+    previousStateList.clear();
     imageName.setText(DEFAULT_IMAGE_NAME);
     imageView.setImage(defaultImage);
 
@@ -221,6 +237,8 @@ public class ViewerController {
       for (String logEntry : selectedImageFile.getLog()) {
         logList.add(logEntry.replaceFirst("/", "->").replaceFirst("/", "|"));
       }
+      // Update the list of all the previous states of the Image
+      previousStateList.addAll(selectedImageFile.getPreviousStates());
       // Update the name of the Image.
       imageName.setText(selectedImageFile.getName());
       // Update the
@@ -283,7 +301,7 @@ public class ViewerController {
   @FXML
   public void handleCreateTag() {
     if (selectedImageFile != null) {
-      if (imageFileManager.addTag(tagToCreate.getText())) {
+      if (imageFileManager.addTag(new String[]{tagToCreate.getText()})) {
         tagToCreate.clear();
         updateAll();
       }
@@ -300,7 +318,11 @@ public class ViewerController {
   @FXML
   public void handleRemoveTag() {
     if (selectedImageFile != null) {
-      if (selectedImageFile.removeTag(currentTags.getSelectionModel().getSelectedItem())) {
+      if (selectedImageFile.removeTag(
+          currentTags
+              .getSelectionModel()
+              .getSelectedItems()
+              .toArray(new String[currentTags.getSelectionModel().getSelectedItems().size()]))) {
         updateAll();
       }
     }
@@ -310,14 +332,28 @@ public class ViewerController {
   @FXML
   public void handleDeleteTag() {
     if (imageFileManager != null) {
-      imageFileManager.deleteTag(directoryTags.getSelectionModel().getSelectedItem());
-      updateAll();
+      if (imageFileManager.deleteTag(
+          directoryTags
+              .getSelectionModel()
+              .getSelectedItems()
+              .toArray(new String[directoryTags.getSelectionModel().getSelectedItems().size()]))) {
+        updateAll();
+      }
     }
   }
 
+  @FXML
   public void handleKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
       handleCreateTag();
+    }
+  }
+
+  @FXML
+  public void handleRestorePreviousState() {
+    if (selectedImageFile != null
+        && selectedImageFile.rename(previousStates.getSelectionModel().getSelectedItem())) {
+        updateAll();
     }
   }
 
