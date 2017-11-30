@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 /** Manages all the imageFiles under a root folder */
-@SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class ImageFileManager {
   /** String to match all image files */
   private static final String IMAGE_FILE = "^.*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)$";
@@ -43,7 +42,6 @@ public class ImageFileManager {
    * @param regex the regular expression to an acceptable file with.
    * @return a ImageFile[] of all image files anywhere under the root directory.
    */
-  @SuppressWarnings("ConstantConditions")
   public AbsTaggableFile[] getAllImageFiles(String regex) {
     List<File> matchingFiles = new ArrayList<>();
     if (root.isDirectory() || (root.isFile() && root.getName().matches(IMAGE_FILE))) {
@@ -83,7 +81,6 @@ public class ImageFileManager {
    * @param regex the regular expression to an acceptable file with.
    * @return a ImageFile[] of all images files directly under the root directory.
    */
-  @SuppressWarnings("ConstantConditions")
   public AbsTaggableFile[] getLocalImageFiles(String regex) {
     List<File> matchingFiles = new ArrayList<>();
     if (root.list() != null) {
@@ -98,11 +95,11 @@ public class ImageFileManager {
 
   private AbsTaggableFile[] generateAbsTaggableFiles(List<File> files) {
     List<AbsTaggableFile> possibleAbsTaggableFiles = new ArrayList<>(files.size());
-    for (int i = 0; i < files.size(); i++) {
-      if (files.get(i).getName().matches(IMAGE_FILE)) {
-        possibleAbsTaggableFiles.add(new ImageFile(files.get(i)));
+    for (File file : files) {
+      if (file.getName().matches(IMAGE_FILE)) {
+        possibleAbsTaggableFiles.add(new ImageFile(file));
       } else {
-        possibleAbsTaggableFiles.add(new GeneralFile(files.get(i)));
+        possibleAbsTaggableFiles.add(new GeneralFile(file));
       }
     }
     Set<AbsTaggableFile> newAbsTaggableFiles =

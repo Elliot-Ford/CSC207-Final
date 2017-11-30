@@ -100,7 +100,7 @@ public class Log {
    * @param newLogName the new log file
    * @return the log file after recording the renaming
    */
-  public boolean updateLog(String entry1, String entry2, String newLogName) throws Exception {
+  boolean updateLog(String entry1, String entry2, String newLogName) throws Exception {
     File newLog =
         new File(
             log.getParentFile(),
@@ -127,7 +127,7 @@ public class Log {
    *
    * @return the list of String representations
    */
-  public String[] getLog() {
+  String[] getLog() {
     List<String> logs = new ArrayList<>();
     BufferedReader reader;
     try {
@@ -150,7 +150,7 @@ public class Log {
    *
    * @param column the column of data to get, should be a value between 0-2 inclusive.
    */
-  public String[] getColumn(int column) {
+  String[] getColumn(int column) {
     List<List<String>> tabledLog = new ArrayList<>();
     List<String> ret = new ArrayList<>();
     for (String logEntry : getLog()) {

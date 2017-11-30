@@ -6,7 +6,6 @@ import java.io.File;
 import java.util.*;
 
 /** Represents a physical image file in a filesystem. */
-@SuppressWarnings("WeakerAccess")
 public abstract class AbsTaggableFile extends Observable implements Observer {
 
   private static final String TAG_MARKER = "@";
@@ -174,7 +173,7 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
    *
    * @return the suffix of an image
    */
-  public String getSuffix() {
+  private String getSuffix() {
     String ret = "";
     if (file.getName().lastIndexOf(".") != -1) {
       ret = file.getName().substring(file.getName().lastIndexOf("."));

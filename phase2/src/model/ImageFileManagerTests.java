@@ -1,4 +1,4 @@
-package tests;
+package model;
 // Note: I'm using Junit4 because of the Temporary Folder Rule that it has (and was removed in
 // Junit5) to save on headaches
 import model.ImageFile;

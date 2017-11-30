@@ -107,7 +107,7 @@ public class TagManager extends Observable implements Observer, Taggable {
     }
   }
 
-  public String[] getLastErasedTag() {
+  String[] getLastErasedTag() {
     return lastErasedTags;
   }
 

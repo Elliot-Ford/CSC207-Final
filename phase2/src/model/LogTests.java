@@ -1,7 +1,6 @@
-package tests;
+package model;
 // Note: I'm using Junit4 because of the Temporary Folder Rule that it has (and was removed in
 // Junit5) to save on headaches
-import model.Log;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -37,7 +36,7 @@ public class LogTests {
   public void testLogFileIsRenamed() {
     String newName = "newName";
     try {
-      log.updateLog("", "", "newName");
+      log.updateLog("", "", newName);
     } catch (Exception e) {
       e.printStackTrace();
     }
