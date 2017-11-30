@@ -7,9 +7,10 @@ public class TagManager extends Observable implements Observer, Taggable {
   private static final String LOG_FILE_NAME = "TagManager";
   /** A set of tags. */
   private Set<String> tags;
-
+    /** A Log file*/
   private Log log;
 
+    /**A String Array of erased tags */
   private String[] lastErasedTags;
 
   /** Construct a new TagManager with no existing tag. */
@@ -107,6 +108,10 @@ public class TagManager extends Observable implements Observer, Taggable {
     }
   }
 
+    /**
+     * Return last Erased Tags
+     * @return String[]
+     */
   String[] getLastErasedTag() {
     return lastErasedTags;
   }
