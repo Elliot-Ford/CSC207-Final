@@ -289,4 +289,9 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   public int hashCode() {
     return file.getAbsolutePath().hashCode();
   }
+
+
+  public String[] getDates() {
+    return log.getDates();
+  }
 }
