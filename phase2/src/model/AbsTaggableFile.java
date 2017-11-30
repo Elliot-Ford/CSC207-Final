@@ -109,8 +109,6 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     boolean success = false;
     if (newTag != null && newTag.length() > 0 && !Arrays.asList(getTags()).contains(newTag)) {
       success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
-      setChanged();
-      notifyObservers();
     }
     return success;
   }
@@ -145,6 +143,8 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
       file = newFile;
       ret = log.rename(lastName, newName, file.getName());
     }
+    setChanged();
+    notifyObservers();
     return ret;
   }
 
@@ -237,5 +237,9 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
    */
   public String[] getLog() {
     return log.getLog();
+  }
+
+  public String[] getPreviousStates() {
+    return log.getColumn(0);
   }
 }
