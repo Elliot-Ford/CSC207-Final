@@ -273,18 +273,20 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     return log.getLog();
   }
 
-    /**
-     * Return a list of String representation of previous tags.
-     * @return String[]
-     */
+  /**
+   * Return a list of String representation of previous tags.
+   *
+   * @return String[]
+   */
   public String[] getPreviousStates() {
     return log.getColumn(0);
   }
 
-    /**
-     * Returns a specific hash code for a file
-     * @return int
-     */
+  /**
+   * Returns a specific hash code for a file
+   *
+   * @return int
+   */
   @Override
   public int hashCode() {
     return file.getAbsolutePath().hashCode();

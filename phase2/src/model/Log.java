@@ -4,7 +4,10 @@ import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
 
 /** Manages the log file for the target class (ImageFile and TagManager in our model). */
 public class Log {
@@ -65,6 +68,7 @@ public class Log {
 
   /**
    * Add the new line into the now log file.
+   *
    * @param entry1
    * @param entry2
    * @throws Exception
@@ -84,6 +88,7 @@ public class Log {
 
   /**
    * Helps generate the Log entry
+   *
    * @param entry1
    * @param entry2
    * @return
@@ -101,6 +106,7 @@ public class Log {
 
   /**
    * Renames the file
+   *
    * @param newFile
    * @return File
    */
@@ -134,6 +140,7 @@ public class Log {
 
   /**
    * Update the log
+   *
    * @param lastName
    * @param newName
    * @throws Exception

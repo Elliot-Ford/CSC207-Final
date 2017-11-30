@@ -353,9 +353,7 @@ public class ViewerController {
         newName =
             selectedItem.substring(selectedItem.indexOf("-> ") + 3, selectedItem.indexOf(" | "));
       }
-      if (selectedImageFile != null
-          && newName != ""
-          && selectedImageFile.rename(newName)) {
+      if (selectedImageFile != null && newName.equals("") && selectedImageFile.rename(newName)) {
         updateAll();
       }
     } catch (Exception e) {
