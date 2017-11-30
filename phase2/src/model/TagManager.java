@@ -14,11 +14,15 @@ public class TagManager extends Observable implements Observer, Taggable {
 
   /** Construct a new TagManager with no existing tag. */
   public TagManager() {
+    lastErasedTags = new String[0];
     tags = new HashSet<>();
     log = new Log(".", LOG_FILE_NAME);
     // Get the tags of the previous session of the program.
     String[] column1 = log.getColumn(1);
-    String[] tagSet = (column1[column1.length-1].replaceFirst("\\[", "").replaceFirst("]", "").split(","));
+    String[] tagSet = new String[0];
+    if (column1.length > 0){
+      tagSet = (column1[column1.length-1].replaceFirst("\\[", "").replaceFirst("]", "").split(","));
+    }
     for (String s : tagSet) {
       s = s.replaceFirst("\\[", "");
       s = s.replaceFirst("]", "");
