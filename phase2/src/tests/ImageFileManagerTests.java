@@ -1,5 +1,6 @@
-package Tests;
-
+package tests;
+// Note: I'm using Junit4 because of the Temporary Folder Rule that it has (and was removed in
+// Junit5) to save on headaches
 import model.ImageFile;
 import model.ImageFileManager;
 import org.junit.Assert;
@@ -38,21 +39,21 @@ public class ImageFileManagerTests {
   @Test
   public void testGetLocalImageFiles() {
     ImageFile[] expectedResults = new ImageFile[] {new ImageFile(imageFile)};
-    Assert.assertArrayEquals(expectedResults, imageFileManager.getLocalImageFiles());
+    Assert.assertArrayEquals(expectedResults, imageFileManager.getLocalImageFiles(""));
   }
 
   @Test
   public void testGetAllImageFiles() {
     ImageFile[] expectedResults =
         new ImageFile[] {new ImageFile(imageFile), new ImageFile(subFolderedImageFile)};
-    Assert.assertArrayEquals(expectedResults, imageFileManager.getAllImageFiles());
+    Assert.assertArrayEquals(expectedResults, imageFileManager.getAllImageFiles(""));
   }
 
-//  @Test
-//  public void testGetAllTags() {
-//    String[] expectedResults = new String[] {"Tag1", "Tag2"};
-//    Assert.assertArrayEquals(expectedResults, imageFileManager.getAllCurrentTags());
-//  }
+  //  @Test
+  //  public void testGetAllTags() {
+  //    String[] expectedResults = new String[] {"Tag1", "Tag2"};
+  //    Assert.assertArrayEquals(expectedResults, imageFileManager.getAllCurrentTags());
+  //  }
 
   @Test
   public void testGetRoot() {
