@@ -63,6 +63,12 @@ public class Log {
     return ret;
   }
 
+  /**
+   * Add the new line into the now log file.
+   * @param entry1
+   * @param entry2
+   * @throws Exception
+   */
   private void addEntry(String entry1, String entry2) throws Exception {
     // Add the new line into the now log file.
     try {
@@ -76,6 +82,12 @@ public class Log {
     }
   }
 
+  /**
+   * Helps generate the Log entry
+   * @param entry1
+   * @param entry2
+   * @return
+   */
   private String generateLogEntry(String entry1, String entry2) {
     return String.format(
         "%s%s%s%s%tD %tT\n",
@@ -87,6 +99,11 @@ public class Log {
         Calendar.getInstance());
   }
 
+  /**
+   * Renames the file
+   * @param newFile
+   * @return File
+   */
   private File renameFile(File newFile) {
     assert log.renameTo(newFile);
     return newFile;
@@ -115,6 +132,12 @@ public class Log {
     return ret;
   }
 
+  /**
+   * Update the log
+   * @param lastName
+   * @param newName
+   * @throws Exception
+   */
   void updateLog(String lastName, String newName) throws Exception {
     updateLog(lastName, newName, log.getName().substring(1, log.getName().lastIndexOf(".")));
   }
