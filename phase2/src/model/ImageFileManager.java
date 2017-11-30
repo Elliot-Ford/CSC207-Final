@@ -9,7 +9,7 @@ import java.util.List;
 public class ImageFileManager {
   /** String to match all image files */
   private static final String IMAGE_FILE =
-      ".*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)";
+      "^.*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)$";
 
   /** the root of the directory */
   private File root;
@@ -35,10 +35,12 @@ public class ImageFileManager {
   /**
    * Returns all the image files anywhere under the root directory.
    *
+   * @param regex the regular expression to an acceptable file with.
    * @return a ImageFile[] of all image files anywhere under the root directory.
+   *
    */
   @SuppressWarnings("ConstantConditions")
-  public AbsTaggableFile[] getAllImageFiles() {
+  public AbsTaggableFile[] getAllImageFiles(String regex) {
     List<File> matchingFiles = new ArrayList<>();
     if (root.isDirectory() || (root.isFile() && root.getName().matches(IMAGE_FILE))) {
       matchingFiles.add(root);
@@ -75,6 +77,7 @@ public class ImageFileManager {
       } else {
         ret[i] = new GeneralFile(matchingFiles.get(i));
       }
+      tagManager.addTag(ret[i].getTags());
       ret[i].addObserver(tagManager);
       tagManager.addObserver(ret[i]);
     }
@@ -84,10 +87,11 @@ public class ImageFileManager {
   /**
    * Returns all the image files directly under the root directory.
    *
+   * @param regex the regular expression to an acceptable file with.
    * @return a ImageFile[] of all images files directly under the root directory.
    */
   @SuppressWarnings("ConstantConditions")
-  public AbsTaggableFile[] getLocalImageFiles() {
+  public AbsTaggableFile[] getLocalImageFiles(String regex) {
     List<File> matchingFiles = new ArrayList<>();
     if (root.list() != null) {
       for (File file : root.listFiles()) {
@@ -103,6 +107,7 @@ public class ImageFileManager {
       } else {
         ret[i] = new GeneralFile(matchingFiles.get(i));
       }
+      tagManager.addTag(ret[i].getTags());
       ret[i].addObserver(tagManager);
       tagManager.addObserver(ret[i]);
     }
@@ -155,9 +160,11 @@ public class ImageFileManager {
     if (root.exists()) {
       ret = true;
       this.root = root;
-      for (AbsTaggableFile image : getAllImageFiles()) {
-        tagManager.addTag(image.getTags());
-      }
+//      for (AbsTaggableFile image : getAllImageFiles("")) {
+//        for (String tag : image.getTags()) {
+//          tagManager.addTag(tag);
+//        }
+//      }
     }
     return ret;
   }
