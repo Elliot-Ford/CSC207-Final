@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,7 +16,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.AbsTaggableFile;
-import model.ImageFileManager;
+import model.TaggableFileManager;
 
 import java.io.File;
 
@@ -59,8 +60,8 @@ public class ViewerController {
   /** the Boolean that indicates which mode it is for the TreeView */
   private boolean toggle;
 
-  /** the imageFileManager for this GUI */
-  private ImageFileManager imageFileManager;
+  /** the taggableFileManager for this GUI */
+  private TaggableFileManager taggableFileManager;
 
   /** the imageFile for this GUI */
   private AbsTaggableFile selectedImageFile;
@@ -86,7 +87,7 @@ public class ViewerController {
   /** Construct a ViewerController. */
   public ViewerController() {
     toggle = false;
-    imageFileManager = new ImageFileManager("");
+    taggableFileManager = new TaggableFileManager("");
     currentTagsList = FXCollections.observableArrayList();
     directoryTagsList = FXCollections.observableArrayList();
     previousTagsList = FXCollections.observableArrayList();
@@ -104,11 +105,15 @@ public class ViewerController {
   void setup(Stage stage) {
     changeDirectory(stage);
     currentTags.setItems(currentTagsList);
+    currentTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     directoryTags.setItems(directoryTagsList);
+    directoryTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     previousTags.setItems(previousTagsList);
+    previousTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     viewer.setItems(viewerList);
     log.setItems(logList);
     previousStates.setItems(previousStateList);
+
     //    currentTags.setCellFactory(
     //        CheckBoxListCell.forListView(
     //            new Callback<String, ObservableValue<Boolean>>() {
@@ -140,8 +145,8 @@ public class ViewerController {
     File initialDirectory = new File(System.getProperty("user.home"));
     File newDirectory;
 
-    if (imageFileManager.getRoot().exists()) {
-      initialDirectory = imageFileManager.getRoot();
+    if (taggableFileManager.getRoot().exists()) {
+      initialDirectory = taggableFileManager.getRoot();
     }
 
     dc.setInitialDirectory(initialDirectory);
@@ -149,7 +154,7 @@ public class ViewerController {
     do {
       newDirectory = dc.showDialog(window);
       if (newDirectory != null && newDirectory.exists()) {
-        imageFileManager.changeDirectory(newDirectory);
+        taggableFileManager.changeDirectory(newDirectory);
         selectedImageFile = null;
         updateAll();
       }
@@ -167,8 +172,8 @@ public class ViewerController {
     File initialDirectory = new File(System.getProperty("user.home"));
     File newDirectory;
 
-    if (imageFileManager.getRoot().exists()) {
-      initialDirectory = imageFileManager.getRoot();
+    if (taggableFileManager.getRoot().exists()) {
+      initialDirectory = taggableFileManager.getRoot();
     }
 
     dc.setInitialDirectory(initialDirectory);
@@ -192,24 +197,24 @@ public class ViewerController {
     updateImageFileViews();
   }
 
-  /** Updates all the ImageFileManager related views. */
+  /** Updates all the TaggableFileManager related views. */
   @FXML
   private void updateImageFileManagerViews() {
     viewerList.clear();
     directoryTagsList.clear();
-    if (imageFileManager != null) {
+    if (taggableFileManager != null) {
       AbsTaggableFile[] imageFiles;
       if (toggle) {
-        imageFiles = imageFileManager.getAllImageFiles("");
+        imageFiles = taggableFileManager.getAllImageFiles("");
 
       } else {
-        imageFiles = imageFileManager.getLocalImageFiles("");
+        imageFiles = taggableFileManager.getLocalImageFiles("");
       }
       viewerList.addAll(imageFiles);
       if (selectedImageFile != null) {
         viewer.getSelectionModel().select(selectedImageFile);
       }
-      directoryTagsList.addAll(imageFileManager.getAllCurrentTags());
+      directoryTagsList.addAll(taggableFileManager.getAllCurrentTags());
     }
   }
 
@@ -257,7 +262,6 @@ public class ViewerController {
     AbsTaggableFile imageFile = viewer.getSelectionModel().getSelectedItem();
     if (imageFile != null) {
       selectedImageFile = imageFile;
-
       updateAll();
     }
   }
@@ -299,7 +303,7 @@ public class ViewerController {
   @FXML
   public void handleCreateTag() {
     if (selectedImageFile != null) {
-      if (imageFileManager.addTag(new String[] {tagToCreate.getText()})) {
+      if (taggableFileManager.addTag(new String[] {tagToCreate.getText()})) {
         tagToCreate.clear();
         updateAll();
       }
@@ -329,8 +333,8 @@ public class ViewerController {
   /** Handles the delete Tag action. */
   @FXML
   public void handleDeleteTag() {
-    if (imageFileManager != null) {
-      if (imageFileManager.deleteTag(
+    if (taggableFileManager != null) {
+      if (taggableFileManager.deleteTag(
           directoryTags
               .getSelectionModel()
               .getSelectedItems()

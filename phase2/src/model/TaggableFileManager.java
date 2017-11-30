@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /** Manages all the imageFiles under a root folder */
-public class ImageFileManager {
+public class TaggableFileManager {
   /** String to match all image files */
   private static final String IMAGE_FILE = "^.*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)$";
 
@@ -21,15 +21,15 @@ public class ImageFileManager {
   private Set<AbsTaggableFile> absTaggableFiles;
 
   /**
-   * Construct a new ImageFileManager object.
+   * Construct a new TaggableFileManager object.
    *
-   * @param path the root directory for this ImageFileManager object
+   * @param path the root directory for this TaggableFileManager object
    */
-  public ImageFileManager(String path) {
+  public TaggableFileManager(String path) {
     this(new File(path));
   }
 
-  public ImageFileManager(File file) {
+  public TaggableFileManager(File file) {
     root = new File("");
     tagManager = new TagManager();
     absTaggableFiles = new HashSet<>();
@@ -155,7 +155,7 @@ public class ImageFileManager {
   }
 
   /**
-   * Changes the working directory of ImageFileManager if new directory exists. All tags that aren't
+   * Changes the working directory of TaggableFileManager if new directory exists. All tags that aren't
    * associated with an Image will when be unavailable when switch happens unless restored.
    *
    * @param path the String path of the root folder to try to switch to
@@ -166,7 +166,7 @@ public class ImageFileManager {
   }
 
   /**
-   * Changes the working directory of ImageFileManager if new directory exists. All tags that aren't
+   * Changes the working directory of TaggableFileManager if new directory exists. All tags that aren't
    * associated with an Image will when be unavailable when switch happens unless restored.
    *
    * @param root the root folder to try to switch to
