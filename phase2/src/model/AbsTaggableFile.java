@@ -108,7 +108,11 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   public boolean addTag(String newTag) {
     boolean success = false;
     if (newTag != null && newTag.length() > 0 && !Arrays.asList(getTags()).contains(newTag)) {
-      success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+      try {
+        success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     return success;
   }
@@ -123,25 +127,29 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     boolean ret = false;
     for (String tag : thisTags) {
       if (tag != null && file.getName().contains(tag) && tag.length() > 0) {
-        ret = rename(getName().replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, tag), ""));
+        try {
+          ret = rename(getName().replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, tag), ""));
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
     }
     return ret;
   }
 
   /**
-   * Tries to rename the image with the newName
+   * Tries to updateLog the image with the newName
    *
-   * @param newName a String to try and rename the image with.
+   * @param newName a String to try and updateLog the image with.
    * @return true if renaming is successful, false if it isn't.
    */
-  public boolean rename(String newName) {
+  public boolean rename(String newName) throws Exception {
     String lastName = getName();
     File newFile = new File(file.getParent(), newName + getSuffix());
     boolean ret = false;
     if (!newFile.exists() && file.renameTo(newFile)) {
       file = newFile;
-      ret = log.rename(lastName, newName, file.getName());
+      ret = log.updateLog(lastName, newName, file.getName());
     }
     setChanged();
     notifyObservers();
@@ -176,7 +184,8 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
 
   @Override
   public String toString() {
-    return file.getName();
+    return file.getParentFile().getName() + "/" + file.getName();
+
   }
 
   /**
