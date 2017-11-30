@@ -1,30 +1,29 @@
 package model;
-// Note: I'm using Junit4 because of the Temporary Folder Rule that it has (and was removed in
-// Junit5) to save on headaches
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
-public class LogTests {
+public class LogTest {
   private final String LOG_FILE_NAME = "log";
   private final String LOG_FILE_FULL_NAME = "." + LOG_FILE_NAME + ".log";
-  @Rule public TemporaryFolder folder = new TemporaryFolder();
+  @Rule
+  public TemporaryFolder folder = new TemporaryFolder();
   private Log log;
 
   @Before
-  public void Before() throws IOException {
+  public void setUp() throws Exception {
     log = new Log(new File(folder.getRoot(), LOG_FILE_NAME));
   }
+
+  @After
+  public void tearDown() throws Exception {}
 
   @Test
   public void testLogFileIsCreated() {
@@ -33,7 +32,17 @@ public class LogTests {
   }
 
   @Test
-  public void testLogFileIsRenamed() {
+  public void moveFile() throws Exception {
+    File tempFolder = folder.newFolder("folder");
+    log.moveFile(tempFolder.getPath());
+    File expectedResult = new File(tempFolder.getPath(), LOG_FILE_FULL_NAME);
+    File shouldntExist = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
+    assertTrue(expectedResult.exists());
+    assertFalse(shouldntExist.exists());
+  }
+
+  @Test
+  public void updateLog() throws Exception {
     String newName = "newName";
     try {
       log.updateLog("", "", newName);
@@ -47,21 +56,31 @@ public class LogTests {
   }
 
   @Test
-  public void testGetColumnWithAlphaEntries() throws IOException {
+  public void updateLog1() throws Exception {
+    String newName = "newName";
+    try {
+      log.updateLog("", "");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    File shouldntExist = new File(folder.getRoot(), ".newName.log");
+    File expectedResult = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
+    assertTrue(expectedResult.exists());
+    assertFalse(shouldntExist.exists());
+  }
+
+  @Test
+  public void getLog() throws Exception {
     File file = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.append("oldname / newname / time");
     writer.close();
-    String[] expectedResultsColumn0 = new String[] {"oldname"};
-    String[] expectedResultsColumn1 = new String[] {"newname"};
-    String[] expectedResultsColumn2 = new String[] {"time"};
-    Assert.assertArrayEquals(expectedResultsColumn0, log.getColumn(0));
-    Assert.assertArrayEquals(expectedResultsColumn1, log.getColumn(1));
-    Assert.assertArrayEquals(expectedResultsColumn2, log.getColumn(2));
+    String[] expectedResults = new String[] {"oldname / newname / time"};
+    Assert.assertArrayEquals(expectedResults, log.getLog());
   }
 
   @Test
-  public void testGetColumnWithSpecialEntries() throws IOException {
+  public void getColumnWithSpecialEntries() throws Exception {
     File file = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.append("!@#$%^&*() / ,.<>;:'\"[]{}\\|? / `~-_=+");
@@ -75,12 +94,16 @@ public class LogTests {
   }
 
   @Test
-  public void testGetLog() throws IOException {
+  public void getColumnWithAlphaEntries() throws Exception {
     File file = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
     BufferedWriter writer = new BufferedWriter(new FileWriter(file));
     writer.append("oldname / newname / time");
     writer.close();
-    String[] expectedResults = new String[] {"oldname / newname / time"};
-    Assert.assertArrayEquals(expectedResults, log.getLog());
+    String[] expectedResultsColumn0 = new String[] {"oldname"};
+    String[] expectedResultsColumn1 = new String[] {"newname"};
+    String[] expectedResultsColumn2 = new String[] {"time"};
+    Assert.assertArrayEquals(expectedResultsColumn0, log.getColumn(0));
+    Assert.assertArrayEquals(expectedResultsColumn1, log.getColumn(1));
+    Assert.assertArrayEquals(expectedResultsColumn2, log.getColumn(2));
   }
 }

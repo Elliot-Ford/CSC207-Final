@@ -43,7 +43,11 @@ public class Log {
     }
   }
 
-  /** @param fileName */
+  /**
+   * Constructs a new log file at the given root with the given name having the needed
+   * prefix and suffix added to it.
+   *  @param fileName the name of the log file
+   */
   public Log(String root, String fileName) {
     this(new File(root, fileName));
   }
@@ -52,26 +56,20 @@ public class Log {
    * When the file is moved, move this log file as well.
    *
    * @param newPath the String representation of the given directory
-   * @param file the target file of this log file
    * @return Whether this moving the files was successful
    */
-  boolean moveFile(String newPath, File file, boolean ret1) {
-    File newLog = new File(newPath, LOG_FILE_PREFIX + file.getName() + LOG_FILE_SUFFIX);
-    boolean ret = ret1 && log.renameTo(newLog);
-    if (ret) {
-      if (newLog.exists()) {
-        log = newLog;
-      }
-    }
-    return ret;
+  boolean moveFile(String newPath) {
+    File newLog = new File(newPath, log.getName());
+    log = renameFile(newLog);
+    return true;
   }
 
   /**
    * Add the new line into the now log file.
    *
-   * @param entry1
-   * @param entry2
-   * @throws Exception
+   * @param entry1 the first entry to add to the log
+   * @param entry2 the second entry to add to the log
+   * @throws Exception exception is thrown if unable to write to the log file
    */
   private void addEntry(String entry1, String entry2) throws Exception {
     // Add the new line into the now log file.
@@ -89,9 +87,9 @@ public class Log {
   /**
    * Helps generate the Log entry
    *
-   * @param entry1
-   * @param entry2
-   * @return
+   * @param entry1 the first entry in the log
+   * @param entry2 the second entry in the log
+   * @return returns the format of a row in the log
    */
   private String generateLogEntry(String entry1, String entry2) {
     return String.format(
@@ -107,8 +105,8 @@ public class Log {
   /**
    * Renames the file
    *
-   * @param newFile
-   * @return File
+   * @param newFile the file to try and rename the log file to.
+   * @return File the new reference to the log file.
    */
   private File renameFile(File newFile) {
     assert log.renameTo(newFile);
@@ -128,25 +126,23 @@ public class Log {
         new File(
             log.getParentFile(),
             String.format("%s%s%s", LOG_FILE_PREFIX, newLogName, LOG_FILE_SUFFIX));
-    //        if (!newLog.exists()) {
-    boolean ret = log.renameTo(newLog);
-    assert ret;
-    if (ret) {
-      log = newLog;
-    }
+    log = renameFile(newLog);
+//    boolean ret = log.renameTo(newLog);
+//    assert ret;
+//    log = newLog;
     addEntry(entry1, entry2);
-    return ret;
+    return true;
   }
 
   /**
    * Update the log
    *
-   * @param lastName
-   * @param newName
-   * @throws Exception
+   * @param entry1 the first entry to add to the log.
+   * @param entry2 the second entry to add to the log.
+   * @throws Exception throws exception if unable to update log.
    */
-  void updateLog(String lastName, String newName) throws Exception {
-    updateLog(lastName, newName, log.getName().substring(1, log.getName().lastIndexOf(".")));
+  void updateLog(String entry1, String entry2) throws Exception {
+    addEntry(entry1, entry2);
   }
 
   /**
