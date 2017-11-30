@@ -1,7 +1,5 @@
 package viewer;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,7 +8,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -55,8 +52,6 @@ public class ViewerController {
   /** The imaged displayed as default when there's no image available. */
   public Image defaultImage;
 
-  /** the list of previousStates for an image */
-  public ListView<String> previousStates;
   public ChoiceBox<String> fileType;
   public ChoiceBox<String> dates;
 
@@ -115,12 +110,14 @@ public class ViewerController {
     previousTags.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     viewer.setItems(viewerList);
     log.setItems(logList);
-    previousStates.setItems(previousStateList);
     fileType.getItems().add("Image");
     fileType.getItems().add("Text");
     fileType.getItems().add("Audio");
     fileType.setValue("Image");
-    fileType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateAll());
+    fileType
+        .getSelectionModel()
+        .selectedItemProperty()
+        .addListener((observable, oldValue, newValue) -> updateAll());
     updateAll();
   }
 
@@ -193,7 +190,7 @@ public class ViewerController {
     directoryTagsList.clear();
     if (taggableFileManager != null) {
       AbsTaggableFile[] imageFiles;
-        imageFiles = taggableFileManager.getTaggableFiles(fileType.getValue(), toggle);
+      imageFiles = taggableFileManager.getTaggableFiles(fileType.getValue(), toggle);
       viewerList.addAll(imageFiles);
       if (selectedImageFile != null) {
         viewer.getSelectionModel().select(selectedImageFile);
@@ -357,8 +354,13 @@ public class ViewerController {
   @FXML
   public void handleRestorePreviousState() {
     try {
-      if (selectedImageFile != null
-          && selectedImageFile.rename(previousStates.getSelectionModel().getSelectedItem())) {
+      String newName = "";
+      if (log.getSelectionModel().getSelectedItem() != null) {
+        String selectedItem = log.getSelectionModel().getSelectedItem();
+        newName =
+            selectedItem.substring(selectedItem.indexOf("-> ") + 3, selectedItem.indexOf(" | "));
+      }
+      if (selectedImageFile != null && newName.equals("") && selectedImageFile.rename(newName)) {
         updateAll();
       }
     } catch (Exception e) {

@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.*;
 
 /** Represents a physical image file in a filesystem. */
-public abstract class AbsTaggableFile extends Observable implements Observer {
+public abstract class AbsTaggableFile extends Observable implements Observer, Taggable {
 
   private static final String TAG_MARKER = "@";
 
@@ -44,7 +44,7 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   public boolean moveFile(String newPath) {
     File newFile = new File(newPath, getName() + getSuffix());
     boolean ret1 = file.renameTo(newFile);
-    boolean ret2 = log.moveFile(newPath, file, ret1);
+    boolean ret2 = log.moveFile(newPath);
     boolean ret = ret1 && ret2;
     if (ret) {
       if (newFile.exists()) {
@@ -273,18 +273,20 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     return log.getLog();
   }
 
-    /**
-     * Return a list of String representation of previous tags.
-     * @return String[]
-     */
+  /**
+   * Return a list of String representation of previous tags.
+   *
+   * @return String[]
+   */
   public String[] getPreviousStates() {
     return log.getColumn(0);
   }
 
-    /**
-     * Returns a specific hash code for a file
-     * @return int
-     */
+  /**
+   * Returns a specific hash code for a file
+   *
+   * @return int
+   */
   @Override
   public int hashCode() {
     return file.getAbsolutePath().hashCode();

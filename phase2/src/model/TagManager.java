@@ -7,10 +7,10 @@ public class TagManager extends Observable implements Observer, Taggable {
   private static final String LOG_FILE_NAME = "TagManager";
   /** A set of tags. */
   private Set<String> tags;
-    /** A Log file*/
+  /** A Log file */
   private Log log;
 
-    /**A String Array of erased tags */
+  /** A String Array of erased tags */
   private String[] lastErasedTags;
 
   /** Construct a new TagManager with no existing tag. */
@@ -21,14 +21,15 @@ public class TagManager extends Observable implements Observer, Taggable {
     // Get the tags of the previous session of the program.
     String[] column1 = log.getColumn(1);
     String[] tagSet = new String[0];
-    if (column1.length > 0){
-      tagSet = (column1[column1.length-1].replaceFirst("\\[", "").replaceFirst("]", "").split(","));
+    if (column1.length > 0) {
+      tagSet =
+          (column1[column1.length - 1].replaceFirst("\\[", "").replaceFirst("]", "").split(","));
     }
     for (String s : tagSet) {
       s = s.replaceFirst("\\[", "");
       s = s.replaceFirst("]", "");
       s = s.trim();
-      if(s.length() > 0) {
+      if (s.length() > 0) {
         tags.add(s);
       }
     }
@@ -108,10 +109,11 @@ public class TagManager extends Observable implements Observer, Taggable {
     }
   }
 
-    /**
-     * Return last Erased Tags
-     * @return String[]
-     */
+  /**
+   * Return last Erased Tags
+   *
+   * @return String[]
+   */
   String[] getLastErasedTag() {
     return lastErasedTags;
   }

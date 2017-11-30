@@ -100,7 +100,7 @@ public class TaggableFileManager {
 
   private String getRegEx(String fileType) {
     String regex = "";
-    if(fileType != null) {
+    if (fileType != null) {
       switch (fileType) {
         case "Image":
           regex = IMAGE_FILE;
