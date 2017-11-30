@@ -1,16 +1,16 @@
 package viewer;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
@@ -56,6 +56,7 @@ public class ViewerController {
 
   /** the list of previousStates for an image */
   public ListView<String> previousStates;
+  public ChoiceBox<String> fileType;
 
   /** the Boolean that indicates which mode it is for the TreeView */
   private boolean toggle;
@@ -113,25 +114,11 @@ public class ViewerController {
     viewer.setItems(viewerList);
     log.setItems(logList);
     previousStates.setItems(previousStateList);
-
-    //    currentTags.setCellFactory(
-    //        CheckBoxListCell.forListView(
-    //            new Callback<String, ObservableValue<Boolean>>() {
-    //              @Override
-    //              public ObservableValue<Boolean> call(String item) {
-    //                BooleanProperty observable = new SimpleBooleanProperty();
-    //                observable.addListener(
-    //                    (obs, wasSelected, isNowSelected) ->
-    //                        System.out.println(
-    //                            "Check box for "
-    //                                + item
-    //                                + " changed from "
-    //                                + wasSelected
-    //                                + " to "
-    //                                + isNowSelected));
-    //                return observable;
-    //              }
-    //            }));
+    fileType.getItems().add("Image");
+    fileType.getItems().add("Text");
+    fileType.getItems().add("Audio");
+    fileType.setValue("Image");
+    fileType.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateAll());
     updateAll();
   }
 
@@ -204,12 +191,7 @@ public class ViewerController {
     directoryTagsList.clear();
     if (taggableFileManager != null) {
       AbsTaggableFile[] imageFiles;
-      if (toggle) {
-        imageFiles = taggableFileManager.getAllImageFiles("");
-
-      } else {
-        imageFiles = taggableFileManager.getLocalImageFiles("");
-      }
+        imageFiles = taggableFileManager.getTaggableFiles(fileType.getValue(), toggle);
       viewerList.addAll(imageFiles);
       if (selectedImageFile != null) {
         viewer.getSelectionModel().select(selectedImageFile);

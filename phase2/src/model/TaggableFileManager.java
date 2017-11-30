@@ -9,7 +9,12 @@ import java.util.Set;
 /** Manages all the imageFiles under a root folder */
 public class TaggableFileManager {
   /** String to match all image files */
-  private static final String IMAGE_FILE = "^.*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)$";
+  private static final String IMAGE_FILE = "^.*[.](jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF|bmp|BMP)$";
+
+  private static final String TEXT_FILE =
+      "^.*[.](txt|TXT|doc|DOC|docx|DOCX|odt|ODT|pdf|PDF|rtf|RTF|tex|TEX)$";
+  private static final String AUDIO_FILE =
+      "^.*[.](aif|AIF|cda|CDA|mid|MID|midi|MIDI|mp3|MP3|mpa|MPA|ogg|OGG|wav|WAV|wma|WMA|wpl|WPL)$";
 
   /** the root of the directory */
   private File root;
@@ -39,58 +44,76 @@ public class TaggableFileManager {
   /**
    * Returns all the image files anywhere under the root directory.
    *
-   * @param regex the regular expression to an acceptable file with.
-   * @return a ImageFile[] of all image files anywhere under the root directory.
+   * @param fileType file type to return, must be either "Image","Audio",or "Text"
+   * @param toggle true if recursively get all taggable files, false if just local
+   * @return a AbsTaggableFile[] of all files that match the fileType and recursively under the root
+   *     if the toggle is true. Directly under the root if false.
    */
-  public AbsTaggableFile[] getAllImageFiles(String regex) {
+  public AbsTaggableFile[] getTaggableFiles(String fileType, boolean toggle) {
+    String regex = getRegEx(fileType);
     List<File> matchingFiles = new ArrayList<>();
-    if (root.isDirectory() || (root.isFile() && root.getName().matches(IMAGE_FILE))) {
-      matchingFiles.add(root);
+    if (toggle) {
+      if (root.isDirectory() || (root.isFile() && root.getName().matches(regex))) {
+        matchingFiles.add(root);
 
-      int i = 0;
-      while (i < matchingFiles.size()) {
-        // Check if element at i in ret is a Directory, a File, or it exists.
-        if (matchingFiles.get(i).isDirectory()) {
-          // Element at i is a directory, so determine if it has children and remove the Element at
-          // i.
-          // Check if the Element at i has children.
-          if (matchingFiles.get(i).list() != null) {
-            // Element at i has children, so add children to the ArrayList if they match the regEx.
-            for (File file : matchingFiles.get(i).listFiles()) {
-              if (file.getName().matches(IMAGE_FILE) || file.isDirectory()) {
-                matchingFiles.add(file);
+        int i = 0;
+        while (i < matchingFiles.size()) {
+          // Check if element at i in ret is a Directory, a File, or it exists.
+          if (matchingFiles.get(i).isDirectory()) {
+            // Element at i is a directory, so determine if it has children and remove the Element
+            // at
+            // i.
+            // Check if the Element at i has children.
+            if (matchingFiles.get(i).list() != null) {
+              // Element at i has children, so add children to the ArrayList if they match the
+              // regEx.
+              for (File file : matchingFiles.get(i).listFiles()) {
+                if (file.getName().matches(regex) || file.isDirectory()) {
+                  matchingFiles.add(file);
+                }
               }
             }
+            matchingFiles.remove(i);
+          } else if (matchingFiles.get(i).isFile()) {
+            // Element at i is a File, so increment i by 1.
+            i += 1;
+          } else {
+            // Element doesn't exist in filesystem, so remove from ret.
+            matchingFiles.remove(i);
           }
-          matchingFiles.remove(i);
-        } else if (matchingFiles.get(i).isFile()) {
-          // Element at i is a File, so increment i by 1.
-          i += 1;
-        } else {
-          // Element doesn't exist in filesystem, so remove from ret.
-          matchingFiles.remove(i);
+        }
+      }
+    } else {
+      if (root.isFile() && root.getName().matches(regex)) {
+        matchingFiles.add(root);
+      }
+      if (root.list() != null) {
+        for (File file : root.listFiles()) {
+          if (file.isFile() && file.getName().matches(regex)) {
+            matchingFiles.add(file);
+          }
         }
       }
     }
     return generateAbsTaggableFiles(matchingFiles);
   }
 
-  /**
-   * Returns all the image files directly under the root directory.
-   *
-   * @param regex the regular expression to an acceptable file with.
-   * @return a ImageFile[] of all images files directly under the root directory.
-   */
-  public AbsTaggableFile[] getLocalImageFiles(String regex) {
-    List<File> matchingFiles = new ArrayList<>();
-    if (root.list() != null) {
-      for (File file : root.listFiles()) {
-        if (file.isFile() && file.getName().matches(IMAGE_FILE)) {
-          matchingFiles.add(file);
-        }
+  private String getRegEx(String fileType) {
+    String regex = "";
+    if(fileType != null) {
+      switch (fileType) {
+        case "Image":
+          regex = IMAGE_FILE;
+          break;
+        case "Text":
+          regex = TEXT_FILE;
+          break;
+        case "Audio":
+          regex = AUDIO_FILE;
+          break;
       }
     }
-    return generateAbsTaggableFiles(matchingFiles);
+    return regex;
   }
 
   private AbsTaggableFile[] generateAbsTaggableFiles(List<File> files) {
@@ -155,8 +178,8 @@ public class TaggableFileManager {
   }
 
   /**
-   * Changes the working directory of TaggableFileManager if new directory exists. All tags that aren't
-   * associated with an Image will when be unavailable when switch happens unless restored.
+   * Changes the working directory of TaggableFileManager if new directory exists. All tags that
+   * aren't associated with an Image will when be unavailable when switch happens unless restored.
    *
    * @param path the String path of the root folder to try to switch to
    * @return true if changingDirectory succeeds.
@@ -166,8 +189,8 @@ public class TaggableFileManager {
   }
 
   /**
-   * Changes the working directory of TaggableFileManager if new directory exists. All tags that aren't
-   * associated with an Image will when be unavailable when switch happens unless restored.
+   * Changes the working directory of TaggableFileManager if new directory exists. All tags that
+   * aren't associated with an Image will when be unavailable when switch happens unless restored.
    *
    * @param root the root folder to try to switch to
    * @return true if changingDirectory succeeds.

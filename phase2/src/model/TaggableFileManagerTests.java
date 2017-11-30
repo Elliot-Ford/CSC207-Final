@@ -37,14 +37,14 @@ public class TaggableFileManagerTests {
   @Test
   public void testGetLocalImageFiles() {
     ImageFile[] expectedResults = new ImageFile[] {new ImageFile(imageFile)};
-    Assert.assertArrayEquals(expectedResults, taggableFileManager.getLocalImageFiles(""));
+    Assert.assertArrayEquals(expectedResults, taggableFileManager.getTaggableFiles("Image", false));
   }
 
   @Test
   public void testGetAllImageFiles() {
     ImageFile[] expectedResults =
         new ImageFile[] {new ImageFile(imageFile), new ImageFile(subFolderedImageFile)};
-    Assert.assertArrayEquals(expectedResults, taggableFileManager.getAllImageFiles(""));
+    Assert.assertArrayEquals(expectedResults, taggableFileManager.getTaggableFiles("Image", true));
   }
 
   //  @Test

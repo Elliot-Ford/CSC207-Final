@@ -231,8 +231,8 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   @Override
   public boolean equals(Object o) {
     return o != null
-        && o.getClass() == this.getClass()
-        && ((ImageFile) o).getFile().equals(this.getFile());
+        && o instanceof AbsTaggableFile
+        && ((AbsTaggableFile) o).getFile().equals(this.getFile());
   }
 
   /**
