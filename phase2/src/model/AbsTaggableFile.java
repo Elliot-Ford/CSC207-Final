@@ -185,7 +185,6 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   @Override
   public String toString() {
     return file.getParentFile().getName() + "/" + file.getName();
-
   }
 
   /**
@@ -250,5 +249,10 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
 
   public String[] getPreviousStates() {
     return log.getColumn(0);
+  }
+
+  @Override
+  public int hashCode() {
+    return file.getAbsolutePath().hashCode();
   }
 }

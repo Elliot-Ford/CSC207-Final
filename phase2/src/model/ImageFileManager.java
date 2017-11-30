@@ -2,20 +2,24 @@ package model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /** Manages all the imageFiles under a root folder */
 @SuppressWarnings({"unused", "WeakerAccess", "UnusedReturnValue"})
 public class ImageFileManager {
   /** String to match all image files */
-  private static final String IMAGE_FILE =
-      "^.*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)$";
+  private static final String IMAGE_FILE = "^.*[.](jpg|jpeg|png|gif|bmp|JPG|JPEG|PNG|GIF|BMP)$";
 
   /** the root of the directory */
   private File root;
 
   /** the tagManager */
   private TagManager tagManager;
+
+  /** a set of AbsTaggableFiles */
+  private Set<AbsTaggableFile> absTaggableFiles;
 
   /**
    * Construct a new ImageFileManager object.
@@ -29,6 +33,7 @@ public class ImageFileManager {
   public ImageFileManager(File file) {
     root = new File("");
     tagManager = new TagManager();
+    absTaggableFiles = new HashSet<>();
     changeDirectory(file);
   }
 
@@ -37,7 +42,6 @@ public class ImageFileManager {
    *
    * @param regex the regular expression to an acceptable file with.
    * @return a ImageFile[] of all image files anywhere under the root directory.
-   *
    */
   @SuppressWarnings("ConstantConditions")
   public AbsTaggableFile[] getAllImageFiles(String regex) {
@@ -93,22 +97,31 @@ public class ImageFileManager {
   }
 
   private AbsTaggableFile[] generateAbsTaggableFiles(List<File> files) {
-    AbsTaggableFile[] ret = new AbsTaggableFile[files.size()];
-    for (int i = 0; i < ret.length; i++) {
-      if(files.get(i).getName().matches(IMAGE_FILE)) {
-        ret[i] = new ImageFile(files.get(i));
+    List<AbsTaggableFile> possibleAbsTaggableFiles = new ArrayList<>(files.size());
+    for (int i = 0; i < files.size(); i++) {
+      if (files.get(i).getName().matches(IMAGE_FILE)) {
+        possibleAbsTaggableFiles.add(new ImageFile(files.get(i)));
       } else {
-        ret[i] = new GeneralFile(files.get(i));
+        possibleAbsTaggableFiles.add(new GeneralFile(files.get(i)));
       }
+    }
+    Set<AbsTaggableFile> newAbsTaggableFiles =
+        new HashSet<>(possibleAbsTaggableFiles.size() + absTaggableFiles.size());
+    newAbsTaggableFiles.addAll(absTaggableFiles);
+    newAbsTaggableFiles.addAll(possibleAbsTaggableFiles);
+    newAbsTaggableFiles.retainAll(possibleAbsTaggableFiles);
+    tagManager.deleteObservers();
+    for (AbsTaggableFile absTaggableFile : newAbsTaggableFiles) {
       try {
-        tagManager.addTag(ret[i].getTags());
+        tagManager.addTag(absTaggableFile.getTags());
       } catch (Exception e) {
         e.printStackTrace();
       }
-      ret[i].addObserver(tagManager);
-      tagManager.addObserver(ret[i]);
+      absTaggableFile.addObserver(tagManager);
+      tagManager.addObserver(absTaggableFile);
     }
-    return ret;
+    absTaggableFiles = newAbsTaggableFiles;
+    return absTaggableFiles.toArray(new AbsTaggableFile[absTaggableFiles.size()]);
   }
 
   /**
@@ -167,11 +180,6 @@ public class ImageFileManager {
     if (root.exists()) {
       ret = true;
       this.root = root;
-//      for (AbsTaggableFile image : getAllImageFiles("")) {
-//        for (String tag : image.getTags()) {
-//          tagManager.addTag(tag);
-//        }
-//      }
     }
     return ret;
   }
