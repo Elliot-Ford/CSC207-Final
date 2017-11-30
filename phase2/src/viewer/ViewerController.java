@@ -4,10 +4,12 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.image.Image;
@@ -114,24 +116,24 @@ public class ViewerController {
     viewer.setItems(viewerList);
     log.setItems(logList);
     previousStates.setItems(previousStateList);
-    currentTags.setCellFactory(
-        CheckBoxListCell.forListView(
-            new Callback<String, ObservableValue<Boolean>>() {
-              @Override
-              public ObservableValue<Boolean> call(String item) {
-                BooleanProperty observable = new SimpleBooleanProperty();
-                observable.addListener(
-                    (obs, wasSelected, isNowSelected) ->
-                        System.out.println(
-                            "Check box for "
-                                + item
-                                + " changed from "
-                                + wasSelected
-                                + " to "
-                                + isNowSelected));
-                return observable;
-              }
-            }));
+//    currentTags.setCellFactory(
+//        CheckBoxListCell.forListView(
+//            new Callback<String, ObservableValue<Boolean>>() {
+//              @Override
+//              public ObservableValue<Boolean> call(String item) {
+//                BooleanProperty observable = new SimpleBooleanProperty();
+//                observable.addListener(
+//                    (obs, wasSelected, isNowSelected) ->
+//                        System.out.println(
+//                            "Check box for "
+//                                + item
+//                                + " changed from "
+//                                + wasSelected
+//                                + " to "
+//                                + isNowSelected));
+//                return observable;
+//              }
+//            }));
     updateAll();
   }
 
@@ -342,6 +344,10 @@ public class ViewerController {
     }
   }
 
+  /**
+   * Handles if the user enters the Enter key in the text input.
+   * @param keyEvent key pressed
+   */
   @FXML
   public void handleKeyPressed(KeyEvent keyEvent) {
     if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -349,6 +355,9 @@ public class ViewerController {
     }
   }
 
+  /**
+   * Restore the previous state
+   */
   @FXML
   public void handleRestorePreviousState() {
     if (selectedImageFile != null
