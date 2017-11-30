@@ -101,16 +101,18 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   /**
    * Tries to add a given tag to the image.
    *
-   * @param newTag the tag to try and add.
+   * @param newTags the tag to try and add.
    * @return true if successful, false if it isn't.
    */
-  public boolean addTag(String newTag) {
+  public boolean addTag(String[] newTags) {
     boolean success = false;
-    if (newTag != null && newTag.length() > 0 && !Arrays.asList(getTags()).contains(newTag)) {
-      try {
-        success = rename(String.format("%s %s%s", getName(), TAG_MARKER, newTag));
-      } catch (Exception e) {
-        e.printStackTrace();
+    for (String tag : newTags){
+      if (tag != null && tag.length() > 0 && !Arrays.asList(getTags()).contains(tag)) {
+        try {
+          success = rename(String.format("%s %s%s", getName(), TAG_MARKER, tag));
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
     }
     return success;

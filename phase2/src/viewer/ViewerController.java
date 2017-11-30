@@ -283,7 +283,11 @@ public class ViewerController {
   @FXML
   public void handleAddTag() {
     if (selectedImageFile != null) {
-      if (selectedImageFile.addTag(directoryTags.getSelectionModel().getSelectedItem())) {
+      if (selectedImageFile.addTag(
+          directoryTags
+              .getSelectionModel()
+              .getSelectedItems()
+              .toArray(new String[directoryTags.getSelectionModel().getSelectedItems().size()]))) {
         updateAll();
       }
     }
@@ -293,7 +297,11 @@ public class ViewerController {
   @FXML
   public void handleRestoreTag() {
     if (selectedImageFile != null) {
-      if (selectedImageFile.addTag(previousTags.getSelectionModel().getSelectedItem())) {
+      if (selectedImageFile.addTag(
+          previousTags
+              .getSelectionModel()
+              .getSelectedItems()
+              .toArray(new String[previousTags.getSelectionModel().getSelectedItems().size()]))) {
         updateAll();
       }
     }
