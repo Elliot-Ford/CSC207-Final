@@ -106,15 +106,20 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
    */
   public boolean addTag(String[] newTags) {
     boolean success = false;
+    StringBuilder str = new StringBuilder(getName());
     for (String tag : newTags){
-      if (tag != null && tag.length() > 0 && !Arrays.asList(getTags()).contains(tag)) {
-        try {
-          success = rename(String.format("%s %s%s", getName(), TAG_MARKER, tag));
-        } catch (Exception e) {
-          e.printStackTrace();
+        if (tag != null && tag.length() > 0 && !Arrays.asList(extractTags(str.toString())).contains(tag)) {
+            str.append(String.format(" %s%s", TAG_MARKER, tag));
         }
-      }
     }
+    if(!str.toString().equals(getName())) {
+        try {
+            success = rename(str.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     return success;
   }
 
@@ -126,15 +131,17 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
    */
   public boolean removeTag(String[] thisTags) {
     boolean ret = false;
+    String str = getName();
     for (String tag : thisTags) {
-      if (tag != null && file.getName().contains(tag) && tag.length() > 0) {
-        try {
-          ret = rename(getName().replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, tag), ""));
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+      if (tag != null && str.contains(tag) && tag.length() > 0) {
+       str = str.replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, tag), "");
       }
     }
+      try {
+          ret = rename(str);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
     return ret;
   }
 
