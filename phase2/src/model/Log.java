@@ -63,46 +63,60 @@ public class Log {
     return ret;
   }
 
+  private void addEntry(String entry1, String entry2) throws Exception {
+    // Add the new line into the now log file.
+    try {
+      BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
+      writer.append(generateLogEntry(entry1, entry2));
+      writer.flush();
+      writer.close();
+    } catch (IOException ex) {
+      //      ex.printStackTrace();
+      throw new Exception("Unable to write to Log file: " + ex.getMessage());
+    }
+  }
+
+  private String generateLogEntry(String entry1, String entry2) {
+    return String.format(
+        "%s%s%s%s%tD %tT\n",
+        entry1,
+        LOG_FILE_SEPARATOR,
+        entry2,
+        LOG_FILE_SEPARATOR,
+        Calendar.getInstance(),
+        Calendar.getInstance());
+  }
+
+  private File renameFile(File newFile) {
+    assert log.renameTo(newFile);
+    return newFile;
+  }
+
   /**
    * Record the renaming of the target file in the log file.
    *
-   * @param lastName the last name of the target file
-   * @param newName the new name of the target file
+   * @param entry1 the last name of the target file
+   * @param entry2 the new name of the target file
    * @param newLogName the new log file
    * @return the log file after recording the renaming
    */
-  public boolean rename(String lastName, String newName, String newLogName) {
+  public boolean updateLog(String entry1, String entry2, String newLogName) throws Exception {
     File newLog =
         new File(
             log.getParentFile(),
             String.format("%s%s%s", LOG_FILE_PREFIX, newLogName, LOG_FILE_SUFFIX));
     //        if (!newLog.exists()) {
     boolean ret = log.renameTo(newLog);
+    assert ret;
     if (ret) {
       log = newLog;
     }
-    // Add the new line into the now log file.
-    try {
-      BufferedWriter writer = new BufferedWriter(new FileWriter(log, true));
-      writer.append(
-          String.format(
-              "%s%s%s%s%tD %tT\n",
-              lastName,
-              LOG_FILE_SEPARATOR,
-              newName,
-              LOG_FILE_SEPARATOR,
-              Calendar.getInstance(),
-              Calendar.getInstance()));
-      writer.close();
-    } catch (IOException ex) {
-      ex.printStackTrace();
-      ret = false;
-    }
+    addEntry(entry1, entry2);
     return ret;
   }
 
-  void rename(String lastName, String newName) {
-    rename(lastName, newName, log.getName().substring(1, log.getName().lastIndexOf(".")));
+  void updateLog(String lastName, String newName) throws Exception {
+    updateLog(lastName, newName, log.getName().substring(1, log.getName().lastIndexOf(".")));
   }
 
   /**
@@ -144,7 +158,7 @@ public class Log {
       inner.addAll(Arrays.asList(logEntry.split(LOG_FILE_SEPARATOR)));
       tabledLog.add(inner);
     }
-    for(List<String> row: tabledLog) {
+    for (List<String> row : tabledLog) {
       ret.add(row.get(column));
     }
     return ret.toArray(new String[ret.size()]);
