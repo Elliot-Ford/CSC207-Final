@@ -70,22 +70,7 @@ public class ImageFileManager {
         }
       }
     }
-    AbsTaggableFile[] ret = new AbsTaggableFile[matchingFiles.size()];
-    for (int i = 0; i < ret.length; i++) {
-      if(matchingFiles.get(i).getName().matches(IMAGE_FILE)) {
-        ret[i] = new ImageFile(matchingFiles.get(i));
-      } else {
-        ret[i] = new GeneralFile(matchingFiles.get(i));
-      }
-      try {
-        tagManager.addTag(ret[i].getTags());
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      ret[i].addObserver(tagManager);
-      tagManager.addObserver(ret[i]);
-    }
-    return ret;
+    return generateAbsTaggableFiles(matchingFiles);
   }
 
   /**
@@ -104,12 +89,16 @@ public class ImageFileManager {
         }
       }
     }
-    AbsTaggableFile[] ret = new AbsTaggableFile[matchingFiles.size()];
+    return generateAbsTaggableFiles(matchingFiles);
+  }
+
+  private AbsTaggableFile[] generateAbsTaggableFiles(List<File> files) {
+    AbsTaggableFile[] ret = new AbsTaggableFile[files.size()];
     for (int i = 0; i < ret.length; i++) {
-      if(matchingFiles.get(i).getName().matches(IMAGE_FILE)) {
-        ret[i] = new ImageFile(matchingFiles.get(i));
+      if(files.get(i).getName().matches(IMAGE_FILE)) {
+        ret[i] = new ImageFile(files.get(i));
       } else {
-        ret[i] = new GeneralFile(matchingFiles.get(i));
+        ret[i] = new GeneralFile(files.get(i));
       }
       try {
         tagManager.addTag(ret[i].getTags());
