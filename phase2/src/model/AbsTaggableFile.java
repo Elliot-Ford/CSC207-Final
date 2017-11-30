@@ -107,17 +107,19 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   public boolean addTag(String[] newTags) {
     boolean success = false;
     StringBuilder str = new StringBuilder(getName());
-    for (String tag : newTags){
-        if (tag != null && tag.length() > 0 && !Arrays.asList(extractTags(str.toString())).contains(tag)) {
-            str.append(String.format(" %s%s", TAG_MARKER, tag));
-        }
+    for (String tag : newTags) {
+      if (tag != null
+          && tag.length() > 0
+          && !Arrays.asList(extractTags(str.toString())).contains(tag)) {
+        str.append(String.format(" %s%s", TAG_MARKER, tag));
+      }
     }
-    if(!str.toString().equals(getName())) {
-        try {
-            success = rename(str.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    if (!str.toString().equals(getName())) {
+      try {
+        success = rename(str.toString());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
 
     return success;
@@ -134,14 +136,14 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     String str = getName();
     for (String tag : thisTags) {
       if (tag != null && str.contains(tag) && tag.length() > 0) {
-       str = str.replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, tag), "");
+        str = str.replaceAll(String.format(" %s\\b%s\\b", TAG_MARKER, tag), "");
       }
     }
-      try {
-          ret = rename(str);
-      } catch (Exception e) {
-          e.printStackTrace();
-      }
+    try {
+      ret = rename(str);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return ret;
   }
 
@@ -190,6 +192,11 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     return ret;
   }
 
+  /**
+   * Generate a string of the path
+   *
+   * @return String
+   */
   @Override
   public String toString() {
     return file.getParentFile().getName() + "/" + file.getName();
@@ -215,6 +222,11 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     return ret;
   }
 
+  /**
+   * Returns this file.
+   *
+   * @return File
+   */
   public File getFile() {
     return file;
   }
@@ -228,6 +240,12 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
   //    return file.getName();
   //  }
 
+  /**
+   * Checks if object insistence of AbsTaggableFile
+   *
+   * @param o
+   * @return boolean
+   */
   @Override
   public boolean equals(Object o) {
     return o != null
@@ -255,10 +273,18 @@ public abstract class AbsTaggableFile extends Observable implements Observer {
     return log.getLog();
   }
 
+    /**
+     * Return a list of String representation of previous tags.
+     * @return String[]
+     */
   public String[] getPreviousStates() {
     return log.getColumn(0);
   }
 
+    /**
+     * Returns a specific hash code for a file
+     * @return int
+     */
   @Override
   public int hashCode() {
     return file.getAbsolutePath().hashCode();
