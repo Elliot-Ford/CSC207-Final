@@ -44,7 +44,7 @@ public class TagManager extends Observable implements Observer, Taggable {
    * @param newTags the Array of the string representations for new Tags to be added
    * @return a boolean indicating whether the adding of this tag succeeded
    */
-  public boolean addTag(String[] newTags) {
+  public boolean addTag(String[] newTags) throws Exception {
     Set<String> oldSet = new HashSet<>(tags);
     boolean success = false;
     for (String tag : newTags) {
@@ -53,7 +53,7 @@ public class TagManager extends Observable implements Observer, Taggable {
     if (success) {
       setChanged();
       notifyObservers();
-      log.rename(oldSet.toString(), tags.toString());
+      log.updateLog(oldSet.toString(), tags.toString());
     }
     return success;
   }
@@ -64,7 +64,7 @@ public class TagManager extends Observable implements Observer, Taggable {
    * @param tags the Array of string representations for Tags to be removed
    * @return a boolean indicating whether the removal of this tag succeeded
    */
-  public boolean removeTag(String[] tags) {
+  public boolean removeTag(String[] tags) throws Exception {
     Set<String> oldSet = new HashSet<>(this.tags);
     boolean success = false;
     for (String tag : tags) {
@@ -74,7 +74,7 @@ public class TagManager extends Observable implements Observer, Taggable {
       lastErasedTags = tags.clone();
       setChanged();
       notifyObservers();
-      log.rename(oldSet.toString(), this.tags.toString());
+      log.updateLog(oldSet.toString(), this.tags.toString());
     }
     return success;
   }
@@ -96,7 +96,11 @@ public class TagManager extends Observable implements Observer, Taggable {
    */
   @Override
   public void update(Observable o, Object arg) {
-    addTag(((AbsTaggableFile) o).getTags());
+    try {
+      addTag(((AbsTaggableFile) o).getTags());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public String[] getLastErasedTag() {

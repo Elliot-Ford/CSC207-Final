@@ -77,7 +77,11 @@ public class ImageFileManager {
       } else {
         ret[i] = new GeneralFile(matchingFiles.get(i));
       }
-      tagManager.addTag(ret[i].getTags());
+      try {
+        tagManager.addTag(ret[i].getTags());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       ret[i].addObserver(tagManager);
       tagManager.addObserver(ret[i]);
     }
@@ -107,7 +111,11 @@ public class ImageFileManager {
       } else {
         ret[i] = new GeneralFile(matchingFiles.get(i));
       }
-      tagManager.addTag(ret[i].getTags());
+      try {
+        tagManager.addTag(ret[i].getTags());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
       ret[i].addObserver(tagManager);
       tagManager.addObserver(ret[i]);
     }
@@ -130,11 +138,21 @@ public class ImageFileManager {
    * @return true if it succeeds, false if it doesn't.
    */
   public boolean deleteTag(String[] tags) {
-    return tagManager.removeTag(tags);
+    try {
+      return tagManager.removeTag(tags);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
   public boolean addTag(String[] tags) {
-    return tagManager.addTag(tags);
+    try {
+      return tagManager.addTag(tags);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
   /**

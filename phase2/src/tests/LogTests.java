@@ -36,7 +36,11 @@ public class LogTests {
   @Test
   public void testLogFileIsRenamed() {
     String newName = "newName";
-    log.rename("", "", "newName");
+    try {
+      log.updateLog("", "", "newName");
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     File expectedResult = new File(folder.getRoot(), ".newName.log");
     File shouldntExist = new File(folder.getRoot(), LOG_FILE_FULL_NAME);
     assertTrue(expectedResult.exists());
