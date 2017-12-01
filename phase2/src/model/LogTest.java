@@ -8,13 +8,12 @@ import java.io.File;
 import java.io.FileWriter;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 public class LogTest {
   private final String LOG_FILE_NAME = "log";
   private final String LOG_FILE_FULL_NAME = "." + LOG_FILE_NAME + ".log";
-  @Rule
-  public TemporaryFolder folder = new TemporaryFolder();
+  @Rule public TemporaryFolder folder = new TemporaryFolder();
   private Log log;
 
   @Before

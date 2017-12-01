@@ -74,22 +74,23 @@ public class GeneralFileTest {
 
   @Test
   public void getPreviousTagsWithAPreviousTagAndNoCurrent() throws Exception {
-      File logFile = new File(testFile.getParentFile(), "." + testFile.getName() + ".log" );
-      BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
-      writer.append("fileName @tag / fileName / time");
-      writer.close();
+    File logFile = new File(testFile.getParentFile(), "." + testFile.getName() + ".log");
+    BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
+    writer.append("fileName @tag / fileName / time");
+    writer.close();
   }
 
   @Test
   public void getPreviousTagsWithAnIdencticalPreviousTagAndCurrent() throws Exception {
-      File fileWithOverlappingTag = folder.newFile("fileName @tag");
-      generalFile = new GeneralFile(fileWithOverlappingTag);
-      File logFile = new File(testFile.getParentFile(), "." + fileWithOverlappingTag.getName() + ".log");
-      BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
-      writer.append("fileName @tag / fileName / time");
-      writer.close();
-      String[] expectedResults = new String[0];
-      Assert.assertArrayEquals(expectedResults, generalFile.getPreviousTags());
+    File fileWithOverlappingTag = folder.newFile("fileName @tag");
+    generalFile = new GeneralFile(fileWithOverlappingTag);
+    File logFile =
+        new File(testFile.getParentFile(), "." + fileWithOverlappingTag.getName() + ".log");
+    BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
+    writer.append("fileName @tag / fileName / time");
+    writer.close();
+    String[] expectedResults = new String[0];
+    Assert.assertArrayEquals(expectedResults, generalFile.getPreviousTags());
   }
 
   @Test
@@ -98,7 +99,7 @@ public class GeneralFileTest {
     BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
     writer.append("fileName @tag @tag2 @tag3 / fileName / time");
     writer.close();
-    String[] expectedResults = new String[] {"tag","tag2", "tag3"};
+    String[] expectedResults = new String[] {"tag", "tag2", "tag3"};
     Assert.assertArrayEquals(expectedResults, generalFile.getPreviousTags());
   }
 
@@ -106,7 +107,8 @@ public class GeneralFileTest {
   public void getPreviousTagsWithMultipleTagsAndSomeIdenticalCurrent() throws Exception {
     File fileWithOverlappingTags = folder.newFile("fileName @tag @tag2");
     generalFile = new GeneralFile(fileWithOverlappingTags);
-    File logFile = new File(testFile.getParentFile(), "." + fileWithOverlappingTags.getName() + ".log");
+    File logFile =
+        new File(testFile.getParentFile(), "." + fileWithOverlappingTags.getName() + ".log");
     BufferedWriter writer = new BufferedWriter(new FileWriter(logFile));
     writer.append("fileName @tag @tag2 @tag3 / fileName / time");
     writer.close();
@@ -114,12 +116,10 @@ public class GeneralFileTest {
     Assert.assertArrayEquals(expectedResults, generalFile.getPreviousTags());
   }
 
-
-
   @Test
   public void addTag() throws Exception {
-    generalFile.addTag(new String[]{"Tag"});
-    File expectedResults = new File(folder.getRoot(), TEST_FILE_NAME +" @Tag");
+    generalFile.addTag(new String[] {"Tag"});
+    File expectedResults = new File(folder.getRoot(), TEST_FILE_NAME + " @Tag");
     File shouldntExist = testFile;
     assertTrue(expectedResults.exists());
     assertFalse(shouldntExist.exists());
@@ -129,7 +129,7 @@ public class GeneralFileTest {
   public void removeTag() throws Exception {
     File fileWithTag = folder.newFile("fileName @tag");
     generalFile = new GeneralFile(fileWithTag);
-    generalFile.removeTag(new String[]{"tag"});
+    generalFile.removeTag(new String[] {"tag"});
     File expectedResults = new File(folder.getRoot(), "fileName");
     File shouldntExist = fileWithTag;
     assertTrue(expectedResults.exists());
@@ -159,36 +159,37 @@ public class GeneralFileTest {
 
   @Test
   public void getFile() throws Exception {
-      File expectedResult = testFile;
-      assertEquals(expectedResult, generalFile.getFile());
+    File expectedResult = testFile;
+    assertEquals(expectedResult, generalFile.getFile());
   }
 
   @Test
   public void equals() throws Exception {
-      GeneralFile expectedResult = new GeneralFile(testFile);
-      assertEquals(expectedResult, generalFile);
+    GeneralFile expectedResult = new GeneralFile(testFile);
+    assertEquals(expectedResult, generalFile);
   }
 
   @Test
   public void update() throws Exception {
-      File fileWithTag = folder.newFile("fileName @tag");
-      generalFile = new GeneralFile(fileWithTag);
-      TagManager tagManager = new TagManager() {
+    File fileWithTag = folder.newFile("fileName @tag");
+    generalFile = new GeneralFile(fileWithTag);
+    TagManager tagManager =
+        new TagManager() {
           @Override
           public String[] getLastErasedTag() {
-              return new String[]{"tag"};
+            return new String[] {"tag"};
           }
-      };
-      generalFile.update(tagManager,null);
-      File expectedResult = new File(folder.getRoot(), "fileName");
-      File shouldntExist = fileWithTag;
-      assertTrue(expectedResult.exists());
-      assertFalse(shouldntExist.exists());
+        };
+    generalFile.update(tagManager, null);
+    File expectedResult = new File(folder.getRoot(), "fileName");
+    File shouldntExist = fileWithTag;
+    assertTrue(expectedResult.exists());
+    assertFalse(shouldntExist.exists());
   }
 
   @Test
   public void testHashCode() throws Exception {
-      int expectedResult = testFile.getAbsolutePath().hashCode();
-      assertEquals(expectedResult, generalFile.hashCode());
+    int expectedResult = testFile.getAbsolutePath().hashCode();
+    assertEquals(expectedResult, generalFile.hashCode());
   }
 }
