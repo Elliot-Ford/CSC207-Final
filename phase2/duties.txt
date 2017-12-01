@@ -11,3 +11,10 @@ at once and the selected tags then can be removed or added to the image file. Fi
 front end. Changed the way of adding the tags. Completed java docs of method. Implemented the string builder form in
  add or remove tags so tht the log file of the image should be changed once every time we add or remove multiple
  tags of a file.
+
+ -Shadman
+ My job for this phase was to think of improvements and additional features we could add to the project such as adding
+ checkboxes and adding the ability to ImageFile to modify just the original name of a file, to name a few.
+ I also worked to solve some of the existing issues with our project ( such as the not having the program check for
+ a string in a set) and also helped to troubleshoot bugs with the program along with my teammates, some of them being
+ backend and frontend.
