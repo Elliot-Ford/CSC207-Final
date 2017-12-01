@@ -18,8 +18,6 @@ public class Log {
   /** the log file for the target class. */
   private File log;
 
-  private String[] dates;
-
   /**
    * Creates a log file for a file
    *
@@ -27,7 +25,6 @@ public class Log {
    */
   public Log(File file) {
     log = new File(file.getParent(), LOG_FILE_PREFIX + file.getName() + LOG_FILE_SUFFIX);
-    dates = new String[0];
     if (!log.exists()) {
       try {
         log.createNewFile();
@@ -53,7 +50,6 @@ public class Log {
    */
   public Log(String root, String fileName) {
     this(new File(root, fileName));
-    dates = new String[0];
   }
 
   /**
@@ -99,10 +95,6 @@ public class Log {
    * @return returns the format of a row in the log
    */
   private String generateLogEntry(String entry1, String entry2) {
-    String[] calendar = Calendar.getInstance().toString().split(" ");
-    if (!Arrays.asList(dates).contains(calendar[0].trim())) {
-        Arrays.asList(dates).add(calendar[0].trim());
-    }
     return String.format(
         "%s%s%s%s%tD %tT\n",
         entry1,
@@ -228,8 +220,4 @@ public class Log {
   //    }
   //    return tags;
   //  }
-
-  public String[] getDates() {
-    return dates;
-  }
 }

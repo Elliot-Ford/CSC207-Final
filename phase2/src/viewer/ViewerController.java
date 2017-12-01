@@ -53,7 +53,6 @@ public class ViewerController {
   public Image defaultImage;
 
   public ChoiceBox<String> fileType;
-  public ChoiceBox<String> dates;
 
   /** the Boolean that indicates which mode it is for the TreeView */
   private boolean toggle;
@@ -227,11 +226,6 @@ public class ViewerController {
       imageName.setText(selectedImageFile.getName());
       // Update the
       imageView.setImage(selectedImageFile.getImage());
-
-      this.dates.getItems().addAll(selectedImageFile.getDates());
-      this.dates.setValue(selectedImageFile.getDates()[0]);
-      this.dates.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateAll());
-
     }
     // keep the log up to date
     log.scrollTo(logList.size() - 1);

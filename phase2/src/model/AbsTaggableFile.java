@@ -210,19 +210,6 @@ public abstract class AbsTaggableFile extends Observable implements Observer, Ta
   public abstract Image getImage();
 
   /**
-   * Return the name of the image file without any String representations of the Tags.
-   *
-   * @return the actual name of the image file
-   */
-  public String getActualName() {
-    String ret = "";
-    if (getName().contains(TAG_MARKER)) {
-      ret = getName().substring(0, getName().indexOf(TAG_MARKER));
-    }
-    return ret;
-  }
-
-  /**
    * Returns this file.
    *
    * @return File
@@ -231,19 +218,10 @@ public abstract class AbsTaggableFile extends Observable implements Observer, Ta
     return file;
   }
 
-  //  /**
-  //   * Return the full name of the image file, suffix and all.
-  //   *
-  //   * @return the full name of the image file
-  //   */
-  //  public String getFullName() {
-  //    return file.getName();
-  //  }
-
   /**
    * Checks if object insistence of AbsTaggableFile
    *
-   * @param o
+   * @param o the object passed in for comparison
    * @return boolean
    */
   @Override
@@ -290,10 +268,5 @@ public abstract class AbsTaggableFile extends Observable implements Observer, Ta
   @Override
   public int hashCode() {
     return file.getAbsolutePath().hashCode();
-  }
-
-
-  public String[] getDates() {
-    return log.getDates();
   }
 }
