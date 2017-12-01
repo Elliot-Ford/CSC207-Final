@@ -34,7 +34,7 @@ public class TaggableFileManager {
     this(new File(path));
   }
 
-  public TaggableFileManager(File file) {
+  TaggableFileManager(File file) {
     root = new File("");
     tagManager = new TagManager();
     absTaggableFiles = new HashSet<>();

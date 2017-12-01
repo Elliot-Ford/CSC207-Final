@@ -44,9 +44,10 @@ public class Log {
   }
 
   /**
-   * Constructs a new log file at the given root with the given name having the needed
-   * prefix and suffix added to it.
-   *  @param fileName the name of the log file
+   * Constructs a new log file at the given root with the given name having the needed prefix and
+   * suffix added to it.
+   *
+   * @param fileName the name of the log file
    */
   public Log(String root, String fileName) {
     this(new File(root, fileName));
@@ -60,7 +61,7 @@ public class Log {
    */
   boolean moveFile(String newPath) {
     File newLog = new File(newPath, log.getName());
-//    log = renameFile(newLog);
+    //    log = renameFile(newLog);
     boolean ret = log.renameTo(newLog);
     assert ret;
     log = newLog;
@@ -106,17 +107,6 @@ public class Log {
   }
 
   /**
-   * Renames the file
-   *
-   * @param newFile the file to try and rename the log file to.
-   * @return File the new reference to the log file.
-   */
-  private File renameFile(File newFile) {
-    assert log.renameTo(newFile);
-    return newFile;
-  }
-
-  /**
    * Record the renaming of the target file in the log file.
    *
    * @param entry1 the last name of the target file
@@ -129,7 +119,6 @@ public class Log {
         new File(
             log.getParentFile(),
             String.format("%s%s%s", LOG_FILE_PREFIX, newLogName, LOG_FILE_SUFFIX));
-//    log = renameFile(newLog);
     boolean ret = log.renameTo(newLog);
     assert ret;
     log = newLog;
@@ -192,32 +181,4 @@ public class Log {
     }
     return ret.toArray(new String[ret.size()]);
   }
-
-  //  Set<String> getPreviousGlobalTags() {
-  //    Set<String> tags = new HashSet<>();
-  //    try {
-  //      BufferedReader reader = new BufferedReader(new FileReader(log.getPath()));
-  //      String line = reader.readLine();
-  //      while (line != null) {
-  //        String curr = line;
-  //        line = reader.readLine();
-  //        if (line == null) {
-  //          String[] lineList = curr.split(LOG_FILE_SEPARATOR);
-  //          String set = lineList[1];
-  //          String[] tagSet = set.split(",");
-  //          for (String s : tagSet) {
-  //            s = s.replaceFirst("\\[", "");
-  //            s = s.replaceFirst("]", "");
-  //            s = s.trim();
-  //            tags.add(s);
-  //          }
-  //        }
-  //        line = reader.readLine();
-  //      }
-  //      reader.close();
-  //    } catch (IOException e) {
-  //      e.printStackTrace();
-  //    }
-  //    return tags;
-  //  }
 }

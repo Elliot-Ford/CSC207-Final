@@ -16,7 +16,6 @@ import model.AbsTaggableFile;
 import model.TaggableFileManager;
 
 import java.io.File;
-import java.util.Arrays;
 
 public class ViewerController {
   /** text to display when there's no image */
@@ -351,8 +350,7 @@ public class ViewerController {
       String newName = "";
       if (log.getSelectionModel().getSelectedItem() != null) {
         String selectedItem = log.getSelectionModel().getSelectedItem();
-        newName =
-            selectedItem.substring(0, selectedItem.indexOf(" -> "));
+        newName = selectedItem.substring(0, selectedItem.indexOf(" -> "));
       }
       if (selectedImageFile != null && !newName.equals("") && selectedImageFile.rename(newName)) {
         updateAll();
