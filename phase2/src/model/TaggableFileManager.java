@@ -34,6 +34,11 @@ public class TaggableFileManager {
     this(new File(path));
   }
 
+  /**
+   * Construct a new TaggableFileManager object.
+   *
+   * @param file file for this TaggableFileManager object
+   */
   TaggableFileManager(File file) {
     root = new File("");
     tagManager = new TagManager();
@@ -98,6 +103,11 @@ public class TaggableFileManager {
     return generateAbsTaggableFiles(matchingFiles);
   }
 
+  /**
+   * Returns the regex according to the type of the file.
+   * @param fileType the String representation of the type of this file
+   * @return String
+   */
   private String getRegEx(String fileType) {
     String regex = "";
     if (fileType != null) {
@@ -116,6 +126,11 @@ public class TaggableFileManager {
     return regex;
   }
 
+  /**
+   * Return an array of the file in list
+   * @param files A list of files to generate
+   * @return a AbsTaggableFile[] array
+   */
   private AbsTaggableFile[] generateAbsTaggableFiles(List<File> files) {
     List<AbsTaggableFile> possibleAbsTaggableFiles = new ArrayList<>(files.size());
     for (File file : files) {
@@ -168,6 +183,12 @@ public class TaggableFileManager {
     }
   }
 
+  /**
+   * Add Tag from all files and tagManager
+   *
+   * @param tags the Array of String representations of tags to delete
+   * @return true if it succeeds, false if it doesn't.
+   */
   public boolean addTag(String[] tags) {
     try {
       return tagManager.addTag(tags);
@@ -204,6 +225,10 @@ public class TaggableFileManager {
     return ret;
   }
 
+  /**
+   * Returns the root
+   * @return File
+   */
   public File getRoot() {
     return root;
   }
