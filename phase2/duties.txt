@@ -1,0 +1,6 @@
+-Jeremy
+My job for this phase is, firstly, to implement the Log class and the GeneralFile class so as to make them mutually
+Observable to each other, such that we are able to let these two classes notify each other when changes are made to
+one of the classes. Then I turned to implement the TagManager class such that it now maintains a log file so as to
+keep track of a global list of tags in the program. After finishing these tasks, I then joined my other teammates to
+fix the bugs we found in the program.
