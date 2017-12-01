@@ -351,9 +351,9 @@ public class ViewerController {
       if (log.getSelectionModel().getSelectedItem() != null) {
         String selectedItem = log.getSelectionModel().getSelectedItem();
         newName =
-            selectedItem.substring(selectedItem.indexOf("-> ") + 3, selectedItem.indexOf(" | "));
+            selectedItem.substring(0, selectedItem.indexOf(" -> "));
       }
-      if (selectedImageFile != null && newName.equals("") && selectedImageFile.rename(newName)) {
+      if (selectedImageFile != null && !newName.equals("") && selectedImageFile.rename(newName)) {
         updateAll();
       }
     } catch (Exception e) {

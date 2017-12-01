@@ -60,7 +60,10 @@ public class Log {
    */
   boolean moveFile(String newPath) {
     File newLog = new File(newPath, log.getName());
-    log = renameFile(newLog);
+//    log = renameFile(newLog);
+    boolean ret = log.renameTo(newLog);
+    assert ret;
+    log = newLog;
     return true;
   }
 
@@ -126,10 +129,10 @@ public class Log {
         new File(
             log.getParentFile(),
             String.format("%s%s%s", LOG_FILE_PREFIX, newLogName, LOG_FILE_SUFFIX));
-    log = renameFile(newLog);
-//    boolean ret = log.renameTo(newLog);
-//    assert ret;
-//    log = newLog;
+//    log = renameFile(newLog);
+    boolean ret = log.renameTo(newLog);
+    assert ret;
+    log = newLog;
     addEntry(entry1, entry2);
     return true;
   }

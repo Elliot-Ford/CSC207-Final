@@ -42,7 +42,7 @@ public abstract class AbsTaggableFile extends Observable implements Observer, Ta
    * @return Whether this moving of the ImageFile was successful
    */
   public boolean moveFile(String newPath) {
-    File newFile = new File(newPath, getName() + getSuffix());
+    File newFile = new File(newPath, file.getName());
     boolean ret1 = file.renameTo(newFile);
     boolean ret2 = log.moveFile(newPath);
     boolean ret = ret1 && ret2;
@@ -172,7 +172,7 @@ public abstract class AbsTaggableFile extends Observable implements Observer, Ta
    * @return the name of an image.
    */
   public String getName() {
-    String ret = "";
+    String ret = file.getName();
     if (file.getName().lastIndexOf(".") != -1) {
       ret = file.getName().substring(0, file.getName().lastIndexOf("."));
     }
