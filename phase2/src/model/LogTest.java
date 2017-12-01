@@ -57,7 +57,6 @@ public class LogTest {
 
   @Test
   public void updateLog1() throws Exception {
-    String newName = "newName";
     try {
       log.updateLog("", "");
     } catch (Exception e) {
