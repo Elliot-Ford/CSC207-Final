@@ -77,9 +77,6 @@ public class ViewerController {
   /** the observable list of log */
   private ObservableList<String> logList;
 
-  /** the observable list of previousStates */
-  private ObservableList<String> previousStateList;
-
   /** Construct a ViewerController. */
   public ViewerController() {
     toggle = false;
@@ -89,7 +86,6 @@ public class ViewerController {
     previousTagsList = FXCollections.observableArrayList();
     viewerList = FXCollections.observableArrayList();
     logList = FXCollections.observableArrayList();
-    previousStateList = FXCollections.observableArrayList();
   }
 
   /**
@@ -204,7 +200,6 @@ public class ViewerController {
     currentTagsList.clear();
     previousTagsList.clear();
     logList.clear();
-    previousStateList.clear();
     imageName.setText(DEFAULT_IMAGE_NAME);
     imageView.setImage(defaultImage);
 
@@ -219,8 +214,6 @@ public class ViewerController {
       for (String logEntry : selectedImageFile.getLog()) {
         logList.add(logEntry.replaceFirst("/", "->").replaceFirst("/", "|"));
       }
-      // Update the list of all the previous states of the Image
-      previousStateList.addAll(selectedImageFile.getPreviousStates());
       // Update the name of the Image.
       imageName.setText(selectedImageFile.getName());
       // Update the

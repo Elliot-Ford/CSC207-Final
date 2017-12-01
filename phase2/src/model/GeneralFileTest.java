@@ -158,20 +158,37 @@ public class GeneralFileTest {
   }
 
   @Test
-  public void getFile() throws Exception {}
+  public void getFile() throws Exception {
+      File expectedResult = testFile;
+      assertEquals(expectedResult, generalFile.getFile());
+  }
 
   @Test
-  public void equals() throws Exception {}
+  public void equals() throws Exception {
+      GeneralFile expectedResult = new GeneralFile(testFile);
+      assertEquals(expectedResult, generalFile);
+  }
 
   @Test
-  public void update() throws Exception {}
+  public void update() throws Exception {
+      File fileWithTag = folder.newFile("fileName @tag");
+      generalFile = new GeneralFile(fileWithTag);
+      TagManager tagManager = new TagManager() {
+          @Override
+          public String[] getLastErasedTag() {
+              return new String[]{"tag"};
+          }
+      };
+      generalFile.update(tagManager,null);
+      File expectedResult = new File(folder.getRoot(), "fileName");
+      File shouldntExist = fileWithTag;
+      assertTrue(expectedResult.exists());
+      assertFalse(shouldntExist.exists());
+  }
 
   @Test
-  public void getLog() throws Exception {}
-
-  @Test
-  public void getPreviousStates() throws Exception {}
-
-  @Test
-  public void testHashCode() throws Exception {}
+  public void testHashCode() throws Exception {
+      int expectedResult = testFile.getAbsolutePath().hashCode();
+      assertEquals(expectedResult, generalFile.hashCode());
+  }
 }
