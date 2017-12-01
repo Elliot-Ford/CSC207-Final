@@ -4,3 +4,10 @@ Observable to each other, such that we are able to let these two classes notify 
 one of the classes. Then I turned to implement the TagManager class such that it now maintains a log file so as to
 keep track of a global list of tags in the program. After finishing these tasks, I then joined my other teammates to
 fix the bugs we found in the program.
+
+-Shlok
+In this phase, I implemented the multiple selection in all the three list view so that user can select multiple tags
+at once and the selected tags then can be removed or added to the image file. Fixed bugs in the back end as well as
+front end. Changed the way of adding the tags. Completed java docs of method. Implemented the string builder form in
+ add or remove tags so tht the log file of the image should be changed once every time we add or remove multiple
+ tags of a file.
