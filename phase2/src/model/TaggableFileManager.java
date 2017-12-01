@@ -105,7 +105,7 @@ public class TaggableFileManager {
 
   /**
    * Returns the regex according to the type of the file.
-   * @param fileType
+   * @param fileType the String representation of the type of this file
    * @return String
    */
   private String getRegEx(String fileType) {
@@ -128,7 +128,7 @@ public class TaggableFileManager {
 
   /**
    * Return an array of the file in list
-   * @param files
+   * @param files A list of files to generate
    * @return a AbsTaggableFile[] array
    */
   private AbsTaggableFile[] generateAbsTaggableFiles(List<File> files) {
