@@ -199,7 +199,7 @@ public abstract class AbsTaggableFile extends Observable implements Observer, Ta
    */
   @Override
   public String toString() {
-    return file.getParentFile().getName() + "/" + file.getName();
+    return file.getAbsolutePath();
   }
 
   /**
