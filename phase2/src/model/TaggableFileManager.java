@@ -14,7 +14,7 @@ public class TaggableFileManager {
   private static final String TEXT_FILE =
       "^.*[.](txt|TXT|doc|DOC|docx|DOCX|odt|ODT|pdf|PDF|rtf|RTF|tex|TEX)$";
   private static final String AUDIO_FILE =
-      "^.*[.](aif|AIF|cda|CDA|mid|MID|midi|MIDI|mp3|MP3|mpa|MPA|ogg|OGG|wav|WAV|wma|WMA|wpl|WPL)$";
+      "^.*[.](aif|AIF|cda|CDA|mid|MID|midi|MIDI|mp3|MP3|mp4|MP4|mpa|MPA|ogg|OGG|wav|WAV|wma|WMA|wpl|WPL)$";
 
   /** the root of the directory */
   private File root;
